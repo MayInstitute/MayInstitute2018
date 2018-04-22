@@ -1,0 +1,10 @@
+########################################################################################
+## Install required packages for Advanced R course section from CRAN
+packages <- c("ggplot2", "reshape2", "psych", "pwr", 
+              "dplyr", "magrittr", "limma", 
+              "MSnbase", "isobar", "aLFQ", "MSnID", "RforProteomics")
+
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite(packages)
+
