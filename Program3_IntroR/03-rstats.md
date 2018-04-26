@@ -39,7 +39,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 8 1 9
+## [1] 1 5 2
 ```
 
 ```r
@@ -47,7 +47,7 @@ sample(10, 3)
 ```
 
 ```
-## [1]  3  9 10
+## [1] 3 2 6
 ```
 
 Now suppose we would like to select the same randomly selected samples
@@ -281,7 +281,7 @@ $$ s = \sqrt{\frac{1}{n-1} \sum_{i=1}^n (x_i - \bar x)^2} $$
 > Using the `aggregate` function above, calculate the standard
 > deviation, by applying the `median` function.
 
-
+<details>
 
 ```r
 ## The same as mean calculation above. 'FUN' is changed to 'sd'.
@@ -300,10 +300,12 @@ sub.median
 ```
 ## Error in eval(expr, envir, enclos): object 'sub.median' not found
 ```
+</details>
 
 > Using the `aggregate` function above, calculate the standard
 > deviation, by applying the `sd` function.
 
+<details>
 
 ```r
 ## The same as mean calculation above. 'FUN' is changed to 'sd'.
@@ -322,7 +324,7 @@ sub.sd
 ```
 ## Error in eval(expr, envir, enclos): object 'sub.sd' not found
 ```
-
+</details>
 
 ### Count the number of observation per groups
 
@@ -331,6 +333,7 @@ sub.sd
 > Using the `aggregate` function above, count the number of
 > observations per group with the `length` function.
 
+<details>
 
 ```r
 ## The same as mean calculation. 'FUN' is changed 'length'.
@@ -350,6 +353,7 @@ sub.len
 ```
 ## Error in eval(expr, envir, enclos): object 'sub.len' not found
 ```
+</details>
 
 ### Calculate SE (standard error of mean) per groups
 
@@ -488,7 +492,7 @@ p2 + geom_errorbar(aes(ymax = mean + sd, ymin = mean - sd), width = 0.1) +
 >
 > Add the **standard error of the mean**. Which one is smaller?
 
-
+<details>
 
 ```r
 # mean with SE
@@ -503,11 +507,13 @@ p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1) +
 ```r
 ## The SE is narrow than the SD!
 ```
+</details>
 
 > **Challenge**
 >
 > Add the **standard error of the mean** with black color.
 
+<details>
 
 ```r
 # mean with SE
@@ -518,6 +524,7 @@ p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1, color='bl
 ```
 ## Error in eval(expr, envir, enclos): object 'p2' not found
 ```
+</details>
 
 ## Working with statistical distributions
 
@@ -690,6 +697,7 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 >
 > Replicate the above for the 99% two-sided confidence interval.
 
+<details>
 
 ```r
 # mean with 99% two-sided confidence interval
@@ -735,6 +743,7 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 ```
 ## Error in ggplot(aes(x = Group, y = mean, colour = Group), data = summaryresult): could not find function "ggplot"
 ```
+</details>
 
 ### Some comments
 
@@ -917,7 +926,9 @@ result
 > Repeat the t-test above but with calculating a 90% confidence interval
 > for the log2 fold change.
 
+<details>
 
+</details>
 
 ### The `htest` class
 
@@ -972,8 +983,9 @@ result$estimate
 > * Extract the p values
 > * Extract the 95% confidence intervals
 
+<details>
 
-
+</details>
 
 We can also manually compute our t-test statistic using the formulas
 we descibed above and compare it with the `summaryresult`.
@@ -1144,8 +1156,9 @@ pwr.t.test(d = d, sig.level = alpha, power = power, type = 'two.sample')
 >
 > * Calculate power with 10 samples and the same parameters as above.
 
+<details>
 
-
+</details>
 
 Let's investigate the effect of required fold change and variance on the sample size estimation.
 
@@ -1307,8 +1320,9 @@ class(TCGA.CRC$Gender)
 > * Get unique information and class for `BRAF.mutation` information
 > * Get unique information and class for `history_of_colon_polyps` information
 
+<details>
 
-
+</details>
 
 `table` function generates contingency table (or classification table with frequency of outcomes) at each combination.
 
@@ -1439,8 +1453,9 @@ TCGA.CRC <- TCGA.CRC[!duplicated(TCGA.CRC), ]
 >
 > * Check whether dimension and number of participants ID are changed after removing duplicated rows.
 
+<details>
 
-
+</details>
 
 
 ## Generate 2-way contingency tables
@@ -1623,8 +1638,9 @@ ft$estimate
 >
 > * Compare the proportion of male patients in the patients with colon cancer is different from that in the patients with rectal cancer.
 
+<details>
 
-
+</details>
 
 ### Optional practice :  Large-sample Z-test
 
@@ -1936,6 +1952,7 @@ See also `?influence.measures`.
 >    a linear model for one $(x_i, y_i)$ pair of your choice and
 >    visualise/check the model.
 
+<details>
 
 ```r
 x3 <- anscombe[, 3]
@@ -1971,6 +1988,7 @@ plot(lmod)
 ```
 
 ![plot of chunk unnamed-chunk-71](figure/unnamed-chunk-71-1.png)
+</details>
 
 Finally, let's conclude by illustrating how `ggplot2` can very
 elegantly be used to produce similar plots, with useful annotations:
@@ -1991,6 +2009,7 @@ p + geom_smooth(method = "lm") +
 > Replicate the MA plot above using `ggplot2`. Then add a
 > non-parametric lowess regression using `geom_smooth()`.
 
+<details>
 
 ```r
 p <- ggplot(aes(x = A, y = M), data = dfr) + geom_point()
@@ -2006,6 +2025,8 @@ p + geom_smooth() + geom_quantile(colour = "red")
 ```
 
 ![plot of chunk unnamed-chunk-73](figure/unnamed-chunk-73-1.png)
+</details>
+
 
 ---
 

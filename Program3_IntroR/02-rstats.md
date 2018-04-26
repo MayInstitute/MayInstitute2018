@@ -249,40 +249,43 @@ of the autocompletion feature to get the full and correct column name.
 >
 > 1. Create a `data.frame` (`iprg_200`) containing only the observations from
 >    row 200 of the `iprg` dataset.
-
-
-```r
-iprg_200 <- iprg[200, ]
-```
-
+>
 > 2. Notice how `nrow()` gave you the number of rows in a `data.frame`?
 >
 >      * Use that number to pull out just that last row in the data frame.
 >      * Compare that with what you see as the last row using `tail()` to make
 >        sure it's meeting expectations.
 >      * Pull out that last row using `nrow()` instead of the row number.
->      * Create a new data frame object (`iprg_last`) from that last row.
-
-
-```r
-iprg_last <- iprg[nrow(iprg), ]
-```
-
+>      * Create a new data frame object `iprg_last` from that last row.
+>
 > 3. Extract the row that is in the middle of the data frame. Store
 >    the content of this row in an object named `iprg_middle`.
-
-
-```r
-i <- floor(nrow(iprg)/2)
-iprg_middle <- iprg[i, ]
-```
-
+>
 > 4. Combine `nrow()` with the `-` notation above to reproduce the behavior of
 >    `head(iprg)` keeping just the first through 6th rows of the `iprg`
 >    dataset.
 
+<details>
 
 ```r
+## 1.
+iprg_200 <- iprg[200, ]
+
+## 2.
+iprg_last <- iprg[nrow(iprg), ]
+
+## 3.
+(i <- floor(nrow(iprg)/2))
+```
+
+```
+## [1] 18160
+```
+
+```r
+iprg_middle <- iprg[i, ]
+
+## 4.
 iprg[-(7:nrow(iprg)), ]
 ```
 
@@ -302,6 +305,7 @@ iprg[-(7:nrow(iprg)), ]
 ## 5            2 116382798             B
 ## 6            2 102328260             C
 ```
+</details>
 
 ## Factors
 
@@ -417,8 +421,10 @@ require this data type.
 
 > **Challenge**
 >
-> Compare the output of `str(surveys)` when setting `stringsAsFactors = TRUE` (default) and `stringsAsFactors = FALSE`:
+> Compare the output of `str(surveys)` when setting `stringsAsFactors
+> = TRUE` (default) and `stringsAsFactors = FALSE`:
 
+<details>
 
 ```r
 iprg <- read.csv("data/iPRG_example_runsummary.csv", stringsAsFactors = TRUE)
@@ -451,6 +457,7 @@ str(iprg)
 ##  $ Intensity    : num  1.18e+08 1.02e+08 1.01e+08 1.20e+08 1.16e+08 ...
 ##  $ TechReplicate: chr  "B" "C" "A" "A" ...
 ```
+</details>
 
 ## Other data structures
 
@@ -545,10 +552,15 @@ unique(dfr)
 
 > **Challenge**
 >
-> * How many conditions are there?
+> 1. How many conditions are there?
+> 2. How many biological replicates are there?
+> 3. How many condition/technical replicates combinations are there?
+
+<details>
 
 
 ```r
+## 1.
 unique(iprg$Condition)
 ```
 
@@ -564,10 +576,8 @@ length(unique(iprg$Condition))
 ## [1] 4
 ```
 
-> * How many biological replicates are there?
-
-
 ```r
+## 2.
 unique(iprg$BioReplicate)
 ```
 
@@ -583,10 +593,8 @@ length(unique(iprg$BioReplicate))
 ## [1] 4
 ```
 
-> * How many condition/technical replicates combinations are there?
-
-
 ```r
+## 3.
 unique(iprg$Condition)
 ```
 
@@ -636,6 +644,7 @@ more detailed data exploration using a smalle subset of the data.
 >
 > For each of there, how many measurements are there?
 
+<details>
 
 ```r
 iprg_c1 <- iprg[iprg$Condition == "Condition1", ]
@@ -756,6 +765,7 @@ nrow(iprg_c12)
 ```
 ## [1] 18160
 ```
+</details>
 
 # Part 2: Manipulating and analyzing data woth `dplyr`
 
@@ -1394,7 +1404,7 @@ for `iPRG_example`.
 hist(iprg$Intensity)
 ```
 
-![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
+![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-1.png)
 
 Our histogram looks quite skewed. How does this look on log-scale?
 
@@ -1413,7 +1423,7 @@ hist(iprg$Log2Intensity,
 	 main = "Histogram of iPRG data")
 ```
 
-![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47-1.png)
+![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42-1.png)
 
 In this case, we have duplicated information in our data, we have the
 raw and log-transformed data. This is not necessary (and not advised),
@@ -1427,7 +1437,7 @@ hist(log2(iprg$Intensity),
 	 main = "Histogram of iPRG data")
 ```
 
-![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48-1.png)
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-1.png)
 
 We look at the summary for the log2-transformed values including the
 value for the mean. Let's fix that first.
@@ -1450,11 +1460,14 @@ summary(iprg$Log2Intensity)
 > `log` function.
 
 
+<details><details>
+
 ```r
 hist(log10(iprg$Intensity))
 ```
 
-![plot of chunk unnamed-chunk-50](figure/unnamed-chunk-50-1.png)
+![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
+</details>
 
 ## Boxplot or box-and-whisker plot
 
@@ -1469,7 +1482,7 @@ files.
 boxplot(iprg$Log2Intensity)
 ```
 
-![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
+![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
 
 The boxplot, however, shows us the intensities for all conditions and
 replicates. If we want to display the data for, we have multile
@@ -1483,7 +1496,7 @@ int_by_run <- by(iprg$Log2Intensity, iprg$Run, c)
 boxplot(int_by_run)
 ```
 
-![plot of chunk unnamed-chunk-52](figure/unnamed-chunk-52-1.png)
+![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47-1.png)
 
 * We can use the formula syntax
 
@@ -1492,7 +1505,7 @@ boxplot(int_by_run)
 boxplot(Log2Intensity ~ Run, data = iprg)
 ```
 
-![plot of chunk unnamed-chunk-53](figure/unnamed-chunk-53-1.png)
+![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48-1.png)
 
 * We can use the `ggplot2` package that is very flexible to visualise
   data under different angles.
@@ -1580,7 +1593,7 @@ ggplot(data = iprg, aes(x = Run, y = Log2Intensity)) +
   geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-57](figure/unnamed-chunk-57-1.png)
+![plot of chunk unnamed-chunk-52](figure/unnamed-chunk-52-1.png)
 
 See the [documentation page](http://ggplot2.tidyverse.org/reference/)
 to explore the many available `geoms`.
@@ -1621,19 +1634,22 @@ Notes:
 > * Repeat the plot above but displaying the raw intensities.
 > * Log-10 transform the raw intensities on the flight when plotting.
 
-
+<details>
 
 ```r
 ggplot(data = iprg, aes(x = Run, y = Intensity)) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-59](figure/unnamed-chunk-59-1.png)
+![plot of chunk unnamed-chunk-54](figure/unnamed-chunk-54-1.png)
 
 ```r
 ggplot(data = iprg, aes(x = Run, y = log10(Intensity))) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-59](figure/unnamed-chunk-59-2.png)
+![plot of chunk unnamed-chunk-54](figure/unnamed-chunk-54-2.png)
+</details>
+
+
 ## Customising plots
 
 First, let's colour the boxplot based on the condition:
@@ -1646,7 +1662,7 @@ ggplot(data = iprg,
   geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-60](figure/unnamed-chunk-60-1.png)
+![plot of chunk unnamed-chunk-55](figure/unnamed-chunk-55-1.png)
 
 Now let's rename all axis labels and title, and rotate the x-axis
 labels 90 degrees. We can add those specifications using the `labs`
@@ -1663,7 +1679,7 @@ ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
 	theme(axis.text.x = element_text(angle = 90))
 ```
 
-![plot of chunk unnamed-chunk-61](figure/unnamed-chunk-61-1.png)
+![plot of chunk unnamed-chunk-56](figure/unnamed-chunk-56-1.png)
 
 
 And easily switch from a boxplot to a violin plot representation by
@@ -1680,7 +1696,7 @@ ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
 	theme(axis.text.x = element_text(angle = 90))
 ```
 
-![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-1.png)
+![plot of chunk unnamed-chunk-57](figure/unnamed-chunk-57-1.png)
 
 Finally, we can also overlay multiple geoms by simply *adding* them
 one after the other.
@@ -1692,25 +1708,25 @@ p <- ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
 p + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-1.png)
+![plot of chunk unnamed-chunk-58](figure/unnamed-chunk-58-1.png)
 
 ```r
 p + geom_boxplot() + geom_jitter() ## not very usefull
 ```
 
-![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-2.png)
+![plot of chunk unnamed-chunk-58](figure/unnamed-chunk-58-2.png)
 
 ```r
 p + geom_jitter() + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-3.png)
+![plot of chunk unnamed-chunk-58](figure/unnamed-chunk-58-3.png)
 
 ```r
 p + geom_jitter(alpha = 0.1) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-4.png)
+![plot of chunk unnamed-chunk-58](figure/unnamed-chunk-58-4.png)
 
 > **Challenge**
 >
@@ -1718,6 +1734,7 @@ p + geom_jitter(alpha = 0.1) + geom_boxplot()
 >   log-10 transformed intensities.
 > * Customise the plot as suggested above.
 
+<details>
 
 ```r
 ## Note how the log10 transformation is applied to both geoms
@@ -1726,7 +1743,8 @@ ggplot(data = iprg, aes(x = Run, y = log10(Intensity))) +
 	geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-64](figure/unnamed-chunk-64-1.png)
+![plot of chunk unnamed-chunk-59](figure/unnamed-chunk-59-1.png)
+</details>
 
 Finally, a very useful feature of `ggplot2` is **facetting**, that
 defines how to subset the data into different *panels* (facets).
@@ -1749,9 +1767,9 @@ ggplot(data = iprg,
 	facet_grid(~ Condition)
 ```
 
-![plot of chunk unnamed-chunk-65](figure/unnamed-chunk-65-1.png)
+![plot of chunk unnamed-chunk-60](figure/unnamed-chunk-60-1.png)
 
-## Saving your work
+## Saving your figures
 
 You can save plots to a number of different file formats. PDF is by
 far the most common format because it's lightweight, cross-platform

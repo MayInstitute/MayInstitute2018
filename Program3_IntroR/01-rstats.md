@@ -902,11 +902,9 @@ important ones are lists (`list`), matrices (`matrix`), data frames
 
 > **Challenge**
 >
-> * We’ve seen that atomic vectors can be of type character,
->   numeric, integer, and logical. But what happens if we try to mix these types in
->   a single vector?
-
-Answer: R implicitly converts them to all be the same type
+> * We've seen that atomic vectors can be of type character, numeric,
+>   integer, and logical. But what happens if we try to mix these
+>   types in a single vector?
 >
 > * What will happen in each of these examples? (hint: use `class()`
 >   to check the data type of your objects):
@@ -917,79 +915,6 @@ Answer: R implicitly converts them to all be the same type
 >     char_logical <- c('a', 'b', 'c', TRUE)
 >     tricky <- c(1, 2, 3, '4')
 >     ```
->
-> * Why do you think it happens?
-
-Answer: Vectors can be of only one data type. R tries to convert
-(coerce) the content of this vector to find a "common denominator".
-
-> * You've probably noticed that objects of different types get
->   converted into a single, shared type within a vector. In R, we
->   call converting objects from one class into another class
->   _coercion_. These conversions happen according to a hierarchy,
->   whereby some types get preferentially coerced into other
->   types. Can you draw a diagram that represents the hierarchy of how
->   these data types are coerced?
-
-Answer: `logical -> numeric -> character <-- logical`
-
-
-```r
-## We’ve seen that atomic vectors can be of type character, numeric, integer, and
-## logical. But what happens if we try to mix these types in a single
-## vector?
-
-## What will happen in each of these examples? (hint: use `class()` to
-## check the data type of your object)
-num_char <- c(1, 2, 3, "a")
-class(num_char)
-```
-
-```
-## [1] "character"
-```
-
-```r
-num_logical <- c(1, 2, 3, TRUE)
-class(num_logical)
-```
-
-```
-## [1] "numeric"
-```
-
-```r
-char_logical <- c("a", "b", "c", TRUE)
-class(char_logical)
-```
-
-```
-## [1] "character"
-```
-
-```r
-tricky <- c(1, 2, 3, "4")
-class(tricky)
-```
-
-```
-## [1] "character"
-```
-
-```r
-## Why do you think it happens?
-
-## You've probably noticed that objects of different types get
-## converted into a single, shared type within a vector. In R, we call
-## converting objects from one class into another class
-## _coercion_. These conversions happen according to a hierarchy,
-## whereby some types get preferentially coerced into other types. Can
-## you draw a diagram that represents the hierarchy of how these data
-## types are coerced?
-```
-
-
-## Subsetting vectors
 
 If we want to extract one or several values from a vector, we must
 provide one or several indices in square brackets. For instance:
@@ -1219,6 +1144,7 @@ heights[complete.cases(heights)]
 >
 > 2. Use the function `median()` to calculate the median of the `lengths` vector.
 
+<details>
 
 ```r
 lengths <- c(10, 24, NA, 18, NA, 20)
@@ -1245,6 +1171,7 @@ median(lenghts, na.rm = TRUE)
 ```
 ## Error in median(lenghts, na.rm = TRUE): object 'lenghts' not found
 ```
+</details>
 
 Now that we have learned how to write scripts, and the basics of R's
 data structures, we are ready to start working with the Portal dataset

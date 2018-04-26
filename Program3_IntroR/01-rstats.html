@@ -554,47 +554,14 @@ pep_lens</code></pre>
 <blockquote>
 <p><strong>Challenge</strong></p>
 <ul>
-<li>We’ve seen that atomic vectors can be of type character, numeric, integer, and logical. But what happens if we try to mix these types in a single vector?</li>
+<li><p>We’ve seen that atomic vectors can be of type character, numeric, integer, and logical. But what happens if we try to mix these types in a single vector?</p></li>
+<li><p>What will happen in each of these examples? (hint: use <code>class()</code> to check the data type of your objects):</p>
+<pre class="r"><code>num_char &lt;- c(1, 2, 3, 'a')
+num_logical &lt;- c(1, 2, 3, TRUE)
+char_logical &lt;- c('a', 'b', 'c', TRUE)
+tricky &lt;- c(1, 2, 3, '4')</code></pre></li>
 </ul>
 </blockquote>
-<p>Answer: R implicitly converts them to all be the same type &gt; &gt; * What will happen in each of these examples? (hint: use <code>class()</code> &gt; to check the data type of your objects): &gt; &gt; <code>r &gt;     num_char &lt;- c(1, 2, 3, 'a') &gt;     num_logical &lt;- c(1, 2, 3, TRUE) &gt;     char_logical &lt;- c('a', 'b', 'c', TRUE) &gt;     tricky &lt;- c(1, 2, 3, '4') &gt;</code> &gt; &gt; * Why do you think it happens?</p>
-<p>Answer: Vectors can be of only one data type. R tries to convert (coerce) the content of this vector to find a “common denominator”.</p>
-<blockquote>
-<ul>
-<li>You’ve probably noticed that objects of different types get converted into a single, shared type within a vector. In R, we call converting objects from one class into another class <em>coercion</em>. These conversions happen according to a hierarchy, whereby some types get preferentially coerced into other types. Can you draw a diagram that represents the hierarchy of how these data types are coerced?</li>
-</ul>
-</blockquote>
-<p>Answer: <code>logical -&gt; numeric -&gt; character &lt;-- logical</code></p>
-<pre class="r"><code>## We’ve seen that atomic vectors can be of type character, numeric, integer, and
-## logical. But what happens if we try to mix these types in a single
-## vector?
-
-## What will happen in each of these examples? (hint: use `class()` to
-## check the data type of your object)
-num_char &lt;- c(1, 2, 3, &quot;a&quot;)
-class(num_char)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>num_logical &lt;- c(1, 2, 3, TRUE)
-class(num_logical)</code></pre>
-<pre><code>## [1] &quot;numeric&quot;</code></pre>
-<pre class="r"><code>char_logical &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, TRUE)
-class(char_logical)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>tricky &lt;- c(1, 2, 3, &quot;4&quot;)
-class(tricky)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>## Why do you think it happens?
-
-## You've probably noticed that objects of different types get
-## converted into a single, shared type within a vector. In R, we call
-## converting objects from one class into another class
-## _coercion_. These conversions happen according to a hierarchy,
-## whereby some types get preferentially coerced into other types. Can
-## you draw a diagram that represents the hierarchy of how these data
-## types are coerced?</code></pre>
-</div>
-<div id="subsetting-vectors" class="section level2">
-<h2>Subsetting vectors</h2>
 <p>If we want to extract one or several values from a vector, we must provide one or several indices in square brackets. For instance:</p>
 <pre class="r"><code>peps &lt;- c(&quot;VESITARHGEVLQLRPK&quot;, &quot;IDGQWVTHQWLK&quot;, &quot;LVILLFR&quot;, &quot;ARHGILPK&quot;)
 peps[2]</code></pre>
@@ -670,6 +637,7 @@ heights[complete.cases(heights)]</code></pre>
 <li><p>Use the function <code>median()</code> to calculate the median of the <code>lengths</code> vector.</p></li>
 </ol>
 </blockquote>
+<p><details></p>
 <pre class="r"><code>lengths &lt;- c(10, 24, NA, 18, NA, 20)
 median(lenghts) ## NA</code></pre>
 <pre><code>## Error in median(lenghts): object 'lenghts' not found</code></pre>
@@ -678,6 +646,7 @@ median(lengths2)</code></pre>
 <pre><code>## [1] 19</code></pre>
 <pre class="r"><code>median(lenghts, na.rm = TRUE)</code></pre>
 <pre><code>## Error in median(lenghts, na.rm = TRUE): object 'lenghts' not found</code></pre>
+<p></details></p>
 <p>Now that we have learned how to write scripts, and the basics of R’s data structures, we are ready to start working with the Portal dataset we have been using in the other lessons, and learn about data frames.</p>
 </div>
 </div>

@@ -154,24 +154,26 @@ $$ s = \sqrt{\frac{1}{n-1} \sum_{i=1}^n (x_i - \bar x)^2} $$
 > Using the `aggregate` function above, calculate the standard
 > deviation, by applying the `median` function.
 
-
+<details>
 ```{r}
 ## The same as mean calculation above. 'FUN' is changed to 'sd'.
 sub.median <- aggregate(Log2Intensity ~ Condition,
 					data = oneproteindata, FUN = median)
 sub.median
 ```
+</details>
 
 > Using the `aggregate` function above, calculate the standard
 > deviation, by applying the `sd` function.
 
+<details>
 ```{r}
 ## The same as mean calculation above. 'FUN' is changed to 'sd'.
 sub.sd <- aggregate(Log2Intensity ~ Condition,
 					data = oneproteindata, FUN = sd)
 sub.sd
 ```
-
+</details>
 
 ### Count the number of observation per groups
 
@@ -180,6 +182,7 @@ sub.sd
 > Using the `aggregate` function above, count the number of
 > observations per group with the `length` function.
 
+<details>
 ```{r}
 ## The same as mean calculation. 'FUN' is changed 'length'.
 sub.len <- aggregate(Log2Intensity ~ Condition,
@@ -187,6 +190,7 @@ sub.len <- aggregate(Log2Intensity ~ Condition,
 					 FUN = length)
 sub.len
 ```
+</details>
 
 ### Calculate SE (standard error of mean) per groups
 
@@ -265,23 +269,26 @@ p2 + geom_errorbar(aes(ymax = mean + sd, ymin = mean - sd), width = 0.1) +
 >
 > Add the **standard error of the mean**. Which one is smaller?
 
-
+<details>
 ```{r}
 # mean with SE
 p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1) +
 	labs(title="Mean with SE")
 ## The SE is narrow than the SD!
 ```
+</details>
 
 > **Challenge**
 >
 > Add the **standard error of the mean** with black color.
 
+<details>
 ```{r}
 # mean with SE
 p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1, color='black') +
 	labs(title="Mean with SE")
 ```
+</details>
 
 ## Working with statistical distributions
 
@@ -386,6 +393,7 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 >
 > Replicate the above for the 99% two-sided confidence interval.
 
+<details>
 ```{r}
 # mean with 99% two-sided confidence interval
 summaryresult$ciw.lower.99 <- summaryresult$mean - qt(0.995,summaryresult$len-1) * summaryresult$se
@@ -406,6 +414,7 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 		  legend.background = element_rect(colour='black'),
 		  legend.key = element_rect(colour='white'))
 ```
+</details>
 
 ### Some comments
 
@@ -522,6 +531,7 @@ result
 > Repeat the t-test above but with calculating a 90% confidence interval
 > for the log2 fold change.
 
+<details>
 ```{r, eval=FALSE, echo=FALSE}
 result.ci90 <- t.test(Log2Intensity ~ Condition,
 					  var.equal = FALSE,
@@ -529,6 +539,7 @@ result.ci90 <- t.test(Log2Intensity ~ Condition,
 					  conf.level = 0.9)
 result.ci90
 ```
+</details>
 
 ### The `htest` class
 
@@ -566,7 +577,7 @@ result$estimate
 > * Extract the p values
 > * Extract the 95% confidence intervals
 
-
+<details>
 ```{r, echo=FALSE, include=FALSE}
 ## log2 fold-change
 result$estimate[1]-result$estimate[2]
@@ -581,6 +592,7 @@ result$p.value
 ## 95% confidence interval for log2 fold change
 result$conf.int
 ```
+</details>
 
 We can also manually compute our t-test statistic using the formulas
 we descibed above and compare it with the `summaryresult`.
@@ -689,11 +701,12 @@ pwr.t.test(d = d, sig.level = alpha, power = power, type = 'two.sample')
 >
 > * Calculate power with 10 samples and the same parameters as above.
 
+<details>
 ```{r, echo=FALSE, include=FALSE}
 ## log2 fold-change
 pwr.t.test(d = d, sig.level = alpha, n=10, power = NULL, type = 'two.sample')
 ```
-
+</details>
 
 Let's investigate the effect of required fold change and variance on the sample size estimation.
 
@@ -801,6 +814,7 @@ class(TCGA.CRC$Gender)
 > * Get unique information and class for `BRAF.mutation` information
 > * Get unique information and class for `history_of_colon_polyps` information
 
+<details>
 ```{r, echo=FALSE, include=FALSE}
 ## check unique information of Cancer column.
 unique(TCGA.CRC$Cancer)
@@ -814,7 +828,7 @@ class(TCGA.CRC$BRAF.mutation)
 unique(TCGA.CRC$history_of_colon_polyps)
 class(TCGA.CRC$history_of_colon_polyps)
 ```
-
+</details>
 
 `table` function generates contingency table (or classification table with frequency of outcomes) at each combination.
 
@@ -853,6 +867,7 @@ TCGA.CRC <- TCGA.CRC[!duplicated(TCGA.CRC), ]
 >
 > * Check whether dimension and number of participants ID are changed after removing duplicated rows.
 
+<details>
 ```{r, echo=FALSE, include=FALSE}
 ## check the dimension of data
 dim(TCGA.CRC)
@@ -866,7 +881,7 @@ countID
 
 unique(countID)
 ```
-
+</details>
 
 
 ## Generate 2-way contingency tables
@@ -962,6 +977,7 @@ ft$estimate
 >
 > * Compare the proportion of male patients in the patients with colon cancer is different from that in the patients with rectal cancer.
 
+<details>
 ```{r, echo=FALSE, include=FALSE}
 cancer.gender <- table(TCGA.CRC$Gender, TCGA.CRC$Cancer)
 cancer.gender
@@ -971,7 +987,7 @@ cancer <- apply(cancer.gender, 2, sum)
 pt <- prop.test(male, cancer)
 pt
 ```
-
+</details>
 
 ### Optional practice :  Large-sample Z-test
 
@@ -1205,6 +1221,7 @@ See also `?influence.measures`.
 >    a linear model for one $(x_i, y_i)$ pair of your choice and
 >    visualise/check the model.
 
+<details>
 ```{r}
 x3 <- anscombe[, 3]
 y3 <- anscombe[, 7]
@@ -1213,6 +1230,7 @@ summary(lmod)
 par(mfrow = c(2, 2))
 plot(lmod)
 ```
+</details>
 
 Finally, let's conclude by illustrating how `ggplot2` can very
 elegantly be used to produce similar plots, with useful annotations:
@@ -1230,10 +1248,13 @@ p + geom_smooth(method = "lm") +
 > Replicate the MA plot above using `ggplot2`. Then add a
 > non-parametric lowess regression using `geom_smooth()`.
 
+<details>
 ```{r}
 p <- ggplot(aes(x = A, y = M), data = dfr) + geom_point()
 p + geom_smooth() + geom_quantile(colour = "red")
 ```
+</details>
+
 
 ---
 
