@@ -36,6 +36,8 @@
 |         | 5:00 - 6:00pm  | Wrap-up            |
 
 
+Olga Vitek (OV), Meena Choi (MC), Laurent Gatto (LG)
+
 ### Material
 
 - [Material day 1](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/01-rstats.html)
