@@ -39,7 +39,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 3 2 7
+## [1] 8 1 9
 ```
 
 ```r
@@ -47,7 +47,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 3 2 1
+## [1]  3  9 10
 ```
 
 Now suppose we would like to select the same randomly selected samples
@@ -2008,4 +2008,5 @@ p + geom_smooth() + geom_quantile(colour = "red")
 ![plot of chunk unnamed-chunk-73](figure/unnamed-chunk-73-1.png)
 
 ---
-Back to course [home page](https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/README.md)
+
+Back to course [home page](http://bit.ly/2018MayInstRstats)

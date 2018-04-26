@@ -1291,4 +1291,5 @@ statistical analyses.
 
 
 ---
-Back to course [home page](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/README.html)
+
+Back to course [home page](http://bit.ly/2018MayInstRstats)
