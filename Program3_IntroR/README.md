@@ -1,6 +1,6 @@
 # May Institute 2018: Beginner's statistics in R
 
-* This page: http://bit.ly/2018MayIntroR
+* This page: http://bit.ly/2018MayInstRstats
 
 ### Suggested reading
 
