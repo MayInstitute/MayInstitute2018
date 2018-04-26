@@ -860,6 +860,19 @@ serialise such R Data objects with `save`.
 save(iprg, file = "iprg.rda")
 ```
 
+Finally, we can save this whole session you worked so hard on, i.e
+save the complete environment (all variables at once) with
+`save.image`. Be careful though, as this can save a lot of unnecessary
+(temporary) data.
+
+```{r, eval = FALSE}
+save.image(file = '02-rstats-all.rda')
+```
+
+**Tip**: The best way to save your work is to save the script that
+contains the exact command that lead to the results! Or better, we can
+save and document our full analysis in an R markdown file!
+
 # Part 4: Data visualisation
 
 ## Histogram
@@ -1172,19 +1185,6 @@ function.
 > `png` function and save that same image to a png file.
 >
 > **Tip**: save your figures in a dedicated directory.
-
-Finally, we can save this whole session you worked so hard on! We can
-save individual variables using the `save` function, or save the
-complete environment with `save.image`. Be careful though, as this can
-save a lot of unnecessary (temporary) data.
-
-```{r,eval=FALSE}
-save.image(file = '02-rstats-all.rda')
-```
-
-**Tip**: The best way to save your work is to save the script that
-contains the exact command that lead to the results! Or better, we can
-save and document our full analysis in an R markdown file!
 
 
 ---

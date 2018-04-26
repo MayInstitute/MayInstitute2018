@@ -1368,6 +1368,20 @@ serialise such R Data objects with `save`.
 save(iprg, file = "iprg.rda")
 ```
 
+Finally, we can save this whole session you worked so hard on, i.e
+save the complete environment (all variables at once) with
+`save.image`. Be careful though, as this can save a lot of unnecessary
+(temporary) data.
+
+
+```r
+save.image(file = '02-rstats-all.rda')
+```
+
+**Tip**: The best way to save your work is to save the script that
+contains the exact command that lead to the results! Or better, we can
+save and document our full analysis in an R markdown file!
+
 # Part 4: Data visualisation
 
 ## Histogram
@@ -1380,7 +1394,7 @@ for `iPRG_example`.
 hist(iprg$Intensity)
 ```
 
-![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
+![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
 
 Our histogram looks quite skewed. How does this look on log-scale?
 
@@ -1399,7 +1413,7 @@ hist(iprg$Log2Intensity,
 	 main = "Histogram of iPRG data")
 ```
 
-![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
+![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47-1.png)
 
 In this case, we have duplicated information in our data, we have the
 raw and log-transformed data. This is not necessary (and not advised),
@@ -1413,7 +1427,7 @@ hist(log2(iprg$Intensity),
 	 main = "Histogram of iPRG data")
 ```
 
-![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47-1.png)
+![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48-1.png)
 
 We look at the summary for the log2-transformed values including the
 value for the mean. Let's fix that first.
@@ -1440,7 +1454,7 @@ summary(iprg$Log2Intensity)
 hist(log10(iprg$Intensity))
 ```
 
-![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49-1.png)
+![plot of chunk unnamed-chunk-50](figure/unnamed-chunk-50-1.png)
 
 ## Boxplot or box-and-whisker plot
 
@@ -1455,7 +1469,7 @@ files.
 boxplot(iprg$Log2Intensity)
 ```
 
-![plot of chunk unnamed-chunk-50](figure/unnamed-chunk-50-1.png)
+![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
 
 The boxplot, however, shows us the intensities for all conditions and
 replicates. If we want to display the data for, we have multile
@@ -1469,7 +1483,7 @@ int_by_run <- by(iprg$Log2Intensity, iprg$Run, c)
 boxplot(int_by_run)
 ```
 
-![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
+![plot of chunk unnamed-chunk-52](figure/unnamed-chunk-52-1.png)
 
 * We can use the formula syntax
 
@@ -1478,7 +1492,7 @@ boxplot(int_by_run)
 boxplot(Log2Intensity ~ Run, data = iprg)
 ```
 
-![plot of chunk unnamed-chunk-52](figure/unnamed-chunk-52-1.png)
+![plot of chunk unnamed-chunk-53](figure/unnamed-chunk-53-1.png)
 
 * We can use the `ggplot2` package that is very flexible to visualise
   data under different angles.
@@ -1566,7 +1580,7 @@ ggplot(data = iprg, aes(x = Run, y = Log2Intensity)) +
   geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-56](figure/unnamed-chunk-56-1.png)
+![plot of chunk unnamed-chunk-57](figure/unnamed-chunk-57-1.png)
 
 See the [documentation page](http://ggplot2.tidyverse.org/reference/)
 to explore the many available `geoms`.
@@ -1613,13 +1627,13 @@ Notes:
 ggplot(data = iprg, aes(x = Run, y = Intensity)) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-58](figure/unnamed-chunk-58-1.png)
+![plot of chunk unnamed-chunk-59](figure/unnamed-chunk-59-1.png)
 
 ```r
 ggplot(data = iprg, aes(x = Run, y = log10(Intensity))) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-58](figure/unnamed-chunk-58-2.png)
+![plot of chunk unnamed-chunk-59](figure/unnamed-chunk-59-2.png)
 ## Customising plots
 
 First, let's colour the boxplot based on the condition:
@@ -1632,7 +1646,7 @@ ggplot(data = iprg,
   geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-59](figure/unnamed-chunk-59-1.png)
+![plot of chunk unnamed-chunk-60](figure/unnamed-chunk-60-1.png)
 
 Now let's rename all axis labels and title, and rotate the x-axis
 labels 90 degrees. We can add those specifications using the `labs`
@@ -1649,7 +1663,7 @@ ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
 	theme(axis.text.x = element_text(angle = 90))
 ```
 
-![plot of chunk unnamed-chunk-60](figure/unnamed-chunk-60-1.png)
+![plot of chunk unnamed-chunk-61](figure/unnamed-chunk-61-1.png)
 
 
 And easily switch from a boxplot to a violin plot representation by
@@ -1666,7 +1680,7 @@ ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
 	theme(axis.text.x = element_text(angle = 90))
 ```
 
-![plot of chunk unnamed-chunk-61](figure/unnamed-chunk-61-1.png)
+![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-1.png)
 
 Finally, we can also overlay multiple geoms by simply *adding* them
 one after the other.
@@ -1678,25 +1692,25 @@ p <- ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
 p + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-1.png)
+![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-1.png)
 
 ```r
 p + geom_boxplot() + geom_jitter() ## not very usefull
 ```
 
-![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-2.png)
+![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-2.png)
 
 ```r
 p + geom_jitter() + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-3.png)
+![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-3.png)
 
 ```r
 p + geom_jitter(alpha = 0.1) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-4.png)
+![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-4.png)
 
 > **Challenge**
 >
@@ -1712,7 +1726,7 @@ ggplot(data = iprg, aes(x = Run, y = log10(Intensity))) +
 	geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-1.png)
+![plot of chunk unnamed-chunk-64](figure/unnamed-chunk-64-1.png)
 
 Finally, a very useful feature of `ggplot2` is **facetting**, that
 defines how to subset the data into different *panels* (facets).
@@ -1735,7 +1749,7 @@ ggplot(data = iprg,
 	facet_grid(~ Condition)
 ```
 
-![plot of chunk unnamed-chunk-64](figure/unnamed-chunk-64-1.png)
+![plot of chunk unnamed-chunk-65](figure/unnamed-chunk-65-1.png)
 
 ## Saving your work
 
@@ -1764,20 +1778,6 @@ function.
 > `png` function and save that same image to a png file.
 >
 > **Tip**: save your figures in a dedicated directory.
-
-Finally, we can save this whole session you worked so hard on! We can
-save individual variables using the `save` function, or save the
-complete environment with `save.image`. Be careful though, as this can
-save a lot of unnecessary (temporary) data.
-
-
-```r
-save.image(file = '02-rstats-all.rda')
-```
-
-**Tip**: The best way to save your work is to save the script that
-contains the exact command that lead to the results! Or better, we can
-save and document our full analysis in an R markdown file!
 
 
 ---
