@@ -365,8 +365,7 @@ dput(head(iris))
 ##     Sepal.Width = c(3.5, 3, 3.2, 3.1, 3.6, 3.9), Petal.Length = c(1.4, 
 ##     1.4, 1.3, 1.5, 1.4, 1.7), Petal.Width = c(0.2, 0.2, 0.2, 
 ##     0.2, 0.2, 0.4), Species = structure(c(1L, 1L, 1L, 1L, 1L, 
-##     1L), .Label = c("setosa", "versicolor", "virginica"), class = "factor")), .Names = c("Sepal.Length", 
-## "Sepal.Width", "Petal.Length", "Petal.Width", "Species"), row.names = c(NA, 
+##     1L), .Label = c("setosa", "versicolor", "virginica"), class = "factor")), row.names = c(NA, 
 ## 6L), class = "data.frame")
 ```
 
@@ -406,12 +405,12 @@ sessionInfo()
 ```
 
 ```
-## R Under development (unstable) (2017-02-25 r72256)
+## R Under development (unstable) (2018-04-02 r74505)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 14.04.5 LTS
 ## 
 ## Matrix products: default
-## BLAS: /usr/lib/atlas-base/libf77blas.so.3.0
+## BLAS: /usr/lib/atlas-base/atlas/libblas.so.3.0
 ## LAPACK: /usr/lib/lapack/liblapack.so.3.0
 ## 
 ## locale:
@@ -423,12 +422,11 @@ sessionInfo()
 ## [11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  base     
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## loaded via a namespace (and not attached):
-## [1] compiler_3.4.0 magrittr_1.5   tools_3.4.0    msdata_0.15.1 
-## [5] stringi_1.1.5  knitr_1.15.1   methods_3.4.0  stringr_1.2.0 
-## [9] evaluate_0.10
+## [1] compiler_3.6.0  magrittr_1.5    tools_3.6.0     msdata_0.19.4  
+## [5] stringi_1.1.7   knitr_1.20      stringr_1.3.0   evaluate_0.10.1
 ```
 
 ### Where to ask for help?

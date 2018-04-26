@@ -1,12 +1,12 @@
 ---
 title: 'Day 2: Beginner''s statistics in R'
 author: "Laurent Gatto, Meena Choi and Data Carpentry"
-output: 
+output:
   html_document:
-    self_contained: true
-    toc: true
-    toc_float: true
-    fig_caption: no	
+   self_contained: true
+   toc: true
+   toc_float: true
+   fig_caption: no
 ---
 
 
@@ -15,9 +15,7 @@ output:
 
 - Reading data in R
 - Data manipulation and exploration
-- Randomisation
 - Visualisation
-- Basic statistics
 
 ---
 
@@ -26,7 +24,8 @@ Parts of the `data.frame` and `ggplot2` material are based on the
 Data Carpentry course.
 
 
-# Part 1: Data exploration and visualisation
+# Part 1: Data analysis
+
 ## Reading in data
 
 The file we'll be reading in is a dataset that has been 1) processed
@@ -73,7 +72,7 @@ class(iprg)
 
 These object are the equivalent of a sheet in a spreadsheet file. They
 are composed on a set of columns, which are different vectors (or
-characters, numerics, factors, ...) as seen previously. 
+characters, numerics, factors, ...) as seen previously.
 
 There are actually some additional cont strains compared to a
 spreadsheet. Rather than being limitations, these constrains are an
@@ -82,16 +81,16 @@ computations.
 
 * All the data in a `data.frame` must be included in a column, as a
   vector. This means that it's not possible to add *random* notes or
-  values, as is sometimes seen in spreadsheets. 
-  
+  values, as is sometimes seen in spreadsheets.
+
 * All columns/vectors must have the same length, as opposed to
   spreadsheets, where sometimes some values or summary statistics are
   added at the bottom.
-  
+
 * No colours or font decorations.
 
 This leads us to a very important concept in data formatting and data
-manipulation, which is that data should be *tidy*, where 
+manipulation, which is that data should be *tidy*, where
 
 * Columns describe different variables
 * Rows describe different observations
@@ -127,7 +126,7 @@ wide format (as we will see later), but the data should never be
 ![Help!](./img/2_datasheet_example.jpg)
 
 > **Challenge**
-> 
+>
 > Compare the structure of the data presented above (loaded from the
 > `iprg2.rda` files) and the `iprg` data.
 
@@ -169,25 +168,25 @@ content and the structure of a data frame. Here is a non-exhaustive list of
 functions to get a sense of the content/structure of the data. Let's try them out!
 
 * Size:
-    * `dim(iprg)` - returns a vector with the number of rows in the first element,
-          and the number of columns as the second element (the **dim**ensions of
-          the object)
-    * `nrow(iprg)` - returns the number of rows
-    * `ncol(iprg)` - returns the number of columns
+	* `dim(iprg)` - returns a vector with the number of rows in the first element,
+		  and the number of columns as the second element (the **dim**ensions of
+		  the object)
+	* `nrow(iprg)` - returns the number of rows
+	* `ncol(iprg)` - returns the number of columns
 
 * Content:
-    * `head(iprg)` - shows the first 6 rows
-    * `tail(iprg)` - shows the last 6 rows
+	* `head(iprg)` - shows the first 6 rows
+	* `tail(iprg)` - shows the last 6 rows
 
 * Names:
-    * `names(iprg)` - returns the column names (synonym of `colnames()` for `data.frame`
+	* `names(iprg)` - returns the column names (synonym of `colnames()` for `data.frame`
 	   objects)
-    * `rownames(iprg)` - returns the row names
+	* `rownames(iprg)` - returns the row names
 
 * Summary:
-    * `str(iprg)` - structure of the object and information about the class, length and
+	* `str(iprg)` - structure of the object and information about the class, length and
 	   content of  each column
-    * `summary(iprg)` - summary statistics for each column
+	* `summary(iprg)` - summary statistics for each column
 
 Note: most of these functions are "generic", they can be used on other types of
 objects besides `data.frame`.
@@ -417,7 +416,7 @@ importing your data, and converting as a factor only the columns that
 require this data type.
 
 > **Challenge**
-> 
+>
 > Compare the output of `str(surveys)` when setting `stringsAsFactors = TRUE` (default) and `stringsAsFactors = FALSE`:
 
 
@@ -455,12 +454,12 @@ str(iprg)
 
 ## Other data structures
 
-|          | dimensions | number of types | 
+|          | dimensions | number of types |
 |:---------|------------|-----------------|
-| `vector` |       1    |       1         | 
-| `matrix` |       2    |       1         | 
-| `array`  |     any    |       1         | 
-|`data.frame`|       2    | 1 per colums    | 
+| `vector` |       1    |       1         |
+| `matrix` |       2    |       1         |
+| `array`  |     any    |       1         |
+|`data.frame`|       2    | 1 per colums    |
 | `list`   | 1 (length) | any             |
 
 ## Data exploration
@@ -482,7 +481,7 @@ iPRG dataset.
 
 
 > **Challenge**
-> 
+>
 > Explore the data as described below
 >
 > * What is the *class* of the variable?
@@ -494,7 +493,7 @@ iPRG dataset.
 
 Let's now inspect the possible values for the `Conditions` and the
 `BioReplicate` columns. To aswer the questions, below, we will need to
-use the `unique` function. From the manual page, we learn that 
+use the `unique` function. From the manual page, we learn that
 
 ```
 'unique' returns a vector, data frame or array like 'x' but with
@@ -523,7 +522,7 @@ unique(c("a", "b", "a"))
 
 ```r
 dfr <- data.frame(x = c(1, 1, 2),
-                  y = c("a", "a", "b"))
+				  y = c("a", "a", "b"))
 dfr
 ```
 
@@ -627,10 +626,10 @@ It is often useful to start a preliminary analysis, or proceed with a
 more detailed data exploration using a smalle subset of the data.
 
 > **Challenge**
-> 
-> Select subsets of rows from iPRG dataset. Let's focus on 
-> 
-> * Condition 1 only 
+>
+> Select subsets of rows from iPRG dataset. Let's focus on
+>
+> * Condition 1 only
 > * Condition 1 and TechReplicate A
 > * all measurements on one particular MS run.
 > * Conditions 1 and 2
@@ -758,7 +757,618 @@ nrow(iprg_c12)
 ## [1] 18160
 ```
 
-# Part 2: Data visualisation
+# Part 2: Manipulating and analyzing data woth `dplyr`
+
+> The following material is based on Data Carpentry's the
+> [Data analisis and visualisation](http://www.datacarpentry.org/R-ecology-lesson/) lessons.
+
+
+Learning Objectives:
+
+* Understand the purpose of the **`dplyr`** package.
+* Select certain columns in a data frame with the **`dplyr`** function `select`.
+* Select certain rows in a data frame according to filtering
+  conditions with the **`dplyr`** function `filter` .
+* Link the output of one **`dplyr`** function to the input of another function with the 'pipe' operator.
+* Add new columns to a data frame that are functions of existing columns with `mutate`.
+* Understand the split-apply-combine concept for data analysis.
+* Use `summarize`, `group_by`, and `tally` to split a data frame into groups
+  of observations, apply a summary statistics for each group, and then
+  combine the results.
+
+
+Bracket subsetting is handy, but it can be cumbersome and difficult to
+read, especially for complicated operations. Enter
+**`dplyr`**. **`dplyr`** is a package for making tabular data
+manipulation easier. It pairs nicely with **`tidyr`** which enables
+you to swiftly convert between different data formats for plotting and
+analysis.
+
+Packages in R are basically sets of additional functions that let you
+do more stuff. The functions we've been using so far, like `str()` or
+`data.frame()`, come built into R; packages give you access to more of
+them. Before you use a package for the first time you need to install
+it on your machine, and then you should import it in every subsequent
+R session when you need it. You should already have installed the
+[`tidyverse`](https://www.tidyverse.org/) package. This is an
+"umbrella-package" that installs several packages useful for data
+analysis which work together well such as `dplyr`, `ggplot2` (for
+visualisation), `tibble`, etc.
+
+The `tidyverse` package tries to address 3 major problems with some of
+base R functions:
+
+1. The results from a base R function sometimes depends on the type of
+   data.
+2. Using R expressions in a non standard way, which can be confusing
+   for new learners.
+3. Hidden arguments, having default operations that new learners are
+   not aware of.
+
+We have seen in our previous lesson that when building or importing a
+data frame, the columns that contain characters (i.e., text) are
+coerced (=converted) into the factor data type. We had to set
+**`stringsAsFactor`** to **`FALSE`** to avoid this hidden argument to
+convert our data type.
+
+This time will use the **`tidyverse`** package to read the data and
+avoid having to set **`stringsAsFactor`** to **`FALSE`**
+
+To load the package type:
+
+
+
+```r
+library("tidyverse")  ## load the tidyverse packages, incl. dplyr
+```
+
+## What are **`dplyr`** and **`tidyr`**?
+
+The package **`dplyr`** provides easy tools for the most common data manipulation
+tasks. It is built to work directly with data frames, with many common tasks
+optimized by being written in a compiled language (C++). An additional feature is the
+ability to work directly with data stored in an external database. The benefits of
+doing this are that the data can be managed natively in a relational database,
+queries can be conducted on that database, and only the results of the query are
+returned.
+
+This addresses a common problem with R in that all operations are conducted
+in-memory and thus the amount of data you can work with is limited by available
+memory. The database connections essentially remove that limitation in that you
+can have a database of many 100s GB, conduct queries on it directly, and pull
+back into R only what you need for analysis.
+
+The package **`tidyr`** addresses the common problem of wanting to
+reshape your data for plotting and use by different R
+functions. Sometimes we want data sets where we have one row per
+measurement. Sometimes we want a data frame where each measurement
+type has its own column, and rows are instead more aggregated groups -
+like plots or aquaria. Moving back and forth between these formats is
+nontrivial, and **`tidyr`** gives you tools for this and more
+sophisticated data manipulation.
+
+To learn more about **`dplyr`** and **`tidyr`** after the workshop,
+you may want to check out
+this
+[handy data transformation with **`dplyr`** cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf) and
+this
+[one about **`tidyr`**](https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf).
+
+**`dplyr`**  reads data using read_csv(), instead of read.csv()
+
+
+```r
+iprg <- read_csv('data/iPRG_example_runsummary.csv')
+```
+
+```
+## Parsed with column specification:
+## cols(
+##   Protein = col_character(),
+##   Log2Intensity = col_double(),
+##   Run = col_character(),
+##   Condition = col_character(),
+##   BioReplicate = col_integer(),
+##   Intensity = col_double(),
+##   TechReplicate = col_character()
+## )
+```
+
+```r
+## inspect the data
+str(iprg)
+```
+
+Notice that the class of the data is now `tbl_df` This is referred to
+as a "tibble". Tibbles are data frames, but they tweak some of the old
+behaviors of data frames. The data structure is very similar to a data
+frame. For our purposes the only differences are that:
+
+1. In addition to displaying the data type of each column under its
+   name, it only prints the first few rows of data and only as many
+   columns as fit on one screen.
+2. Columns of class `character` are never converted into factors.
+
+## Selecting columns and filtering rows
+
+We're going to learn some of the most common **`dplyr`** functions:
+`select()`, `filter()`, `mutate()`, `group_by()`, and
+`summarize()`. To select columns of a data frame, use `select()`. The
+first argument to this function is the data frame, and the subsequent
+arguments are the columns to keep.
+
+
+```r
+select(iprg, Protein, Run, Condition)
+```
+
+To choose rows based on a specific criteria, use `filter()`:
+
+
+```r
+filter(iprg, BioReplicate == 1)
+```
+
+```
+## # A tibble: 9,079 x 7
+##    Protein      Log2Intensity Run         Condition BioReplicate Intensity
+##    <chr>                <dbl> <chr>       <chr>            <int>     <dbl>
+##  1 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            1    1.18e8
+##  2 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            1    1.02e8
+##  3 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            1    1.01e8
+##  4 sp|O13297|C…          24.7 JD_0623201… Conditio…            1    2.76e7
+##  5 sp|O13297|C…          24.7 JD_0623201… Conditio…            1    2.68e7
+##  6 sp|O13297|C…          24.7 JD_0623201… Conditio…            1    2.76e7
+##  7 sp|O13329|F…          23.4 JD_0623201… Conditio…            1    1.09e7
+##  8 sp|O13329|F…          24.0 JD_0623201… Conditio…            1    1.69e7
+##  9 sp|O13329|F…          23.5 JD_0623201… Conditio…            1    1.16e7
+## 10 sp|O13539|T…          27.5 JD_0623201… Conditio…            1    1.92e8
+## # ... with 9,069 more rows, and 1 more variable: TechReplicate <chr>
+```
+
+
+```r
+filter(iprg, Condition == 'Condition2')
+```
+
+```
+## # A tibble: 9,081 x 7
+##    Protein      Log2Intensity Run         Condition BioReplicate Intensity
+##    <chr>                <dbl> <chr>       <chr>            <int>     <dbl>
+##  1 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            2    1.20e8
+##  2 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            2    1.16e8
+##  3 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            2    1.02e8
+##  4 sp|O13297|C…          24.5 JD_0623201… Conditio…            2    2.41e7
+##  5 sp|O13297|C…          24.7 JD_0623201… Conditio…            2    2.68e7
+##  6 sp|O13297|C…          24.6 JD_0623201… Conditio…            2    2.51e7
+##  7 sp|O13329|F…          23.2 JD_0623201… Conditio…            2    9.45e6
+##  8 sp|O13329|F…          23.4 JD_0623201… Conditio…            2    1.13e7
+##  9 sp|O13329|F…          23.8 JD_0623201… Conditio…            2    1.43e7
+## 10 sp|O13539|T…          25.9 JD_0623201… Conditio…            2    6.18e7
+## # ... with 9,071 more rows, and 1 more variable: TechReplicate <chr>
+```
+
+## Pipes
+
+But what if you wanted to select and filter at the same time? There
+are three ways to do this: use intermediate steps, nested functions,
+or pipes.
+
+With intermediate steps, you essentially create a temporary data frame
+and use that as input to the next function. This can clutter up your
+workspace with lots of objects. You can also nest functions (i.e. one
+function inside of another).  This is handy, but can be difficult to
+read if too many functions are nested as things are evaluated from the
+inside out.
+
+The last option, pipes, are a fairly recent addition to R. Pipes let
+you take the output of one function and send it directly to the next,
+which is useful when you need to do many things to the same dataset.
+Pipes in R look like `%>%` and are made available via the `magrittr`
+package, installed automatically with **`dplyr`**. If you use RStudio,
+you can type the pipe with <kbd>Ctrl</kbd>
++ <kbd>Shift</kbd> + <kbd>M</kbd> if you have a PC or <kbd>Cmd</kbd> +
+<kbd>Shift</kbd> + <kbd>M</kbd> if you have a Mac.
+
+
+```r
+iprg %>%
+  filter(Intensity > 1e8) %>%
+  select(Protein, Condition, Intensity)
+```
+
+```
+## # A tibble: 4,729 x 3
+##    Protein              Condition   Intensity
+##    <chr>                <chr>           <dbl>
+##  1 sp|D6VTK4|STE2_YEAST Condition1 117845016.
+##  2 sp|D6VTK4|STE2_YEAST Condition1 102273602.
+##  3 sp|D6VTK4|STE2_YEAST Condition1 100526837.
+##  4 sp|D6VTK4|STE2_YEAST Condition2 119765106.
+##  5 sp|D6VTK4|STE2_YEAST Condition2 116382798.
+##  6 sp|D6VTK4|STE2_YEAST Condition2 102328260.
+##  7 sp|D6VTK4|STE2_YEAST Condition3 103830944.
+##  8 sp|D6VTK4|STE2_YEAST Condition4 102150172.
+##  9 sp|D6VTK4|STE2_YEAST Condition4 105724288.
+## 10 sp|O13539|THP2_YEAST Condition1 192490784.
+## # ... with 4,719 more rows
+```
+
+In the above, we use the pipe to send the `iprg` dataset first through
+`filter()` to keep rows where `Intensity` is greater than 1e8, then
+through `select()` to keep only the `Protein`, `Condition`, and
+`Intensity` columns. Since `%>%` takes the object on its left and
+passes it as the first argument to the function on its right, we don't
+need to explicitly include it as an argument to the `filter()` and
+`select()` functions anymore.
+
+If we wanted to create a new object with this smaller version of the
+data, we could do so by assigning it a new name:
+
+
+```r
+iprg_sml <- iprg %>%
+	filter(Intensity > 1e8) %>%
+	select(Protein, Condition, Intensity)
+
+iprg_sml
+```
+
+```
+## # A tibble: 4,729 x 3
+##    Protein              Condition   Intensity
+##    <chr>                <chr>           <dbl>
+##  1 sp|D6VTK4|STE2_YEAST Condition1 117845016.
+##  2 sp|D6VTK4|STE2_YEAST Condition1 102273602.
+##  3 sp|D6VTK4|STE2_YEAST Condition1 100526837.
+##  4 sp|D6VTK4|STE2_YEAST Condition2 119765106.
+##  5 sp|D6VTK4|STE2_YEAST Condition2 116382798.
+##  6 sp|D6VTK4|STE2_YEAST Condition2 102328260.
+##  7 sp|D6VTK4|STE2_YEAST Condition3 103830944.
+##  8 sp|D6VTK4|STE2_YEAST Condition4 102150172.
+##  9 sp|D6VTK4|STE2_YEAST Condition4 105724288.
+## 10 sp|O13539|THP2_YEAST Condition1 192490784.
+## # ... with 4,719 more rows
+```
+
+Note that the final data frame is the leftmost part of this expression.
+
+> Challenge
+>
+>  Using pipes, subset the `iprg` data to include Proteins with a log2
+>  intensity greater than 20 and retain only the columns `Proteins`,
+>  and `Condition`.
+
+
+<details>
+
+```r
+## Answer
+iprg %>%
+	filter(Log2Intensity > 20) %>%
+	select(Protein, Condition)
+```
+</details>
+
+
+## Mutate
+
+Frequently you'll want to create new columns based on the values in existing
+columns, for example to do unit conversions, or find the ratio of values in two
+columns. For this we'll use `mutate()`.
+
+To create a new column of weight in kg:
+
+
+```r
+iprg %>%
+  mutate(Log10Intensity = log10(Intensity))
+```
+
+```
+## # A tibble: 36,321 x 8
+##    Protein      Log2Intensity Run         Condition BioReplicate Intensity
+##    <chr>                <dbl> <chr>       <chr>            <int>     <dbl>
+##  1 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            1    1.18e8
+##  2 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            1    1.02e8
+##  3 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            1    1.01e8
+##  4 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            2    1.20e8
+##  5 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            2    1.16e8
+##  6 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            2    1.02e8
+##  7 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            3    1.04e8
+##  8 sp|D6VTK4|S…          26.5 JD_0623201… Conditio…            3    9.47e7
+##  9 sp|D6VTK4|S…          26.5 JD_0623201… Conditio…            3    9.69e7
+## 10 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            4    1.02e8
+## # ... with 36,311 more rows, and 2 more variables: TechReplicate <chr>,
+## #   Log10Intensity <dbl>
+```
+
+You can also create a second new column based on the first new column
+within the same call of `mutate()`:
+
+
+```r
+iprg %>%
+	mutate(Log10Intensity = log10(Intensity),
+		   Log10Intensity2 = Log10Intensity * 2)
+```
+
+```
+## # A tibble: 36,321 x 9
+##    Protein      Log2Intensity Run         Condition BioReplicate Intensity
+##    <chr>                <dbl> <chr>       <chr>            <int>     <dbl>
+##  1 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            1    1.18e8
+##  2 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            1    1.02e8
+##  3 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            1    1.01e8
+##  4 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            2    1.20e8
+##  5 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            2    1.16e8
+##  6 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            2    1.02e8
+##  7 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            3    1.04e8
+##  8 sp|D6VTK4|S…          26.5 JD_0623201… Conditio…            3    9.47e7
+##  9 sp|D6VTK4|S…          26.5 JD_0623201… Conditio…            3    9.69e7
+## 10 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            4    1.02e8
+## # ... with 36,311 more rows, and 3 more variables: TechReplicate <chr>,
+## #   Log10Intensity <dbl>, Log10Intensity2 <dbl>
+```
+
+If this runs off your screen and you just want to see the first few
+rows, you can use a pipe to view the `head()` of the data. (Pipes work
+with non-**`dplyr`** functions, too, as long as the **`dplyr`** or
+`magrittr` package is loaded).
+
+
+```r
+iprg %>%
+  mutate(Log10Intensity = log10(Intensity)) %>%
+  head
+```
+
+```
+## # A tibble: 6 x 8
+##   Protein      Log2Intensity Run          Condition BioReplicate Intensity
+##   <chr>                <dbl> <chr>        <chr>            <int>     <dbl>
+## 1 sp|D6VTK4|S…          26.8 JD_06232014… Conditio…            1    1.18e8
+## 2 sp|D6VTK4|S…          26.6 JD_06232014… Conditio…            1    1.02e8
+## 3 sp|D6VTK4|S…          26.6 JD_06232014… Conditio…            1    1.01e8
+## 4 sp|D6VTK4|S…          26.8 JD_06232014… Conditio…            2    1.20e8
+## 5 sp|D6VTK4|S…          26.8 JD_06232014… Conditio…            2    1.16e8
+## 6 sp|D6VTK4|S…          26.6 JD_06232014… Conditio…            2    1.02e8
+## # ... with 2 more variables: TechReplicate <chr>, Log10Intensity <dbl>
+```
+
+Note that we don't include parentheses at the end of our call to `head()` above.
+When piping into a function with no additional arguments, you can call the
+function with or without parentheses (e.g. `head` or `head()`).
+
+If you want to display more data, you can use the `print()` function
+at the end of your chain with the argument `n` specifying the number
+of rows to display:
+
+
+
+```r
+iprg %>%
+	mutate(Log10Intensity = log10(Intensity),
+			   Log10Intensity2 = Log10Intensity * 2) %>%
+	print(n = 20)
+```
+
+```
+## # A tibble: 36,321 x 9
+##    Protein      Log2Intensity Run         Condition BioReplicate Intensity
+##    <chr>                <dbl> <chr>       <chr>            <int>     <dbl>
+##  1 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            1    1.18e8
+##  2 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            1    1.02e8
+##  3 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            1    1.01e8
+##  4 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            2    1.20e8
+##  5 sp|D6VTK4|S…          26.8 JD_0623201… Conditio…            2    1.16e8
+##  6 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            2    1.02e8
+##  7 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            3    1.04e8
+##  8 sp|D6VTK4|S…          26.5 JD_0623201… Conditio…            3    9.47e7
+##  9 sp|D6VTK4|S…          26.5 JD_0623201… Conditio…            3    9.69e7
+## 10 sp|D6VTK4|S…          26.6 JD_0623201… Conditio…            4    1.02e8
+## 11 sp|D6VTK4|S…          26.4 JD_0623201… Conditio…            4    8.77e7
+## 12 sp|D6VTK4|S…          26.7 JD_0623201… Conditio…            4    1.06e8
+## 13 sp|O13297|C…          24.7 JD_0623201… Conditio…            1    2.76e7
+## 14 sp|O13297|C…          24.7 JD_0623201… Conditio…            1    2.68e7
+## 15 sp|O13297|C…          24.7 JD_0623201… Conditio…            1    2.76e7
+## 16 sp|O13297|C…          24.5 JD_0623201… Conditio…            2    2.41e7
+## 17 sp|O13297|C…          24.7 JD_0623201… Conditio…            2    2.68e7
+## 18 sp|O13297|C…          24.6 JD_0623201… Conditio…            2    2.51e7
+## 19 sp|O13297|C…          24.4 JD_0623201… Conditio…            3    2.20e7
+## 20 sp|O13297|C…          24.6 JD_0623201… Conditio…            3    2.59e7
+## # ... with 3.63e+04 more rows, and 3 more variables: TechReplicate <chr>,
+## #   Log10Intensity <dbl>, Log10Intensity2 <dbl>
+```
+
+> Challenge
+>
+> Load the `iprgna` data that is available in the `iprgna.rda` file,
+> and repeat the creation of a new `Log10Intensisty` column.
+>
+> **Hint**: this is a R Data object file (`rda` extension), that is
+> loaded with the `load` function. It is not a `cvs` file!
+
+<details>
+
+```r
+load("./data/iprg2.rda")
+iprgna %>% mutate(Log10Intensity = log10(Intensity))
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+</details>
+
+The first few rows of the output are full of `NA`s, so if we wanted to remove
+those we could insert a `filter()` in the chain:
+
+
+```r
+iprgna %>%
+	filter(!is.na(Intensity)) %>%
+	mutate(Log10Intensity = log10(Intensity))
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+
+`is.na()` is a function that determines whether something is an
+`NA`. The `!` symbol negates the result, so we're asking for
+everything that *is not* an `NA`.
+
+## Split-apply-combine data analysis and the summarize() function
+
+Many data analysis tasks can be approached using the
+*split-apply-combine* paradigm: split the data into groups, apply some
+analysis to each group, and then combine the results. **`dplyr`**
+makes this very easy through the use of the `group_by()` function.
+
+
+### The `summarize()` function
+
+`group_by()` is often used together with `summarize()`, which
+collapses each group into a single-row summary of that group.
+`group_by()` takes as arguments the column names that contain the
+**categorical** variables for which you want to calculate the summary
+statistics. So to view the mean `weight` by sex:
+
+
+```r
+iprgna %>%
+  group_by(Condition) %>%
+  summarize(mean_Intensity = mean(Intensity))
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+
+Unfortunately, the `mean` of any vector that contains even a single
+missing value is `NA`. We need to remove missing values before
+calculating the mean, which is done easily with the `na.rm` argument.
+
+
+```r
+iprgna %>%
+  group_by(Condition) %>%
+  summarize(mean_Intensity = mean(Intensity, na.rm = TRUE))
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+
+
+You can also group by multiple columns:
+
+
+```r
+iprgna %>%
+  group_by(TechReplicate, BioReplicate) %>%
+  summarize(mean_Intensity = mean(Intensity, na.rm = TRUE))
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+
+### Tallying
+
+When working with data, it is also common to want to know the number of
+observations found for each factor or combination of factors. For this, **`dplyr`**
+provides `tally()`.
+
+
+```r
+iprgna %>%
+  group_by(Condition) %>%
+  tally
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+
+Here, `tally()` is the action applied to the groups created by `group_by()` and
+counts the total number of records for each category.
+
+> Challenge
+>
+> 1. How many proteins of each technical replicate are there?
+>
+> 2. Use `group_by()` and `summarize()` to find the mean, min, and max intensity
+> for each condition.
+>
+> 3. What are the proteins with the highest intensity in each
+> condition?
+
+
+<details>
+
+```r
+## Answer 1
+iprgna %>%
+	group_by(TechReplicate) %>%
+	tally
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+
+```r
+## Answer 2
+iprgna %>%
+	filter(!is.na(Intensity)) %>%
+	group_by(Condition) %>%
+	summarize(mean_int = mean(Intensity),
+				  min_int = min(Intensity),
+				  max_int = max(Intensity))
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+
+```r
+## Answer 3
+iprgna %>%
+	filter(!is.na(Intensity)) %>%
+	group_by(Condition) %>%
+	filter(Intensity == max(Intensity)) %>%
+	arrange(Intensity)
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'iprgna' not found
+```
+</details>
+
+
+## Saving and exporting data
+
+We have seen how to lead a `csv` file with `read.csv` and
+`read_csv`. We can write a `csv` file with the `write.csv` and
+`write_csv` functions. The difference is that the latter never writes
+row names and is faster.
+
+
+```r
+write(iprg, file = "iprg.csv")
+```
+
+We have seen how to load data with the `load` function. We can
+serialise such R Data objects with `save`.
+
+
+```r
+save(iprg, file = "iprg.rda")
+```
+
+# Part 4: Data visualisation
 
 ## Histogram
 
@@ -770,9 +1380,9 @@ for `iPRG_example`.
 hist(iprg$Intensity)
 ```
 
-![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
+![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
 
-Our histogram looks quite skewed. How does this look on log-scale? 
+Our histogram looks quite skewed. How does this look on log-scale?
 
 Do you recognise this distribution? The distribution for
 log2-transformed intensities looks very similar to the normal
@@ -785,11 +1395,11 @@ we need them.
 
 ```r
 hist(iprg$Log2Intensity,
-     xlab = "log2 transformed intensities",
-     main = "Histogram of iPRG data")
+	 xlab = "log2 transformed intensities",
+	 main = "Histogram of iPRG data")
 ```
 
-![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
+![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
 
 In this case, we have duplicated information in our data, we have the
 raw and log-transformed data. This is not necessary (and not advised),
@@ -799,11 +1409,11 @@ as it is straightforward to transform the data on the flight.
 
 ```r
 hist(log2(iprg$Intensity),
-     xlab = "log2 transformed intensities",
-     main = "Histogram of iPRG data")
+	 xlab = "log2 transformed intensities",
+	 main = "Histogram of iPRG data")
 ```
 
-![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26-1.png)
+![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47-1.png)
 
 We look at the summary for the log2-transformed values including the
 value for the mean. Let's fix that first.
@@ -820,7 +1430,7 @@ summary(iprg$Log2Intensity)
 
 
 > **Challenge**
-> 
+>
 > Reproduce the histogram above but plotting the data on the log base
 > 10 scale, using the `log10` function. See also the more general
 > `log` function.
@@ -830,7 +1440,7 @@ summary(iprg$Log2Intensity)
 hist(log10(iprg$Intensity))
 ```
 
-![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28-1.png)
+![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49-1.png)
 
 ## Boxplot or box-and-whisker plot
 
@@ -845,7 +1455,7 @@ files.
 boxplot(iprg$Log2Intensity)
 ```
 
-![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29-1.png)
+![plot of chunk unnamed-chunk-50](figure/unnamed-chunk-50-1.png)
 
 The boxplot, however, shows us the intensities for all conditions and
 replicates. If we want to display the data for, we have multile
@@ -859,7 +1469,7 @@ int_by_run <- by(iprg$Log2Intensity, iprg$Run, c)
 boxplot(int_by_run)
 ```
 
-![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30-1.png)
+![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
 
 * We can use the formula syntax
 
@@ -868,12 +1478,12 @@ boxplot(int_by_run)
 boxplot(Log2Intensity ~ Run, data = iprg)
 ```
 
-![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
+![plot of chunk unnamed-chunk-52](figure/unnamed-chunk-52-1.png)
 
 * We can use the `ggplot2` package that is very flexible to visualise
   data under different angles.
-  
-  
+
+
 ## The `ggplot2`  package
 
 `ggplot2` is a plotting package that makes it simple to create
@@ -948,7 +1558,7 @@ ggplot(data = iprg, aes(x = Run, y = Log2Intensity))
 ```
 
 * add `geoms` -- graphical representation of the data in the plot
-     (points, lines, bars). To add a geom to the plot use `+` operator
+	 (points, lines, bars). To add a geom to the plot use `+` operator
 
 
 ```r
@@ -956,7 +1566,7 @@ ggplot(data = iprg, aes(x = Run, y = Log2Intensity)) +
   geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35-1.png)
+![plot of chunk unnamed-chunk-56](figure/unnamed-chunk-56-1.png)
 
 See the [documentation page](http://ggplot2.tidyverse.org/reference/)
 to explore the many available `geoms`.
@@ -982,7 +1592,7 @@ Notes:
 * Anything you put in the `ggplot()` function can be seen by any geom layers
   that you add (i.e., these are universal plot settings). This includes the x and
   y axis you set up in `aes()`.
-  
+
 * You can also specify aesthetics for a given geom independently of the
   aesthetics defined globally in the `ggplot()` function.
 
@@ -993,8 +1603,8 @@ Notes:
 
 
 > **Challenge**
-> 
-> * Repeat the plot above but displaying the raw intensities. 
+>
+> * Repeat the plot above but displaying the raw intensities.
 > * Log-10 transform the raw intensities on the flight when plotting.
 
 
@@ -1003,26 +1613,26 @@ Notes:
 ggplot(data = iprg, aes(x = Run, y = Intensity)) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-1.png)
+![plot of chunk unnamed-chunk-58](figure/unnamed-chunk-58-1.png)
 
 ```r
 ggplot(data = iprg, aes(x = Run, y = log10(Intensity))) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-2.png)
-## Customising plots 
+![plot of chunk unnamed-chunk-58](figure/unnamed-chunk-58-2.png)
+## Customising plots
 
 First, let's colour the boxplot based on the condition:
 
 
 ```r
 ggplot(data = iprg,
-       aes(x = Run, y = Log2Intensity,
-           fill = Condition)) +
+	   aes(x = Run, y = Log2Intensity,
+		   fill = Condition)) +
   geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38-1.png)
+![plot of chunk unnamed-chunk-59](figure/unnamed-chunk-59-1.png)
 
 Now let's rename all axis labels and title, and rotate the x-axis
 labels 90 degrees. We can add those specifications using the `labs`
@@ -1031,15 +1641,15 @@ and `theme` functions of the `ggplot2` package.
 
 ```r
 ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
-       data = iprg) +
-    geom_boxplot() +
-    labs(title = 'Log2 transformed intensity distribution per MS run',
-         y = 'Log2(Intensity)',
-         x = 'MS run') +
-    theme(axis.text.x = element_text(angle = 90))    
+	   data = iprg) +
+	geom_boxplot() +
+	labs(title = 'Log2 transformed intensity distribution per MS run',
+		 y = 'Log2(Intensity)',
+		 x = 'MS run') +
+	theme(axis.text.x = element_text(angle = 90))
 ```
 
-![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-1.png)
+![plot of chunk unnamed-chunk-60](figure/unnamed-chunk-60-1.png)
 
 
 And easily switch from a boxplot to a violin plot representation by
@@ -1048,15 +1658,15 @@ changing the `geom` type.
 
 ```r
 ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
-       data = iprg) +
-    geom_violin() +
-    labs(title = 'Log2 transformed intensity distribution per Subject',
-         y = 'Log2(Intensity)',
-         x = 'MS run') +
-    theme(axis.text.x = element_text(angle = 90))
+	   data = iprg) +
+	geom_violin() +
+	labs(title = 'Log2 transformed intensity distribution per Subject',
+		 y = 'Log2(Intensity)',
+		 x = 'MS run') +
+	theme(axis.text.x = element_text(angle = 90))
 ```
 
-![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40-1.png)
+![plot of chunk unnamed-chunk-61](figure/unnamed-chunk-61-1.png)
 
 Finally, we can also overlay multiple geoms by simply *adding* them
 one after the other.
@@ -1064,32 +1674,32 @@ one after the other.
 
 ```r
 p <- ggplot(aes(x = Run, y = Log2Intensity, fill = Condition),
-            data = iprg)
+			data = iprg)
 p + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-1.png)
+![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-1.png)
 
 ```r
 p + geom_boxplot() + geom_jitter() ## not very usefull
 ```
 
-![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-2.png)
+![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-2.png)
 
 ```r
 p + geom_jitter() + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-3.png)
+![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-3.png)
 
 ```r
 p + geom_jitter(alpha = 0.1) + geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-4.png)
+![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-4.png)
 
 > **Challenge**
-> 
+>
 > * Overlay a boxplot goem on top of a jitter geom for the raw or
 >   log-10 transformed intensities.
 > * Customise the plot as suggested above.
@@ -1098,11 +1708,11 @@ p + geom_jitter(alpha = 0.1) + geom_boxplot()
 ```r
 ## Note how the log10 transformation is applied to both geoms
 ggplot(data = iprg, aes(x = Run, y = log10(Intensity))) +
-    geom_jitter(alpha = 0.1) +
-    geom_boxplot()
+	geom_jitter(alpha = 0.1) +
+	geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42-1.png)
+![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-1.png)
 
 Finally, a very useful feature of `ggplot2` is **facetting**, that
 defines how to subset the data into different *panels* (facets).
@@ -1119,13 +1729,13 @@ names(iprg)
 
 ```r
 ggplot(data = iprg,
-       aes(x = TechReplicate, y = Log2Intensity,
-           fill = Condition)) +
-    geom_boxplot() + 
-    facet_grid(~ Condition)
+	   aes(x = TechReplicate, y = Log2Intensity,
+		   fill = Condition)) +
+	geom_boxplot() +
+	facet_grid(~ Condition)
 ```
 
-![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-1.png)
+![plot of chunk unnamed-chunk-64](figure/unnamed-chunk-64-1.png)
 
 ## Saving your work
 
@@ -1135,7 +1745,7 @@ and scales up well but jpegs, pngs and a number of other file formats
 are also supported. Let's redo the last barplot but save it to the
 file system this time.
 
-Let's save the boxplot as pdf file. 
+Let's save the boxplot as pdf file.
 
 
 ```r
@@ -1149,7 +1759,7 @@ specifying it by passing the file name, as a character, to the `pdf()`
 function.
 
 > **Challenge**
-> 
+>
 > Save a figure of your choice to a pdf file. Read the manual for the
 > `png` function and save that same image to a png file.
 >
@@ -1169,737 +1779,7 @@ save.image(file = '02-rstats-all.rda')
 contains the exact command that lead to the results! Or better, we can
 save and document our full analysis in an R markdown file!
 
-# Part 3: Basic statistics
-
-## Randomisation
-
-### Random selection of samples from a larger set
-
-Let's assume that we have the population with a total of 10 subjects. Suppose we label them from 1 to 10 and randomly would like
-to select 3 subjects we can do this using the `sample` function. When
-we run `sample` another time, different subjects will be selected. Try
-this a couple times.
-
-
-```r
-sample(10, 3)
-```
-
-```
-## [1] 3 4 7
-```
-
-```r
-sample(10, 3)
-```
-
-```
-## [1] 10  7  3
-```
-
-Now suppose we would like to select the same randomly selected samples
-every time, then we can use a random seed number.
-
-
-```r
-set.seed(3728)
-sample(10, 3)
-```
-
-```
-## [1] 5 8 7
-```
-
-```r
-set.seed(3728)
-sample(10, 3)
-```
-
-```
-## [1] 5 8 7
-```
-
-Let's practice with fun example. Select two in our group member for coming early next Monday.
-
-```r
-group.member <- c('Meena', 'Tsung-Heng', 'Ting', 'April', 'Dan', 'Cyril', 'Kylie', 'Sara')
-sample(group.member, 2)
-```
-
-```
-## [1] "Dan"   "Cyril"
-```
-
-
-### Completely randomized order of MS runs
-
-We can also create a random order using all elements of iPRG
-dataset. Again, we can achieve this using `sample`, asking for exactly
-the amount of samples in the subset. This time, each repetition gives
-us a different order of the complete set.
-
-
-```r
-msrun <- unique(iprg$Run)
-msrun
-```
-
-```
-##  [1] "JD_06232014_sample1_B.raw" "JD_06232014_sample1_C.raw"
-##  [3] "JD_06232014_sample1-A.raw" "JD_06232014_sample2_A.raw"
-##  [5] "JD_06232014_sample2_B.raw" "JD_06232014_sample2_C.raw"
-##  [7] "JD_06232014_sample3_A.raw" "JD_06232014_sample3_B.raw"
-##  [9] "JD_06232014_sample3_C.raw" "JD_06232014_sample4_B.raw"
-## [11] "JD_06232014_sample4_C.raw" "JD_06232014_sample4-A.raw"
-```
-
-```r
-## randomize order among all 12 MS runs
-sample(msrun, length(msrun))
-```
-
-```
-##  [1] "JD_06232014_sample1_B.raw" "JD_06232014_sample3_C.raw"
-##  [3] "JD_06232014_sample4_B.raw" "JD_06232014_sample1_C.raw"
-##  [5] "JD_06232014_sample3_B.raw" "JD_06232014_sample4_C.raw"
-##  [7] "JD_06232014_sample3_A.raw" "JD_06232014_sample2_B.raw"
-##  [9] "JD_06232014_sample1-A.raw" "JD_06232014_sample2_C.raw"
-## [11] "JD_06232014_sample4-A.raw" "JD_06232014_sample2_A.raw"
-```
-
-```r
-## different order will be shown.
-sample(msrun, length(msrun))
-```
-
-```
-##  [1] "JD_06232014_sample3_B.raw" "JD_06232014_sample2_A.raw"
-##  [3] "JD_06232014_sample3_A.raw" "JD_06232014_sample2_B.raw"
-##  [5] "JD_06232014_sample2_C.raw" "JD_06232014_sample3_C.raw"
-##  [7] "JD_06232014_sample4-A.raw" "JD_06232014_sample1-A.raw"
-##  [9] "JD_06232014_sample4_B.raw" "JD_06232014_sample1_C.raw"
-## [11] "JD_06232014_sample1_B.raw" "JD_06232014_sample4_C.raw"
-```
-
-### Randomized block design
-
-- Allow to remove known sources of variability that you are not
-  interested in.
-
-- Group conditions into blocks such that the conditions in a block are
-  as similar as possible.
-
-- Randomly assign samples with a block.
-
-This particular dataset contains a total of 12 MS runs across 4
-conditions, 3 technical replicates per condition. Using the
-`block.random` function in the `psych` package, we can achieve
-randomized block designs! `block.random` function makes random assignment of `n` subjects with an equal number in all of `N` conditions.
-
-
-```r
-library("psych") ## load the psych package
-
-msrun <- unique(iprg[, c('Condition','Run')])
-msrun
-```
-
-```
-##     Condition                       Run
-## 1  Condition1 JD_06232014_sample1_B.raw
-## 2  Condition1 JD_06232014_sample1_C.raw
-## 3  Condition1 JD_06232014_sample1-A.raw
-## 4  Condition2 JD_06232014_sample2_A.raw
-## 5  Condition2 JD_06232014_sample2_B.raw
-## 6  Condition2 JD_06232014_sample2_C.raw
-## 7  Condition3 JD_06232014_sample3_A.raw
-## 8  Condition3 JD_06232014_sample3_B.raw
-## 9  Condition3 JD_06232014_sample3_C.raw
-## 10 Condition4 JD_06232014_sample4_B.raw
-## 11 Condition4 JD_06232014_sample4_C.raw
-## 12 Condition4 JD_06232014_sample4-A.raw
-```
-
-```r
-## 4 Conditions of 12 MS runs randomly ordered
-block.random(n = 12, c(Condition = 4))
-```
-
-```
-##     blocks Condition
-## S1       1         4
-## S2       1         2
-## S3       1         3
-## S4       1         1
-## S5       2         2
-## S6       2         1
-## S7       2         3
-## S8       2         4
-## S9       3         4
-## S10      3         3
-## S11      3         2
-## S12      3         1
-```
-
-```r
-block.random(n = 12, c(Condition = 4, BioReplicate=3))
-```
-
-```
-##     blocks Condition BioReplicate
-## S1       1         4            2
-## S2       1         4            1
-## S3       1         3            1
-## S4       1         1            1
-## S5       1         1            2
-## S6       1         3            3
-## S7       1         2            1
-## S8       1         2            3
-## S9       1         4            3
-## S10      1         2            2
-## S11      1         1            3
-## S12      1         3            2
-```
-
-
-## Basic statistical summaries
-
-### Calculate simple statistics
-
-Let's start data with one protein as an example and calculate the
-mean, standard deviation, standard error of the mean across all
-replicates per condition. We then store all the computed statistics
-into a single summary data frame for easy access.
-
-We can use the `aggregate` function to compute summary statistics. `aggregate` splits the data into subsets, computes summary statistics for each, and returns the result in a convenient form.
-
-
-```r
-# check what proteins are in dataset, show all protein names
-head(unique(iprg$Protein))
-```
-
-```
-## [1] "sp|D6VTK4|STE2_YEAST"  "sp|O13297|CET1_YEAST"  "sp|O13329|FOB1_YEAST" 
-## [4] "sp|O13539|THP2_YEAST"  "sp|O13547|CCW14_YEAST" "sp|O13563|RPN13_YEAST"
-```
-
-
-```r
-# Let's start with one protein, named "sp|P44015|VAC2_YEAST"
-oneproteindata <- iprg[iprg$Protein == "sp|P44015|VAC2_YEAST", ]
-
-# there are 12 rows in oneproteindata
-oneproteindata
-```
-
-```
-##                    Protein Log2Intensity                       Run
-## 21096 sp|P44015|VAC2_YEAST      26.30163 JD_06232014_sample1_B.raw
-## 21097 sp|P44015|VAC2_YEAST      26.11643 JD_06232014_sample1_C.raw
-## 21098 sp|P44015|VAC2_YEAST      26.29089 JD_06232014_sample1-A.raw
-## 21099 sp|P44015|VAC2_YEAST      25.81957 JD_06232014_sample2_A.raw
-## 21100 sp|P44015|VAC2_YEAST      26.11527 JD_06232014_sample2_B.raw
-## 21101 sp|P44015|VAC2_YEAST      26.08498 JD_06232014_sample2_C.raw
-## 21102 sp|P44015|VAC2_YEAST      23.14806 JD_06232014_sample3_A.raw
-## 21103 sp|P44015|VAC2_YEAST      23.32465 JD_06232014_sample3_B.raw
-## 21104 sp|P44015|VAC2_YEAST      23.29555 JD_06232014_sample3_C.raw
-## 21105 sp|P44015|VAC2_YEAST      20.94536 JD_06232014_sample4_B.raw
-## 21106 sp|P44015|VAC2_YEAST      21.71424 JD_06232014_sample4_C.raw
-## 21107 sp|P44015|VAC2_YEAST      20.25209 JD_06232014_sample4-A.raw
-##        Condition BioReplicate Intensity TechReplicate
-## 21096 Condition1            1  82714388             B
-## 21097 Condition1            1  72749239             C
-## 21098 Condition1            1  82100518             A
-## 21099 Condition2            2  59219741             A
-## 21100 Condition2            2  72690802             B
-## 21101 Condition2            2  71180513             C
-## 21102 Condition3            3   9295260             A
-## 21103 Condition3            3  10505591             B
-## 21104 Condition3            3  10295788             C
-## 21105 Condition4            4   2019205             B
-## 21106 Condition4            4   3440629             C
-## 21107 Condition4            4   1248781             A
-```
-
-
-
-```r
-# If you want to see more details, 
-?aggregate
-```
-
-### Calculate mean per groups
-
-
-```r
-## splits 'oneproteindata' into subsets by 'Condition', 
-## then, compute 'FUN=mean' of 'log2Int'
-sub.mean <- aggregate(Log2Intensity ~ Condition,
-                      data = oneproteindata,
-                      FUN = mean)
-sub.mean
-```
-
-```
-##    Condition Log2Intensity
-## 1 Condition1      26.23632
-## 2 Condition2      26.00661
-## 3 Condition3      23.25609
-## 4 Condition4      20.97056
-```
-
-### Calculate SD (standard deviation) per groups
-
-$$ s = \sqrt{\frac{1}{n-1} \sum_{i=1}^n (x_i - \bar x)^2} $$
-
-> **Challenge**
-> 
-> Using the `aggregate` function above, calculate the standard
-> deviation, by applying the `median` function.
-
-
-
-```r
-## The same as mean calculation above. 'FUN' is changed to 'sd'.
-sub.median <- aggregate(Log2Intensity ~ Condition,
-                    data = oneproteindata, FUN = median)
-sub.median
-```
-
-```
-##    Condition Log2Intensity
-## 1 Condition1      26.29089
-## 2 Condition2      26.08498
-## 3 Condition3      23.29555
-## 4 Condition4      20.94536
-```
-
-> Using the `aggregate` function above, calculate the standard
-> deviation, by applying the `sd` function.
-
-
-```r
-## The same as mean calculation above. 'FUN' is changed to 'sd'.
-sub.sd <- aggregate(Log2Intensity ~ Condition,
-                    data = oneproteindata, FUN = sd)
-sub.sd
-```
-
-```
-##    Condition Log2Intensity
-## 1 Condition1    0.10396539
-## 2 Condition2    0.16268179
-## 3 Condition3    0.09467798
-## 4 Condition4    0.73140174
-```
-
-
-### Count the number of observation per groups
-
-> **Challenge**
-> 
-> Using the `aggregate` function above, count the number of
-> observations per group with the `length` function.
-
-
-```r
-## The same as mean calculation. 'FUN' is changed 'length'.
-sub.len <- aggregate(Log2Intensity ~ Condition,
-                     data = oneproteindata,
-                     FUN = length)
-sub.len
-```
-
-```
-##    Condition Log2Intensity
-## 1 Condition1             3
-## 2 Condition2             3
-## 3 Condition3             3
-## 4 Condition4             3
-```
-
-### Calculate SE (standard error of mean) per groups
-
-$$ SE = \sqrt{\frac{s^2}{n}} $$
-
-
-```r
-sub.se <- sqrt(sub.sd$Log2Intensity^2 / sub.len$Log2Intensity)
-sub.se
-```
-
-```
-## [1] 0.06002444 0.09392438 0.05466236 0.42227499
-```
-
-We can now make the summary table including the results above (mean,
-sd, se and length).
-
-
-```r
-## paste0 : concatenate vectors after convering to character.
-(grp <- paste0("Condition", 1:4)) 
-```
-
-```
-## [1] "Condition1" "Condition2" "Condition3" "Condition4"
-```
-
-```r
-## It is equivalent to paste("Condition", 1:4, sep="")
-summaryresult <- data.frame(Group = grp,
-                            mean = sub.mean$Log2Intensity,
-                            sd = sub.sd$Log2Intensity, 
-                            se = sub.se, 
-                            length = sub.len$Log2Intensity)
-summaryresult
-```
-
-```
-##        Group     mean         sd         se length
-## 1 Condition1 26.23632 0.10396539 0.06002444      3
-## 2 Condition2 26.00661 0.16268179 0.09392438      3
-## 3 Condition3 23.25609 0.09467798 0.05466236      3
-## 4 Condition4 20.97056 0.73140174 0.42227499      3
-```
-
-## Visualization with error bars for descriptive purpose
-
-*error bars* can have a variety of meanings or conclusions if what
-they represent is not precisely specified. Below we provide some
-examples of which types of error bars are common. We're using the
-summary of protein `sp|P44015|VAC2_YEAST` from the previous section
-and the `ggplot2` package as it provides a convenient way to make
-easily adaptable plots.
-
-
-```r
-# means without any errorbar
-p <- ggplot(aes(x = Group, y = mean, colour = Group),
-            data = summaryresult)+
-    geom_point(size = 3)
-p
-```
-
-![plot of chunk unnamed-chunk-60](figure/unnamed-chunk-60-1.png)
-
-Let's change a number of visual properties to make the plot more attractive.
- 
-* Let's change the labels of x-axis and y-axis and title: `labs(title="Mean", x="Condition", y='Log2(Intensity)')`
-* Let's change background color for white: `theme_bw()`
-* Let's change size or color of labels of axes and title, text of
-  x-axis by using a *theme*
-* Let's change the position of legend (use `'none'` to remove it)
-* Let's make the box for legend
-* Let's remove the box for legend key.
-
-
-
-```r
-p2 <- p + labs(title = "Mean", x = "Group", y = 'Log2(Intensity)') +
-    theme_bw() + 
-    theme(plot.title = element_text(size = 25, colour = "darkblue"),
-          axis.title.x = element_text(size = 15),
-          axis.title.y = element_text(size = 15),
-          axis.text.x = element_text(size = 13),
-          legend.position = 'bottom',
-          legend.background = element_rect(colour = 'black'),
-          legend.key = element_rect(colour = 'white'))
-p2
-```
-
-![plot of chunk unnamed-chunk-61](figure/unnamed-chunk-61-1.png)
-
-Let's now add the **standard deviation**:
-
-
-```r
-# mean with SD
-p2 + geom_errorbar(aes(ymax = mean + sd, ymin = mean - sd), width = 0.1) + 
-      labs(title="Mean with SD")
-```
-
-![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-1.png)
-
-> **Challenge**
-> 
-> Add the **standard error of the mean**. Which one is smaller?
-
-
-
-```r
-# mean with SE
-p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1) +
-    labs(title="Mean with SE")
-```
-
-![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-1.png)
-
-```r
-## The SE is narrow than the SD!
-```
-
-> **Challenge**
-> 
-> Add the **standard error of the mean** with black color. 
-
-
-```r
-# mean with SE
-p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1, color='black') +
-    labs(title="Mean with SE")
-```
-
-![plot of chunk unnamed-chunk-64](figure/unnamed-chunk-64-1.png)
-
-## Working with statistical distributions
-
-For each statistical distribution, we have function to compute
-
-* density
-* distribution function
-* quantile function 
-* random generation
-
-For the normale distribution `norm`, these are respectively
-
-* `dnorm`
-* `pnorm`
-* `qnorm`
-* `rnorm`
-
-Let's start by sampling 1000000 values from a normal distribution $N(0, 1)$:
-
-
-```r
-xn <- rnorm(1e6)
-hist(xn, freq = FALSE)
-rug(xn)
-lines(density(xn), lwd = 2)
-```
-
-![plot of chunk unnamed-chunk-65](figure/unnamed-chunk-65-1.png)
-
-By definition, the area under the density curve is 1. The area at the
-left of 0, 1, and 2 are respectively:
-
-
-```r
-pnorm(0)
-```
-
-```
-## [1] 0.5
-```
-
-```r
-pnorm(1)
-```
-
-```
-## [1] 0.8413447
-```
-
-```r
-pnorm(2)
-```
-
-```
-## [1] 0.9772499
-```
-
-To ask the inverse question, we use the quantile function. The obtain
-0.5, 0.8413447 and 0.9772499 of our distribution, we need means
-of:
-
-
-```r
-qnorm(0.5)
-```
-
-```
-## [1] 0
-```
-
-```r
-qnorm(pnorm(1))
-```
-
-```
-## [1] 1
-```
-
-```r
-qnorm(pnorm(2))
-```
-
-```
-## [1] 2
-```
-
-Finally, the density function gives us the *height* at which we are
-for a given mean:
-
-
-```r
-hist(xn, freq = FALSE)
-lines(density(xn), lwd = 2)
-points(0, dnorm(0), pch = 19, col = "red")
-points(1, dnorm(1), pch = 1, col = "blue")
-points(2, dnorm(2), pch = 4, col = "orange")
-```
-
-![plot of chunk unnamed-chunk-68](figure/unnamed-chunk-68-1.png)
-
-## Calculate the confidence interval
-
-Now that we've covered the standard error of the mean and the standard
-deviation, let's investigate how we can add custom confidence
-intervals (CI) for our measurement of the mean. We'll add these CI's
-to the summary results we previously stored for protein
-`sp|P44015|VAC2_YEAST`.
-
-Confidence interval: 
-
-$$\mbox{mean} \pm (SE \times \frac{\alpha}{2} ~ \mbox{quantile of t distribution})$$
-
-
-To calculate the 95% confident interval, we need to be careful and set
-the quantile for two-sided. We need to divide by two for error.  For
-example, 95% confidence interval, right tail is 2.5% and left tail is
-2.5%.
-
-
-
-```r
-summaryresult$ciw.lower.95 <- summaryresult$mean -
-    qt(0.975, summaryresult$len - 1) * summaryresult$se
-summaryresult$ciw.upper.95 <- summaryresult$mean +
-    qt(0.975, summaryresult$len - 1) * summaryresult$se
-summaryresult
-```
-
-```
-##        Group     mean         sd         se length ciw.lower.95
-## 1 Condition1 26.23632 0.10396539 0.06002444      3     25.97805
-## 2 Condition2 26.00661 0.16268179 0.09392438      3     25.60248
-## 3 Condition3 23.25609 0.09467798 0.05466236      3     23.02090
-## 4 Condition4 20.97056 0.73140174 0.42227499      3     19.15366
-##   ciw.upper.95
-## 1     26.49458
-## 2     26.41073
-## 3     23.49128
-## 4     22.78746
-```
-
-
-```r
-# mean with 95% two-sided confidence interval
-ggplot(aes(x = Group, y = mean, colour = Group),
-       data = summaryresult) +
-    geom_point() +
-    geom_errorbar(aes(ymax = ciw.upper.95, ymin = ciw.lower.95), width = 0.1) +
-    labs(title="Mean with 95% confidence interval", x="Condition", y='Log2(Intensity)') +
-    theme_bw() +
-    theme(plot.title = element_text(size=25, colour="darkblue"),
-          axis.title.x = element_text(size=15),
-          axis.title.y = element_text(size=15),
-          axis.text.x = element_text(size=13),
-          legend.position = 'bottom',
-          legend.background = element_rect(colour = 'black'),
-          legend.key = element_rect(colour='white'))
-```
-
-![plot of chunk unnamed-chunk-70](figure/unnamed-chunk-70-1.png)
-
-> **Challenges**
-> 
-> Replicate the above for the 99% two-sided confidence interval. 
-
-
-```r
-# mean with 99% two-sided confidence interval
-summaryresult$ciw.lower.99 <- summaryresult$mean - qt(0.995,summaryresult$len-1) * summaryresult$se
-summaryresult$ciw.upper.99 <- summaryresult$mean + qt(0.995,summaryresult$len-1) * summaryresult$se
-summaryresult
-```
-
-```
-##        Group     mean         sd         se length ciw.lower.95
-## 1 Condition1 26.23632 0.10396539 0.06002444      3     25.97805
-## 2 Condition2 26.00661 0.16268179 0.09392438      3     25.60248
-## 3 Condition3 23.25609 0.09467798 0.05466236      3     23.02090
-## 4 Condition4 20.97056 0.73140174 0.42227499      3     19.15366
-##   ciw.upper.95 ciw.lower.99 ciw.upper.99
-## 1     26.49458     25.64058     26.83205
-## 2     26.41073     25.07442     26.93879
-## 3     23.49128     22.71357     23.79860
-## 4     22.78746     16.77955     25.16157
-```
-
-```r
-ggplot(aes(x = Group, y = mean, colour = Group),
-       data = summaryresult) +
-    geom_point() +
-    geom_errorbar(aes(ymax = ciw.upper.99, ymin=ciw.lower.99), width=0.1) +
-    labs(title="Mean with 99% confidence interval", x="Condition", y='Log2(Intensity)') +
-    theme_bw()+
-    theme(plot.title = element_text(size=25, colour="darkblue"),
-          axis.title.x = element_text(size=15),
-          axis.title.y = element_text(size=15),
-          axis.text.x = element_text(size=13),
-          legend.position = 'bottom',
-          legend.background = element_rect(colour='black'),
-          legend.key = element_rect(colour='white'))
-```
-
-![plot of chunk unnamed-chunk-71](figure/unnamed-chunk-71-1.png)
-
-### Some comments
-
-* Error bars with SD and CI are overlapping between groups! 
-
-* Error bars for the SD show the spread of the population while error
-  bars based on SE reflect the uncertainty in the mean and depend on
-  the sample size.
-
-* Confidence intervals of `n` on the other hand mean that the
-  intervals capture the population mean `n` percent of the time.
-
-* When the sample size increases, CI and SE are getting closer to each
-  other.
-
-## Saving our results
-
-We have two objects that contain all the information that we have
-generated so far:
-
-* The `summaryresults` object, that contains all the summary
-  statistics.
-* The `iprg` data frame, that was read from the `csv` file. This
-  object can be easily regenerated using `read.csv`, and hence doesn't
-  necessarily to be saved explicity.
-  
-
-
-```r
-save(summaryresult, file = "./data/summaryresults.rda")
-save(iprg, file = "./data/iprg.rda")
-```
-
-We can also save the summary result as a `csv` file using the
-`write.csv` function:
-
-
-```r
-write.csv(sumamryresult, file = "./data/summary.csv")
-```
-
-**Tip**: Exporting to csv is useful to share your work with
-collaborators that do not use R, but for wany continous work in R, to
-assure data validity accords platforms, the best format is `rda`.
 
 ---
 
-Back to course [home page](https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/README.md) 
+Back to course [home page](https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/README.md)

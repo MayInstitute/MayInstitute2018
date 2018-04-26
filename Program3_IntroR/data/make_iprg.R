@@ -6,8 +6,8 @@ write.csv(iprg, file = "iPRG_example_runsummary.csv", row.names = FALSE)
 
 
 set.seed(123)
-i <- sample(nrow(iprg), 1e3)
+i <- c(1, 3, 5, sample(nrow(iprg), 1e3))
 iprgna <- iprg
 iprgna[i, "Intensity"] <- NA
-iprgna[i, "Log2Intensity"] <- NA
+iprgna[, "Log2Intensity"] <- NULL
 save(iprgna, file = "iprgna.rda")

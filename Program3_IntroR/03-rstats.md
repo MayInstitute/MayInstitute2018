@@ -1,12 +1,12 @@
 ---
 title: 'Day 3: Beginner''s statistics in R'
 author: "Laurent Gatto and Meena Choi"
-output: 
+output:
   html_document:
-    self_contained: true
-    toc: true
-    toc_float: true
-    fig_caption: no
+   contained: true
+   toc: true
+   toc_float: true
+   fig_caption: no
 ---
 
 
@@ -14,14 +14,784 @@ output:
 
 # Objectives
 
+- Randomisation and basic statistics
 - Statistical hypothesis testing: t-test
 - Sample size calculation
-- Analysis for categorical data 
+- Analysis for categorical data
 - Linear regression and correlation
 
 ---
 
-# Part 4: Statistical hypothesis test
+# Part 1: Basic statistics
+
+## Randomisation
+
+### Random selection of samples from a larger set
+
+Let's assume that we have the population with a total of 10 subjects. Suppose we label them from 1 to 10 and randomly would like
+to select 3 subjects we can do this using the `sample` function. When
+we run `sample` another time, different subjects will be selected. Try
+this a couple times.
+
+
+```r
+sample(10, 3)
+```
+
+```
+## [1] 5 9 4
+```
+
+```r
+sample(10, 3)
+```
+
+```
+## [1] 5 2 6
+```
+
+Now suppose we would like to select the same randomly selected samples
+every time, then we can use a random seed number.
+
+
+```r
+set.seed(3728)
+sample(10, 3)
+```
+
+```
+## [1] 5 8 7
+```
+
+```r
+set.seed(3728)
+sample(10, 3)
+```
+
+```
+## [1] 5 8 7
+```
+
+Let's practice with fun example. Select two in our group member for coming early next Monday.
+
+```r
+group.member <- c('Meena', 'Tsung-Heng', 'Ting', 'April', 'Dan', 'Cyril', 'Kylie', 'Sara')
+sample(group.member, 2)
+```
+
+```
+## [1] "Dan"   "Cyril"
+```
+
+
+### Completely randomized order of MS runs
+
+We can also create a random order using all elements of iPRG
+dataset. Again, we can achieve this using `sample`, asking for exactly
+the amount of samples in the subset. This time, each repetition gives
+us a different order of the complete set.
+
+
+```r
+msrun <- unique(iprg$Run)
+```
+
+```
+## Error in unique(iprg$Run): object 'iprg' not found
+```
+
+```r
+msrun
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'msrun' not found
+```
+
+```r
+## randomize order among all 12 MS runs
+sample(msrun, length(msrun))
+```
+
+```
+## Error in sample(msrun, length(msrun)): object 'msrun' not found
+```
+
+```r
+## different order will be shown.
+sample(msrun, length(msrun))
+```
+
+```
+## Error in sample(msrun, length(msrun)): object 'msrun' not found
+```
+
+### Randomized block design
+
+- Allow to remove known sources of variability that you are not
+  interested in.
+
+- Group conditions into blocks such that the conditions in a block are
+  as similar as possible.
+
+- Randomly assign samples with a block.
+
+This particular dataset contains a total of 12 MS runs across 4
+conditions, 3 technical replicates per condition. Using the
+`block.random` function in the `psych` package, we can achieve
+randomized block designs! `block.random` function makes random assignment of `n` subjects with an equal number in all of `N` conditions.
+
+
+```r
+library("psych") ## load the psych package
+
+msrun <- unique(iprg[, c('Condition','Run')])
+```
+
+```
+## Error in unique(iprg[, c("Condition", "Run")]): object 'iprg' not found
+```
+
+```r
+msrun
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'msrun' not found
+```
+
+```r
+## 4 Conditions of 12 MS runs randomly ordered
+block.random(n = 12, c(Condition = 4))
+```
+
+```
+##     blocks Condition
+## S1       1         2
+## S2       1         4
+## S3       1         3
+## S4       1         1
+## S5       2         1
+## S6       2         2
+## S7       2         4
+## S8       2         3
+## S9       3         4
+## S10      3         3
+## S11      3         2
+## S12      3         1
+```
+
+```r
+block.random(n = 12, c(Condition = 4, BioReplicate=3))
+```
+
+```
+##     blocks Condition BioReplicate
+## S1       1         1            3
+## S2       1         1            2
+## S3       1         4            2
+## S4       1         2            2
+## S5       1         3            2
+## S6       1         2            3
+## S7       1         1            1
+## S8       1         4            1
+## S9       1         3            3
+## S10      1         3            1
+## S11      1         2            1
+## S12      1         4            3
+```
+
+
+## Basic statistical summaries
+
+### Calculate simple statistics
+
+Let's start data with one protein as an example and calculate the
+mean, standard deviation, standard error of the mean across all
+replicates per condition. We then store all the computed statistics
+into a single summary data frame for easy access.
+
+We can use the `aggregate` function to compute summary statistics. `aggregate` splits the data into subsets, computes summary statistics for each, and returns the result in a convenient form.
+
+
+```r
+# check what proteins are in dataset, show all protein names
+head(unique(iprg$Protein))
+```
+
+```
+## Error in unique(iprg$Protein): object 'iprg' not found
+```
+
+
+```r
+# Let's start with one protein, named "sp|P44015|VAC2_YEAST"
+oneproteindata <- iprg[iprg$Protein == "sp|P44015|VAC2_YEAST", ]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'iprg' not found
+```
+
+```r
+# there are 12 rows in oneproteindata
+oneproteindata
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'oneproteindata' not found
+```
+
+
+
+```r
+# If you want to see more details,
+?aggregate
+```
+
+### Calculate mean per groups
+
+
+```r
+## splits 'oneproteindata' into subsets by 'Condition',
+## then, compute 'FUN=mean' of 'log2Int'
+sub.mean <- aggregate(Log2Intensity ~ Condition,
+					  data = oneproteindata,
+					  FUN = mean)
+```
+
+```
+## Error in eval(m$data, parent.frame()): object 'oneproteindata' not found
+```
+
+```r
+sub.mean
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sub.mean' not found
+```
+
+### Calculate SD (standard deviation) per groups
+
+$$ s = \sqrt{\frac{1}{n-1} \sum_{i=1}^n (x_i - \bar x)^2} $$
+
+> **Challenge**
+>
+> Using the `aggregate` function above, calculate the standard
+> deviation, by applying the `median` function.
+
+
+
+```r
+## The same as mean calculation above. 'FUN' is changed to 'sd'.
+sub.median <- aggregate(Log2Intensity ~ Condition,
+					data = oneproteindata, FUN = median)
+```
+
+```
+## Error in eval(m$data, parent.frame()): object 'oneproteindata' not found
+```
+
+```r
+sub.median
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sub.median' not found
+```
+
+> Using the `aggregate` function above, calculate the standard
+> deviation, by applying the `sd` function.
+
+
+```r
+## The same as mean calculation above. 'FUN' is changed to 'sd'.
+sub.sd <- aggregate(Log2Intensity ~ Condition,
+					data = oneproteindata, FUN = sd)
+```
+
+```
+## Error in eval(m$data, parent.frame()): object 'oneproteindata' not found
+```
+
+```r
+sub.sd
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sub.sd' not found
+```
+
+
+### Count the number of observation per groups
+
+> **Challenge**
+>
+> Using the `aggregate` function above, count the number of
+> observations per group with the `length` function.
+
+
+```r
+## The same as mean calculation. 'FUN' is changed 'length'.
+sub.len <- aggregate(Log2Intensity ~ Condition,
+					 data = oneproteindata,
+					 FUN = length)
+```
+
+```
+## Error in eval(m$data, parent.frame()): object 'oneproteindata' not found
+```
+
+```r
+sub.len
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sub.len' not found
+```
+
+### Calculate SE (standard error of mean) per groups
+
+$$ SE = \sqrt{\frac{s^2}{n}} $$
+
+
+```r
+sub.se <- sqrt(sub.sd$Log2Intensity^2 / sub.len$Log2Intensity)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sub.sd' not found
+```
+
+```r
+sub.se
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'sub.se' not found
+```
+
+We can now make the summary table including the results above (mean,
+sd, se and length).
+
+
+```r
+## paste0 : concatenate vectors after convering to character.
+(grp <- paste0("Condition", 1:4))
+```
+
+```
+## [1] "Condition1" "Condition2" "Condition3" "Condition4"
+```
+
+```r
+## It is equivalent to paste("Condition", 1:4, sep="")
+summaryresult <- data.frame(Group = grp,
+							mean = sub.mean$Log2Intensity,
+							sd = sub.sd$Log2Intensity,
+							se = sub.se,
+							length = sub.len$Log2Intensity)
+```
+
+```
+## Error in data.frame(Group = grp, mean = sub.mean$Log2Intensity, sd = sub.sd$Log2Intensity, : object 'sub.mean' not found
+```
+
+```r
+summaryresult
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+```
+
+## Visualization with error bars for descriptive purpose
+
+*error bars* can have a variety of meanings or conclusions if what
+they represent is not precisely specified. Below we provide some
+examples of which types of error bars are common. We're using the
+summary of protein `sp|P44015|VAC2_YEAST` from the previous section
+and the `ggplot2` package as it provides a convenient way to make
+easily adaptable plots.
+
+
+```r
+# means without any errorbar
+p <- ggplot(aes(x = Group, y = mean, colour = Group),
+			data = summaryresult)+
+	geom_point(size = 3)
+```
+
+```
+## Error in ggplot(aes(x = Group, y = mean, colour = Group), data = summaryresult): could not find function "ggplot"
+```
+
+```r
+p
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'p' not found
+```
+
+Let's change a number of visual properties to make the plot more attractive.
+
+* Let's change the labels of x-axis and y-axis and title: `labs(title="Mean", x="Condition", y='Log2(Intensity)')`
+* Let's change background color for white: `theme_bw()`
+* Let's change size or color of labels of axes and title, text of
+  x-axis by using a *theme*
+* Let's change the position of legend (use `'none'` to remove it)
+* Let's make the box for legend
+* Let's remove the box for legend key.
+
+
+
+```r
+p2 <- p + labs(title = "Mean", x = "Group", y = 'Log2(Intensity)') +
+	theme_bw() +
+	theme(plot.title = element_text(size = 25, colour = "darkblue"),
+		  axis.title.x = element_text(size = 15),
+		  axis.title.y = element_text(size = 15),
+		  axis.text.x = element_text(size = 13),
+		  legend.position = 'bottom',
+		  legend.background = element_rect(colour = 'black'),
+		  legend.key = element_rect(colour = 'white'))
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'p' not found
+```
+
+```r
+p2
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'p2' not found
+```
+
+Let's now add the **standard deviation**:
+
+
+```r
+# mean with SD
+p2 + geom_errorbar(aes(ymax = mean + sd, ymin = mean - sd), width = 0.1) +
+	  labs(title="Mean with SD")
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'p2' not found
+```
+
+> **Challenge**
+>
+> Add the **standard error of the mean**. Which one is smaller?
+
+
+
+```r
+# mean with SE
+p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1) +
+	labs(title="Mean with SE")
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'p2' not found
+```
+
+```r
+## The SE is narrow than the SD!
+```
+
+> **Challenge**
+>
+> Add the **standard error of the mean** with black color.
+
+
+```r
+# mean with SE
+p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1, color='black') +
+	labs(title="Mean with SE")
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'p2' not found
+```
+
+## Working with statistical distributions
+
+For each statistical distribution, we have function to compute
+
+* density
+* distribution function
+* quantile function
+* random generation
+
+For the normale distribution `norm`, these are respectively
+
+* `dnorm`
+* `pnorm`
+* `qnorm`
+* `rnorm`
+
+Let's start by sampling 1000000 values from a normal distribution $N(0, 1)$:
+
+
+```r
+xn <- rnorm(1e6)
+hist(xn, freq = FALSE)
+rug(xn)
+lines(density(xn), lwd = 2)
+```
+
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
+
+By definition, the area under the density curve is 1. The area at the
+left of 0, 1, and 2 are respectively:
+
+
+```r
+pnorm(0)
+```
+
+```
+## [1] 0.5
+```
+
+```r
+pnorm(1)
+```
+
+```
+## [1] 0.8413447
+```
+
+```r
+pnorm(2)
+```
+
+```
+## [1] 0.9772499
+```
+
+To ask the inverse question, we use the quantile function. The obtain
+0.5, 0.8413447 and 0.9772499 of our distribution, we need means
+of:
+
+
+```r
+qnorm(0.5)
+```
+
+```
+## [1] 0
+```
+
+```r
+qnorm(pnorm(1))
+```
+
+```
+## [1] 1
+```
+
+```r
+qnorm(pnorm(2))
+```
+
+```
+## [1] 2
+```
+
+Finally, the density function gives us the *height* at which we are
+for a given mean:
+
+
+```r
+hist(xn, freq = FALSE)
+lines(density(xn), lwd = 2)
+points(0, dnorm(0), pch = 19, col = "red")
+points(1, dnorm(1), pch = 1, col = "blue")
+points(2, dnorm(2), pch = 4, col = "orange")
+```
+
+![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png)
+
+## Calculate the confidence interval
+
+Now that we've covered the standard error of the mean and the standard
+deviation, let's investigate how we can add custom confidence
+intervals (CI) for our measurement of the mean. We'll add these CI's
+to the summary results we previously stored for protein
+`sp|P44015|VAC2_YEAST`.
+
+Confidence interval:
+
+$$\mbox{mean} \pm (SE \times \frac{\alpha}{2} ~ \mbox{quantile of t distribution})$$
+
+
+To calculate the 95% confident interval, we need to be careful and set
+the quantile for two-sided. We need to divide by two for error.  For
+example, 95% confidence interval, right tail is 2.5% and left tail is
+2.5%.
+
+
+
+```r
+summaryresult$ciw.lower.95 <- summaryresult$mean -
+	qt(0.975, summaryresult$len - 1) * summaryresult$se
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+```
+
+```r
+summaryresult$ciw.upper.95 <- summaryresult$mean +
+	qt(0.975, summaryresult$len - 1) * summaryresult$se
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+```
+
+```r
+summaryresult
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+```
+
+
+```r
+# mean with 95% two-sided confidence interval
+ggplot(aes(x = Group, y = mean, colour = Group),
+	   data = summaryresult) +
+	geom_point() +
+	geom_errorbar(aes(ymax = ciw.upper.95, ymin = ciw.lower.95), width = 0.1) +
+	labs(title="Mean with 95% confidence interval", x="Condition", y='Log2(Intensity)') +
+	theme_bw() +
+	theme(plot.title = element_text(size=25, colour="darkblue"),
+		  axis.title.x = element_text(size=15),
+		  axis.title.y = element_text(size=15),
+		  axis.text.x = element_text(size=13),
+		  legend.position = 'bottom',
+		  legend.background = element_rect(colour = 'black'),
+		  legend.key = element_rect(colour='white'))
+```
+
+```
+## Error in ggplot(aes(x = Group, y = mean, colour = Group), data = summaryresult): could not find function "ggplot"
+```
+
+> **Challenges**
+>
+> Replicate the above for the 99% two-sided confidence interval.
+
+
+```r
+# mean with 99% two-sided confidence interval
+summaryresult$ciw.lower.99 <- summaryresult$mean - qt(0.995,summaryresult$len-1) * summaryresult$se
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+```
+
+```r
+summaryresult$ciw.upper.99 <- summaryresult$mean + qt(0.995,summaryresult$len-1) * summaryresult$se
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+```
+
+```r
+summaryresult
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+```
+
+```r
+ggplot(aes(x = Group, y = mean, colour = Group),
+	   data = summaryresult) +
+	geom_point() +
+	geom_errorbar(aes(ymax = ciw.upper.99, ymin=ciw.lower.99), width=0.1) +
+	labs(title="Mean with 99% confidence interval", x="Condition", y='Log2(Intensity)') +
+	theme_bw()+
+	theme(plot.title = element_text(size=25, colour="darkblue"),
+		  axis.title.x = element_text(size=15),
+		  axis.title.y = element_text(size=15),
+		  axis.text.x = element_text(size=13),
+		  legend.position = 'bottom',
+		  legend.background = element_rect(colour='black'),
+		  legend.key = element_rect(colour='white'))
+```
+
+```
+## Error in ggplot(aes(x = Group, y = mean, colour = Group), data = summaryresult): could not find function "ggplot"
+```
+
+### Some comments
+
+* Error bars with SD and CI are overlapping between groups!
+
+* Error bars for the SD show the spread of the population while error
+  bars based on SE reflect the uncertainty in the mean and depend on
+  the sample size.
+
+* Confidence intervals of `n` on the other hand mean that the
+  intervals capture the population mean `n` percent of the time.
+
+* When the sample size increases, CI and SE are getting closer to each
+  other.
+
+## Saving our results
+
+We have two objects that contain all the information that we have
+generated so far:
+
+* The `summaryresults` object, that contains all the summary
+  statistics.
+* The `iprg` data frame, that was read from the `csv` file. This
+  object can be easily regenerated using `read.csv`, and hence doesn't
+  necessarily to be saved explicity.
+
+
+
+```r
+save(summaryresult, file = "./data/summaryresults.rda")
+```
+
+```
+## Error in save(summaryresult, file = "./data/summaryresults.rda"): object 'summaryresult' not found
+```
+
+```r
+save(iprg, file = "./data/iprg.rda")
+```
+
+```
+## Error in save(iprg, file = "./data/iprg.rda"): object 'iprg' not found
+```
+
+We can also save the summary result as a `csv` file using the
+`write.csv` function:
+
+
+```r
+write.csv(sumamryresult, file = "./data/summary.csv")
+```
+
+**Tip**: Exporting to csv is useful to share your work with
+collaborators that do not use R, but for wany continous work in R, to
+assure data validity accords platforms, the best format is `rda`.
+
+# Part 2: Statistical hypothesis test
 
 First, we are going to prepare the session for further analyses.
 
@@ -46,7 +816,7 @@ a change in abundance between Condition 1 and Condition 2.
 * Observed $t = \frac{\mbox{difference of group means}}{\mbox{estimate of variation}} = \frac{(mean_{1} - mean_{2})}{SE} \sim t_{\alpha/2, df}$
 * Standard error, $SE=\sqrt{\frac{s_{1}^2}{n_{1}} + \frac{s_{2}^2}{n_{2}}}$
 
-with 
+with
 
 * $n_{i}$: number of replicates
 * $s_{i}^2 = \frac{1}{n_{i}-1} \sum (Y_{ij} - \bar{Y_{i \cdot}})^2$: sample variance
@@ -59,8 +829,8 @@ with
 oneproteindata <- iprg[iprg$Protein == "sp|P44015|VAC2_YEAST", ]
 
 ## Then, get two conditions only, because t.test only works for two groups (conditions).
-oneproteindata.condition12 <- oneproteindata[oneproteindata$Condition %in% 
-                                             c('Condition1', 'Condition2'), ]
+oneproteindata.condition12 <- oneproteindata[oneproteindata$Condition %in%
+											 c('Condition1', 'Condition2'), ]
 oneproteindata.condition12
 ```
 
@@ -109,7 +879,7 @@ table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
 ```
 
 To perform the t-test, we use the `t.test` function. Let's first
-familiarise ourselves with it by looking that the manual 
+familiarise ourselves with it by looking that the manual
 
 
 ```r
@@ -122,8 +892,8 @@ And now apply to to our data
 ```r
 # t test for different abundance (log2Int) between Groups (Condition)
 result <- t.test(Log2Intensity ~ Condition,
-                 data = oneproteindata.condition12,
-                 var.equal = FALSE)
+				 data = oneproteindata.condition12,
+				 var.equal = FALSE)
 
 result
 ```
@@ -194,7 +964,7 @@ result$estimate
 ```
 
 > **Challenge**
-> 
+>
 > * Calculate the (log2-transformed) fold change between groups
 > * Extract the value of the t-statistics
 > * Calculate the standard error (fold-change/t-statistics)
@@ -275,13 +1045,13 @@ we set to appropriate parameter.
 
 ```r
 ## generate 10^5 number with the same degree of freedom for distribution.
-xt <- rt(1e5, result$parameter) 
+xt <- rt(1e5, result$parameter)
 plot(density(xt), xlim = c(-10, 10))
 abline(v = result$statistic, col = "red") ## where t statistics are located.
 abline(h = 0, col = "gray") ## horizontal line at 0
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
+![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40-1.png)
 
 **The area on the left** of that point is given by `pt(result$statistic,
 result$parameter)`, which is 0.939693. The p-value for a one-sided test, which is ** the area on the right** of red line, is this given by
@@ -296,7 +1066,7 @@ result$parameter)`, which is 0.939693. The p-value for a one-sided test, which i
 ## 0.06030697
 ```
 
-And the p-value for a two-sided test is 
+And the p-value for a two-sided test is
 
 
 ```r
@@ -312,7 +1082,7 @@ which is the same as the one calculated by the t-test.
 
 ***
 
-# Part 5a: Sample size calculation
+# Part 3a: Sample size calculation
 
 To calculate the required sample size, you’ll need to know four
 things:
@@ -342,7 +1112,7 @@ alpha <- 0.05
 # Power = 1 - beta
 power <- 0.95
 
-# anticipated log2 fold change 
+# anticipated log2 fold change
 delta <- 1
 
 # anticipated variability
@@ -371,7 +1141,7 @@ pwr.t.test(d = d, sig.level = alpha, power = power, type = 'two.sample')
 
 
 > **Challenge**
-> 
+>
 > * Calculate power with 10 samples and the same parameters as above.
 
 
@@ -381,7 +1151,7 @@ Let's investigate the effect of required fold change and variance on the sample 
 
 
 ```r
-# anticipated log2 fold change 
+# anticipated log2 fold change
 delta <- seq(0.1, 0.7, .1)
 nd <- length(delta)
 
@@ -394,20 +1164,34 @@ samsize <- matrix(0, nrow=ns*nd, ncol = 3)
 counter <- 0
 for (i in 1:nd){
   for (j in 1:ns){
-    result <- pwr.t.test(d = delta[i]/sigma[j],
-                         sig.level = alpha, 
-                         power = power,
-                         type = "two.sample")
-    counter <- counter + 1
-    samsize[counter,1] <- delta[i]
-    samsize[counter,2] <- sigma[j]
-    samsize[counter,3] <- ceiling(result$n)
+	result <- pwr.t.test(d = delta[i]/sigma[j],
+						 sig.level = alpha,
+						 power = power,
+						 type = "two.sample")
+	counter <- counter + 1
+	samsize[counter,1] <- delta[i]
+	samsize[counter,2] <- sigma[j]
+	samsize[counter,3] <- ceiling(result$n)
   }
 }
 colnames(samsize) <- c("desiredlog2FC","variability","samplesize")
 
 
 library("ggplot2")
+```
+
+```
+## 
+## Attaching package: 'ggplot2'
+```
+
+```
+## The following objects are masked from 'package:psych':
+## 
+##     %+%, alpha
+```
+
+```r
 samsize <- as.data.frame(samsize)
 samsize$variability <- as.factor(samsize$variability)
 ggplot(data=samsize, aes(x=desiredlog2FC, y=samplesize, group = variability, colour = variability)) +
@@ -415,15 +1199,15 @@ ggplot(data=samsize, aes(x=desiredlog2FC, y=samplesize, group = variability, col
   geom_point(size=2, shape=21, fill="white") +
   labs(title="Significance level=0.05, Power=0.95", x="Anticipated log2 fold change", y='Sample Size (n)') +
   theme(plot.title = element_text(size=20, colour="darkblue"),
-        axis.title.x = element_text(size=15),
-        axis.title.y = element_text(size=15),
-        axis.text.x = element_text(size=13)) 
+		axis.title.x = element_text(size=15),
+		axis.title.y = element_text(size=15),
+		axis.text.x = element_text(size=13))
 ```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
+![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
 
 ***
-# Part 5b: Choosing a model
+# Part 3b: Choosing a model
 
 The decision of which statistical model is appropriate for a given set of observations depends on the type of data that have been collected.
 
@@ -443,7 +1227,7 @@ Part 5b are adapted from *Bremer & Doerge*,
 
 ***
 
-# Part 5c: Analysis of categorical data
+# Part 3c: Analysis of categorical data
 
 For this part, we are going to use a new dataset, which contains the
 patient information from TCGA colorectal cohort. This data is from
@@ -518,7 +1302,7 @@ class(TCGA.CRC$Gender)
 ```
 
 > **Challenge**
-> 
+>
 > * Get unique information and class for `Cancer` information
 > * Get unique information and class for `BRAF.mutation` information
 > * Get unique information and class for `history_of_colon_polyps` information
@@ -652,7 +1436,7 @@ TCGA.CRC <- TCGA.CRC[!duplicated(TCGA.CRC), ]
 ```
 
 > **Challenge**
-> 
+>
 > * Check whether dimension and number of participants ID are changed after removing duplicated rows.
 
 
@@ -680,11 +1464,11 @@ cancer.polyps
 dotchart(cancer.polyps, xlab = "Observed counts")
 ```
 
-![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
+![plot of chunk unnamed-chunk-55](figure/unnamed-chunk-55-1.png)
 
 ## Comparison of two proportions
 
-**Hypothesis in general** : 
+**Hypothesis in general** :
 
 $H_0$ : each population has the same proportion of observations, $\pi_{j=1|i=1} = \pi_{j=1|i=2}$
 
@@ -728,7 +1512,7 @@ names(pt)
 
 ```r
 # proportion in each group
-pt$estimate 
+pt$estimate
 ```
 
 ```
@@ -738,7 +1522,7 @@ pt$estimate
 
 ```r
 # test statistic value
-pt$statistic 
+pt$statistic
 ```
 
 ```
@@ -758,7 +1542,7 @@ pt$parameter
 
 ## Test of independence
 
-**Hypothesis in general** : 
+**Hypothesis in general** :
 
 $H_0$ : the factors are independent.
 
@@ -826,7 +1610,7 @@ ft
 and extract the odds ratio.
 
 ```r
-ft$estimate 
+ft$estimate
 ```
 
 ```
@@ -836,7 +1620,7 @@ ft$estimate
 
 
 > **Challenge**
-> 
+>
 > * Compare the proportion of male patients in the patients with colon cancer is different from that in the patients with rectal cancer.
 
 
@@ -851,7 +1635,7 @@ $$Z=\frac{\widehat{p}_1-\widehat{p}_2}{\sqrt{\widehat{p} (1- \widehat{p}) (\frac
 where $\widehat{\pi}_1 = \frac{y_{1}}{n_1}$, $\widehat{\pi}_2 = \frac{y_{2}}{n_2}$ and $\widehat{p}=\frac{x_1 + x_2}{n_1 + n_2}$.
 
 We are going to use this test to illustrate how to write functions in
-R. 
+R.
 
 An R function is created with the function constructor, named
 `function`, and is composed of:
@@ -868,14 +1652,14 @@ An R function is created with the function constructor, named
 
 ```r
 z.prop.p <- function(x1, x2, n1, n2) {
-    pi_1 <- x1/n1
-    pi_2 <- x2/n2
-    numerator <- pi_1 - pi_2
-    p_common <- (x1+x2)/(n1+n2)
-    denominator <- sqrt(p_common * (1-p_common) * (1/n1 + 1/n2))
-    stat <- numerator/denominator
-    pvalue <- 2 * (1 - pnorm(abs(stat)))
-    return(pvalue)
+	pi_1 <- x1/n1
+	pi_2 <- x2/n2
+	numerator <- pi_1 - pi_2
+	p_common <- (x1+x2)/(n1+n2)
+	denominator <- sqrt(p_common * (1-p_common) * (1/n1 + 1/n2))
+	stat <- numerator/denominator
+	pvalue <- 2 * (1 - pnorm(abs(stat)))
+	return(pvalue)
 }
 
 z.prop.p(cancer.polyps[2,1], cancer.polyps[2,2], sum(cancer.polyps[,1]), sum(cancer.polyps[,2]))
@@ -895,10 +1679,10 @@ z.prop.p(cancer.polyps[2,1], cancer.polyps[2,2], sum(cancer.polyps[,1]), sum(can
 
 ***
 
-# Part 6: Linear models and correlation
+# Part 4: Linear models and correlation
 
 
-When considering correlations and modelling data, visualisation is key. 
+When considering correlations and modelling data, visualisation is key.
 
 Let's use the famous
 [*Anscombe's quartet*](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)
@@ -969,7 +1753,7 @@ iprg2 <- iprg2[, -1]
 
 
 And lets focus on the 3 runs, i.e. 2 replicates from condition
-1 and 
+1 and
 
 
 ```r
@@ -998,7 +1782,7 @@ head(x)
 pairs(x)
 ```
 
-![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
+![plot of chunk unnamed-chunk-64](figure/unnamed-chunk-64-1.png)
 
 We can use the `cor` function to calculate the Pearson correlation
 between two vectors of the same length (making sure the order is
@@ -1069,7 +1853,7 @@ suppressPackageStartupMessages(library("affy"))
 affy::ma.plot(A, M)
 ```
 
-![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-1.png)
+![plot of chunk unnamed-chunk-67](figure/unnamed-chunk-67-1.png)
 
 See also this
 [post](http://simplystatistics.org/2015/08/12/correlation-is-not-a-measure-of-reproducibility/)
@@ -1117,7 +1901,7 @@ plot(r1, r2)
 abline(lmod, col = "red")
 ```
 
-![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-1.png)
+![plot of chunk unnamed-chunk-69](figure/unnamed-chunk-69-1.png)
 
 As we have seen in the beginning of this section, it is essential not
 to rely solely on the correlation value, but look at the data. This
@@ -1130,13 +1914,13 @@ par(mfrow = c(2, 2))
 plot(lmod)
 ```
 
-![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42-1.png)
+![plot of chunk unnamed-chunk-70](figure/unnamed-chunk-70-1.png)
 
 * *Cook's distance* is a commonly used estimate of the influence of a
   data point when performing a least-squares regression analysis and
   can be used to highlight points that particularly influence the
   regression.
-  
+
 * *Leverage* quantifies the influence of a given observation on the
   regression due to its location in the space of the inputs.
 
@@ -1144,7 +1928,7 @@ See also `?influence.measures`.
 
 
 > **Challenge**
-> 
+>
 > 1. Take any of the `iprg2` replicates, model and plot their linear
 >    relationship. The `iprg2` data is available as an `rda` file, or
 >    regenerate it as shown above.
@@ -1186,7 +1970,7 @@ par(mfrow = c(2, 2))
 plot(lmod)
 ```
 
-![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-1.png)
+![plot of chunk unnamed-chunk-71](figure/unnamed-chunk-71-1.png)
 
 Finally, let's conclude by illustrating how `ggplot2` can very
 elegantly be used to produce similar plots, with useful annotations:
@@ -1197,10 +1981,10 @@ library("ggplot2")
 dfr <- data.frame(r1, r2, M, A)
 p <- ggplot(aes(x = r1, y = r2), data = dfr) + geom_point()
 p + geom_smooth(method = "lm") +
-    geom_quantile(colour = "red")
+	geom_quantile(colour = "red")
 ```
 
-![plot of chunk unnamed-chunk-44](figure/unnamed-chunk-44-1.png)
+![plot of chunk unnamed-chunk-72](figure/unnamed-chunk-72-1.png)
 
 > **Challenge**
 >
@@ -1221,7 +2005,7 @@ p + geom_smooth() + geom_quantile(colour = "red")
 ## Smoothing formula not specified. Using: y ~ x
 ```
 
-![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
+![plot of chunk unnamed-chunk-73](figure/unnamed-chunk-73-1.png)
 
---- 
+---
 Back to course [home page](https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/README.md)

@@ -6,7 +6,7 @@
 
 * [Points of Significance : Statistics for Biologists](https://www.nature.com/collections/qghhqm/pointsofsignificance)
 
-### Schedule and material
+### Schedule
 
 
 | Day     | Time          | Content             |
@@ -36,12 +36,11 @@
 |         | 5:00 - 6:00pm  | Wrap-up            |
 
 
-Material:
+### Material
 
 - [Material day 1]()
 - [Material day 2]()
 - [Material day 3]()
-
 
 ### License
 
