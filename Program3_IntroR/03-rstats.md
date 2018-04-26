@@ -39,7 +39,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 5 9 4
+## [1] 3 2 7
 ```
 
 ```r
@@ -47,7 +47,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 5 2 6
+## [1] 3 2 1
 ```
 
 Now suppose we would like to select the same randomly selected samples

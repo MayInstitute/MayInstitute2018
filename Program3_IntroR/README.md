@@ -1,6 +1,6 @@
 # May Institute 2018: Beginner's statistics in R
 
-* This page: http://bit.ly/2018MayInstRstats
+* This page: http://bit.ly/2018MayIntroR
 
 ### Suggested reading
 
@@ -38,9 +38,11 @@
 
 ### Material
 
-- [Material day 1]()
-- [Material day 2]()
-- [Material day 3]()
+- [Material day 1](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/01-rstats.html)
+- [Material day 2](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/02-rstats.html)
+- [Material day 3](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/03-rstats.html)
+
+
 
 ### License
 

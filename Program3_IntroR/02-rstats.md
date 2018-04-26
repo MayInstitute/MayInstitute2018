@@ -1782,4 +1782,4 @@ save and document our full analysis in an R markdown file!
 
 ---
 
-Back to course [home page](https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/README.md)
+Back to course [home page](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/README.html)

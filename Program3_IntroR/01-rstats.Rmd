@@ -1,12 +1,12 @@
 ---
 title: 'Day 1: Beginner''s statistics in R'
 author: "Laurent Gatto, Meena Choi and Data Carpentry"
-output: 
+output:
   html_document:
-    self_contained: true
-    toc: true
-    toc_float: true
-    fig_caption: no	
+   self_contained: true
+   toc: true
+   toc_float: true
+   fig_caption: no
 ---
 
 ```{r setup, include=FALSE}
@@ -174,7 +174,7 @@ Your working directory should now look like this:
 
 ![How it should look like at the beginning of this lesson](img/r-starting-how-it-should-look-like.png)
 
-> **Challenge** 
+> **Challenge**
 >
 > Add the provided data files (`iPRG_example_runsummary.csv`,
 > `TCGA_sample_information.csv`, `iprg.rda` and `iprg2.rda`) to your
@@ -355,7 +355,7 @@ same object as the one in memory:
 ```{r, results='show'}
 ## iris is an example data frame that comes with R and head() is a
 ## function that returns the first part of the data frame
-dput(head(iris)) 
+dput(head(iris))
 ```
 
 If the object is larger, provide either the raw file (i.e., your CSV
@@ -370,7 +370,7 @@ save(iris, file="iris.rda")
 ```
 
 The content of this file is however not human readable, but can easily
-and efficiently be loaded back into R on any other platform with: 
+and efficiently be loaded back into R on any other platform with:
 
 ```{r, eval=FALSE}
 load(file="iris.rds")
@@ -952,7 +952,7 @@ It is also possible to interleave R code into markdown documents,
 producing so called R mardown documents (extension `.Rmd`). Before
 generating the final html of pdf output, the `Rmd` files are first
 *knit* (or *weaved*), i.e. the R code chunks are extracted, exectuted
-and replaced by their output, be it text, tables or figures. 
+and replaced by their output, be it text, tables or figures.
 
 Rmarkdown is a fantastic tool to implement **reproducible research**,
 as we have the guarantee that code results and figures, displayed in
@@ -967,14 +967,14 @@ whole process is made relatively easy with RStudio and available
 We are going to walk through the creation of such a document.
 
 > **Challenge**
-> 
+>
 > * Create a new R markdown document in RStudio, and compile it to
 >   html or pdf.
 > * An important aspect of reproducible research is the record the
 >   version of software used. Add a code chunk at the end of the R
 >   markdown document and call `sessionInfo`.
 
---- 
+---
 
 In the next sections, we are going to learn how to read data sets into
 R, how to explore and visualise the data, and how to perform basic
@@ -982,4 +982,4 @@ statistical analyses.
 
 
 ---
-Back to course [home page](https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/README.md)
+Back to course [home page](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/README.html)
