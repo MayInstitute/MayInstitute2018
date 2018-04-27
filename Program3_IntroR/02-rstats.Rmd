@@ -1005,7 +1005,7 @@ The components of `ggplot2`'s of graphics are
    rectangles, contours.
 3. A description of how the variables in the data are mapped to visual
    properties (aesthetics) or the geometric objects, and an associated
-   scale (e.g. linear, logarithmic, rang)
+   scale (e.g. linear, logarithmic, polar)
 4. A statistical summarisation rule
 5. A coordinate system.
 6. A facet specification, i.e. the use of several plots to look at the
