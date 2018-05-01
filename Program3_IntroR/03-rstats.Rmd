@@ -53,12 +53,17 @@ sample(10, 3)
 
 Let's practice with fun example. Select two in our group member for coming early next Monday.
 ```{r}
-group.member <- c('Meena', 'Tsung-Heng', 'Ting', 'April', 'Dan', 'Cyril', 'Kylie', 'Sara')
+group.member <- c('Cyril', 'Dan', 'Kylie', 'Meena', 'Sara', 'Ting', 'Tsung-Heng', 'Tyler')
 sample(group.member, 2)
 ```
 
 
 ### Completely randomized order of MS runs
+
+Let's load `iprg` data first.
+```{r}
+load('data/iprg.rda')
+```
 
 We can also create a random order using all elements of iPRG
 dataset. Again, we can achieve this using `sample`, asking for exactly
@@ -106,6 +111,9 @@ block.random(n = 12, c(Condition = 4, BioReplicate=3))
 
 ## Basic statistical summaries
 
+```{r}
+library(dplyr)
+```
 ### Calculate simple statistics
 
 Let's start data with one protein as an example and calculate the
@@ -118,6 +126,10 @@ We can use the `aggregate` function to compute summary statistics. `aggregate` s
 ```{r}
 # check what proteins are in dataset, show all protein names
 head(unique(iprg$Protein))
+length(unique(iprg$Protein))
+
+distinct(iprg, Protein)
+n_distinct(iprg, Protein)
 ```
 
 ```{r}
@@ -126,6 +138,10 @@ oneproteindata <- iprg[iprg$Protein == "sp|P44015|VAC2_YEAST", ]
 
 # there are 12 rows in oneproteindata
 oneproteindata
+
+# repeat
+oneproteindata.bcp <- filter(iprg, Protein == "sp|P44015|VAC2_YEAST")
+oneproteindata.bcp
 ```
 
 
@@ -143,6 +159,13 @@ sub.mean <- aggregate(Log2Intensity ~ Condition,
 					  data = oneproteindata,
 					  FUN = mean)
 sub.mean
+
+# repeat
+sub.mean.bcp <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(mean=mean(Log2Intensity))
+
+sub.mean.bcp
 ```
 
 ### Calculate SD (standard deviation) per groups
@@ -160,6 +183,13 @@ $$ s = \sqrt{\frac{1}{n-1} \sum_{i=1}^n (x_i - \bar x)^2} $$
 sub.median <- aggregate(Log2Intensity ~ Condition,
 					data = oneproteindata, FUN = median)
 sub.median
+
+# repeat
+sub.median.bcp <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(median=median(Log2Intensity))
+
+sub.median.bcp
 ```
 </details>
 
@@ -172,6 +202,13 @@ sub.median
 sub.sd <- aggregate(Log2Intensity ~ Condition,
 					data = oneproteindata, FUN = sd)
 sub.sd
+
+# repeat
+sub.sd.bcp <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(sd = sd(Log2Intensity))
+
+sub.sd.bcp
 ```
 </details>
 
@@ -189,6 +226,13 @@ sub.len <- aggregate(Log2Intensity ~ Condition,
 					 data = oneproteindata,
 					 FUN = length)
 sub.len
+
+# repeat
+sub.len.bcp <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(count = n())
+
+sub.len.bcp
 ```
 </details>
 
@@ -215,6 +259,23 @@ summaryresult <- data.frame(Group = grp,
 							length = sub.len$Log2Intensity)
 summaryresult
 ```
+
+> **Challenge**
+>
+> Make the same table as summaryresult with dplyr package.
+
+<details>
+```{r}
+summaryresult.dplyr <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(mean = mean(Log2Intensity),
+              sd = sd(Log2Intensity),
+              length = n())
+summaryresult.dplyr <- mutate(summaryresult.dplyr, se=sqrt(sd^2 / length))
+
+summaryresult.dplyr
+```
+</details>
 
 ## Visualization with error bars for descriptive purpose
 
