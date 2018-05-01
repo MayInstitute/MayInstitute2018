@@ -1196,6 +1196,15 @@ function.
 >
 > **Tip**: save your figures in a dedicated directory.
 
+## Saving our results
+
+The `iprg` data frame, that was read from the `csv` file. This
+object can be easily regenerated using `read.csv`, and hence doesn't
+necessarily to be saved explicity.
+
+```{r}
+save(iprg, file = "./data/iprg.rda")
+```
 
 ---
 

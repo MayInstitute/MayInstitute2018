@@ -287,6 +287,10 @@ and the `ggplot2` package as it provides a convenient way to make
 easily adaptable plots.
 
 ```{r}
+library(ggplot2)
+```
+
+```{r}
 # means without any errorbar
 p <- ggplot(aes(x = Group, y = mean, colour = Group),
 			data = summaryresult)+
@@ -304,6 +308,9 @@ Let's change a number of visual properties to make the plot more attractive.
 * Let's make the box for legend
 * Let's remove the box for legend key.
 
+See also this
+[post](http://ggplot2.tidyverse.org/reference/theme.html) for options of *theme*, 
+[post](http://ggplot2.tidyverse.org/reference/ggtheme.html) for complete theme.
 
 ```{r}
 p2 <- p + labs(title = "Mean", x = "Group", y = 'Log2(Intensity)') +
@@ -393,6 +400,7 @@ of:
 qnorm(0.5)
 qnorm(pnorm(1))
 qnorm(pnorm(2))
+qnorm(0.05)
 ```
 
 Finally, the density function gives us the *height* at which we are
@@ -432,6 +440,13 @@ summaryresult$ciw.upper.95 <- summaryresult$mean +
 	qt(0.975, summaryresult$len - 1) * summaryresult$se
 summaryresult
 ```
+<details>
+```{r}
+summaryresult.dplyr %>% mutate(ciw.lower.95 = mean - qt(0.975, length-1)*se,
+                               ciw.upper.95 = mean + qt(0.975, length-1)*se)
+summaryresult.dplr
+```
+</details>
 
 ```{r}
 # mean with 95% two-sided confidence interval
@@ -496,16 +511,14 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 We have two objects that contain all the information that we have
 generated so far:
 
-* The `summaryresults` object, that contains all the summary
+* The `summaryresults` and `summaryresults.dplyr` objects, that contains all the summary
   statistics.
-* The `iprg` data frame, that was read from the `csv` file. This
-  object can be easily regenerated using `read.csv`, and hence doesn't
-  necessarily to be saved explicity.
 
 
 ```{r}
 save(summaryresult, file = "./data/summaryresults.rda")
-save(iprg, file = "./data/iprg.rda")
+save(summaryresult.dplyr, file = "./data/summaryresults.dplyr.rda")
+
 ```
 
 We can also save the summary result as a `csv` file using the
@@ -516,7 +529,7 @@ write.csv(sumamryresult, file = "./data/summary.csv")
 ```
 
 **Tip**: Exporting to csv is useful to share your work with
-collaborators that do not use R, but for wany continous work in R, to
+collaborators that do not use R, but for many continous work in R, to
 assure data validity accords platforms, the best format is `rda`.
 
 # Part 2: Statistical hypothesis test
