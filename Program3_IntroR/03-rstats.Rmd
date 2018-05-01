@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Objectives
 
-- Randomisation and basic statistics
+- Randomization and basic statistics
 - Statistical hypothesis testing: t-test
 - Sample size calculation
 - Analysis for categorical data
@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Part 1: Basic statistics
 
-## Randomisation
+## Randomization
 
 ### Random selection of samples from a larger set
 
@@ -62,7 +62,7 @@ sample(group.member, 2)
 
 Let's load `iprg` data first.
 ```{r}
-load('data/iprg.rda')
+load('./data/iprg.rda')
 ```
 
 We can also create a random order using all elements of iPRG
@@ -128,8 +128,8 @@ We can use the `aggregate` function to compute summary statistics. `aggregate` s
 head(unique(iprg$Protein))
 length(unique(iprg$Protein))
 
-distinct(iprg, Protein)
-n_distinct(iprg, Protein)
+#distinct(iprg, Protein)
+n_distinct(iprg$Protein)
 ```
 
 ```{r}
@@ -139,7 +139,7 @@ oneproteindata <- iprg[iprg$Protein == "sp|P44015|VAC2_YEAST", ]
 # there are 12 rows in oneproteindata
 oneproteindata
 
-# repeat
+# with dplyr
 oneproteindata.bcp <- filter(iprg, Protein == "sp|P44015|VAC2_YEAST")
 oneproteindata.bcp
 ```
@@ -160,7 +160,7 @@ sub.mean <- aggregate(Log2Intensity ~ Condition,
 					  FUN = mean)
 sub.mean
 
-# repeat
+# with dplyr
 sub.mean.bcp <- oneproteindata %>% 
     group_by(Condition) %>%
     summarise(mean=mean(Log2Intensity))
@@ -184,7 +184,7 @@ sub.median <- aggregate(Log2Intensity ~ Condition,
 					data = oneproteindata, FUN = median)
 sub.median
 
-# repeat
+# with dplyr
 sub.median.bcp <- oneproteindata %>% 
     group_by(Condition) %>%
     summarise(median=median(Log2Intensity))
@@ -203,7 +203,7 @@ sub.sd <- aggregate(Log2Intensity ~ Condition,
 					data = oneproteindata, FUN = sd)
 sub.sd
 
-# repeat
+# with dplyr
 sub.sd.bcp <- oneproteindata %>% 
     group_by(Condition) %>%
     summarise(sd = sd(Log2Intensity))
@@ -227,7 +227,7 @@ sub.len <- aggregate(Log2Intensity ~ Condition,
 					 FUN = length)
 sub.len
 
-# repeat
+# with dplyr
 sub.len.bcp <- oneproteindata %>% 
     group_by(Condition) %>%
     summarise(count = n())
@@ -444,7 +444,7 @@ summaryresult
 ```{r}
 summaryresult.dplyr %>% mutate(ciw.lower.95 = mean - qt(0.975, length-1)*se,
                                ciw.upper.95 = mean + qt(0.975, length-1)*se)
-summaryresult.dplr
+summaryresult.dplyr
 ```
 </details>
 
@@ -532,6 +532,7 @@ write.csv(sumamryresult, file = "./data/summary.csv")
 collaborators that do not use R, but for many continous work in R, to
 assure data validity accords platforms, the best format is `rda`.
 
+***
 # Part 2: Statistical hypothesis test
 
 First, we are going to prepare the session for further analyses.
@@ -574,12 +575,26 @@ oneproteindata.condition12
 table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
 ```
 
+<details>
+```{r}
+## with dplyr
+## Let's start with one protein, named "sp|P44015|VAC2_YEAST"
+oneproteindata <- filter(iprg, Protein == "sp|P44015|VAC2_YEAST")
+
+## Then, get two conditions only, because t.test only works for two groups (conditions).
+oneproteindata.subset <- filter(oneproteindata, 
+                                Condition %in% c('Condition1', 'Condition2'))
+oneproteindata.subset
+table(oneproteindata.subset[, c("Condition", "BioReplicate")])
+```
+</details>
+
 If we want to remove the levels that are not relevant anymore, we can
 use `droplevels`:
 
 ```{r}
-oneproteindata.condition12 <- droplevels(oneproteindata.condition12)
-table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
+oneproteindata.subset <- droplevels(oneproteindata.subset)
+table(oneproteindata.subset[, c("Condition", "BioReplicate")])
 ```
 
 To perform the t-test, we use the `t.test` function. Let's first
@@ -594,7 +609,7 @@ And now apply to to our data
 ```{r}
 # t test for different abundance (log2Int) between Groups (Condition)
 result <- t.test(Log2Intensity ~ Condition,
-				 data = oneproteindata.condition12,
+				 data = oneproteindata.subset,
 				 var.equal = FALSE)
 
 result
@@ -687,10 +702,6 @@ diff(summaryresult12$mean)/sqrt(sum(summaryresult12$sd^2/summaryresult12$length)
 
 ## Re-calculating the p values
 
-See the previous
-[*Working with statistical distributions*](https://htmlpreview.github.io/?https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/02-rstats.html#working_with_statistical_distributions)
-for a reminder.
-
 Referring back to our t-test results above, we can manually calculate
 the one- and two-side tests p-values using the t-statistics and the
 test parameter (using the `pt` function).
@@ -725,107 +736,9 @@ And the p-value for a two-sided test is
 
 which is the same as the one calculated by the t-test.
 
-***
-
-# Part 3a: Sample size calculation
-
-To calculate the required sample size, you’ll need to know four
-things:
-
-* $\alpha$: confidence level
-* $power$: 1 - $\beta$, where $\beta$ is probability of a true positive discovery
-* $\Delta$: anticipated fold change
-* $\sigma$: anticipated variance
-
-## R code
-
-Assuming equal varaince and number of samples across groups, the
-following formula is used for sample size estimation:
-
-$$\frac{2{\sigma}^2}{n}\leq(\frac{\Delta}{z_{1-\beta}+z_{1-\alpha/2}})^2$$
-
-
-```{r}
-library("pwr")
-
-## ?pwr.t.test
-
-# Significance level alpha
-alpha <- 0.05
-
-# Power = 1 - beta
-power <- 0.95
-
-# anticipated log2 fold change
-delta <- 1
-
-# anticipated variability
-sigma <- 0.9
-
-# Effect size
-# It quantifies the size of the difference between two groups
-d <- delta/sigma
-
-#Sample size estimation
-pwr.t.test(d = d, sig.level = alpha, power = power, type = 'two.sample')
-```
-
-
-> **Challenge**
->
-> * Calculate power with 10 samples and the same parameters as above.
-
-<details>
-```{r, echo=FALSE, include=FALSE}
-## log2 fold-change
-pwr.t.test(d = d, sig.level = alpha, n=10, power = NULL, type = 'two.sample')
-```
-</details>
-
-Let's investigate the effect of required fold change and variance on the sample size estimation.
-
-```{r, warning=FALSE}
-# anticipated log2 fold change
-delta <- seq(0.1, 0.7, .1)
-nd <- length(delta)
-
-# anticipated variability
-sigma <- seq(0.1,0.5,.1)
-ns <- length(sigma)
-
-# obtain sample sizes
-samsize <- matrix(0, nrow=ns*nd, ncol = 3)
-counter <- 0
-for (i in 1:nd){
-  for (j in 1:ns){
-	result <- pwr.t.test(d = delta[i]/sigma[j],
-						 sig.level = alpha,
-						 power = power,
-						 type = "two.sample")
-	counter <- counter + 1
-	samsize[counter,1] <- delta[i]
-	samsize[counter,2] <- sigma[j]
-	samsize[counter,3] <- ceiling(result$n)
-  }
-}
-colnames(samsize) <- c("desiredlog2FC","variability","samplesize")
-
-
-library("ggplot2")
-samsize <- as.data.frame(samsize)
-samsize$variability <- as.factor(samsize$variability)
-ggplot(data=samsize, aes(x=desiredlog2FC, y=samplesize, group = variability, colour = variability)) +
-  geom_line() +
-  geom_point(size=2, shape=21, fill="white") +
-  labs(title="Significance level=0.05, Power=0.95", x="Anticipated log2 fold change", y='Sample Size (n)') +
-  theme(plot.title = element_text(size=20, colour="darkblue"),
-		axis.title.x = element_text(size=15),
-		axis.title.y = element_text(size=15),
-		axis.text.x = element_text(size=13))
-```
 
 ***
-# Part 3b: Choosing a model
+# Part 3a: Choosing a model
 
 The decision of which statistical model is appropriate for a given set of observations depends on the type of data that have been collected.
 
@@ -845,7 +758,7 @@ Part 5b are adapted from *Bremer & Doerge*,
 
 ***
 
-# Part 3c: Analysis of categorical data
+# Part 3b: Analysis of categorical data
 
 For this part, we are going to use a new dataset, which contains the
 patient information from TCGA colorectal cohort. This data is from
@@ -892,6 +805,9 @@ class(TCGA.CRC$Gender)
 ```{r, echo=FALSE, include=FALSE}
 ## check unique information of Cancer column.
 unique(TCGA.CRC$Cancer)
+
+## or
+distinct(TCGA.CRC, Cancer)
 class(TCGA.CRC$Cancer)
 
 ## check unique information of BRAF.mutation column.
@@ -913,9 +829,12 @@ table(TCGA.CRC$Gender)
 ## check unique information if paticipant ID
 unique(TCGA.CRC$TCGA.participant.ID)
 length(unique(TCGA.CRC$TCGA.participant.ID))
+
+# or
+n_distinct(TCGA.CRC$TCGA.participant.ID)
 ```
 
-There are 74 unique participant IDs. but there are total 78 rows. We can suspect that there are multiple rows for some IDs. Let's check. Get the count per participants ID
+There are 74 unique participant IDs. But there are total 78 rows. We can suspect that there are multiple rows for some IDs. Let's check. Get the count per participants ID
 ```{r}
 countID <- table(TCGA.CRC$TCGA.participant.ID)
 countID
@@ -1026,7 +945,7 @@ chisq.test(cancer.polyps)
 Mathematically, two tests above are equivalent. `prop.test()` uses `chisq.test()` internally and print output differently.
 
 
-### Fisher's exact test
+### Optional : Fisher's exact test
 
 Fisher's exact test is a non-parametric test for independence.
 It compares the distributions of counts within 4 cells. p-value for Fisher's exact test is the probability of obtaining more extreme data by chance than the data observed if the row and column totals are held fixed.
@@ -1047,74 +966,107 @@ ft$estimate
 ```
 
 
-> **Challenge**
->
-> * Compare the proportion of male patients in the patients with colon cancer is different from that in the patients with rectal cancer.
+# Part 4: Sample size calculation
 
-<details>
-```{r, echo=FALSE, include=FALSE}
-cancer.gender <- table(TCGA.CRC$Gender, TCGA.CRC$Cancer)
-cancer.gender
-dotchart(cancer.gender, xlab = "Observed counts")
-male <- cancer.gender[2, ]
-cancer <- apply(cancer.gender, 2, sum)
-pt <- prop.test(male, cancer)
-pt
-```
-</details>
+To calculate the required sample size, you’ll need to know four
+things:
 
-### Optional practice :  Large-sample Z-test
+* $\alpha$: confidence level
+* $power$: 1 - $\beta$, where $\beta$ is probability of a true positive discovery
+* $\Delta$: anticipated fold change
+* $\sigma$: anticipated variance
 
-We could also apply a z-test for comparison of two proportions, defined as
+## R code
 
-$$Z=\frac{\widehat{p}_1-\widehat{p}_2}{\sqrt{\widehat{p} (1- \widehat{p}) (\frac{1}{n_1} + \frac{1}{n_2})}}$$
+Assuming equal varaince and number of samples across groups, the
+following formula is used for sample size estimation:
 
-where $\widehat{\pi}_1 = \frac{y_{1}}{n_1}$, $\widehat{\pi}_2 = \frac{y_{2}}{n_2}$ and $\widehat{p}=\frac{x_1 + x_2}{n_1 + n_2}$.
-
-We are going to use this test to illustrate how to write functions in
-R.
-
-An R function is created with the function constructor, named
-`function`, and is composed of:
-
-1. a name: we will call our function to calculate the p-value
-   `z.prop.p`;
-2. some inputs: our inputs are the number of observations for the
-   outcome of interest, `x1` and `x2`, and the total number of
-   observation in each category, `n1` and `n2`;
-3. a returned value (output): the computed p-value, named `pvalue`;
-4. a body, i.e. the code that, given the inputs, calculates the output.
+$$\frac{2{\sigma}^2}{n}\leq(\frac{\Delta}{z_{1-\beta}+z_{1-\alpha/2}})^2$$
 
 
 ```{r}
-z.prop.p <- function(x1, x2, n1, n2) {
-	pi_1 <- x1/n1
-	pi_2 <- x2/n2
-	numerator <- pi_1 - pi_2
-	p_common <- (x1+x2)/(n1+n2)
-	denominator <- sqrt(p_common * (1-p_common) * (1/n1 + 1/n2))
-	stat <- numerator/denominator
-	pvalue <- 2 * (1 - pnorm(abs(stat)))
-	return(pvalue)
-}
+library("pwr")
 
-z.prop.p(cancer.polyps[2,1], cancer.polyps[2,2], sum(cancer.polyps[,1]), sum(cancer.polyps[,2]))
+## ?pwr.t.test
+
+# Significance level alpha
+alpha <- 0.05
+
+# Power = 1 - beta
+power <- 0.95
+
+# anticipated log2 fold change
+delta <- 1
+
+# anticipated variability
+sigma <- 0.9
+
+# Effect size
+# It quantifies the size of the difference between two groups
+d <- delta/sigma
+
+#Sample size estimation
+pwr.t.test(d = d, sig.level = alpha, power = power, type = 'two.sample')
 ```
 
 
 > **Challenge**
 >
-> Write a function named `f2c` (`c2f`) that converts a temperature
-> from Fahrenheit to Celsium (Celsium to Fahrenheit) using the
-> following formula $F = C \times 1.8 + 32$ ($C = \frac{F - 32}{1.8}$).
+> * Calculate power with 10 samples and the same parameters as above.
 
+<details>
+```{r, echo=FALSE, include=FALSE}
+## log2 fold-change
+pwr.t.test(d = d, sig.level = alpha, n=10, power = NULL, type = 'two.sample')
+```
+</details>
+
+Let's investigate the effect of required fold change and variance on the sample size estimation.
+
+```{r, warning=FALSE}
+# anticipated log2 fold change
+delta <- seq(0.1, 0.7, .1)
+nd <- length(delta)
+
+# anticipated variability
+sigma <- seq(0.1,0.5,.1)
+ns <- length(sigma)
+
+# obtain sample sizes
+samsize <- matrix(0, nrow=ns*nd, ncol = 3)
+counter <- 0
+for (i in 1:nd){
+  for (j in 1:ns){
+	result <- pwr.t.test(d = delta[i] / sigma[j],
+						 sig.level = alpha,
+						 power = power,
+						 type = "two.sample")
+	counter <- counter + 1
+	samsize[counter, 1] <- delta[i]
+	samsize[counter, 2] <- sigma[j]
+	samsize[counter, 3] <- ceiling(result$n)
+  }
+}
+colnames(samsize) <- c("desiredlog2FC", "variability", "samplesize")
+
+## visualization
+samsize <- as.data.frame(samsize)
+samsize$variability <- as.factor(samsize$variability)
+ggplot(data=samsize, aes(x=desiredlog2FC, y=samplesize, group = variability, colour = variability)) +
+  geom_line() +
+  geom_point(size=2, shape=21, fill="white") +
+  labs(title="Significance level=0.05, Power=0.95", x="Anticipated log2 fold change", y='Sample Size (n)') +
+  theme(plot.title = element_text(size=20, colour="darkblue"),
+		axis.title.x = element_text(size=15),
+		axis.title.y = element_text(size=15),
+		axis.text.x = element_text(size=13))
+```
 
 ***
 
-# Part 4: Linear models and correlation
+# Part 5: Linear models and correlation
 
-
-When considering correlations and modelling data, visualisation is key.
+When considering correlations and modelling data, visualization is key.
 
 Let's use the famous
 [*Anscombe's quartet*](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)
@@ -1198,7 +1150,7 @@ if (!file.exists("./data/iprg2.rda"))
 ```
 
 And lets focus on the 3 runs, i.e. 2 replicates from condition
-1 and
+1 and 1 replicate from condition 4.
 
 ```{r}
 x <- iprg2[, c(1, 2, 10)]
