@@ -14,7 +14,7 @@ output:
 
 # Objectives
 
-- Randomisation and basic statistics
+- Randomization and basic statistics
 - Statistical hypothesis testing: t-test
 - Sample size calculation
 - Analysis for categorical data
@@ -24,7 +24,7 @@ output:
 
 # Part 1: Basic statistics
 
-## Randomisation
+## Randomization
 
 ### Random selection of samples from a larger set
 
@@ -39,7 +39,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 1 5 2
+## [1] 8 4 6
 ```
 
 ```r
@@ -47,7 +47,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 3 2 6
+## [1] 3 1 4
 ```
 
 Now suppose we would like to select the same randomly selected samples
@@ -75,16 +75,22 @@ sample(10, 3)
 Let's practice with fun example. Select two in our group member for coming early next Monday.
 
 ```r
-group.member <- c('Meena', 'Tsung-Heng', 'Ting', 'April', 'Dan', 'Cyril', 'Kylie', 'Sara')
+group.member <- c('Cyril', 'Dan', 'Kylie', 'Meena', 'Sara', 'Ting', 'Tsung-Heng', 'Tyler')
 sample(group.member, 2)
 ```
 
 ```
-## [1] "Dan"   "Cyril"
+## [1] "Sara" "Ting"
 ```
 
 
 ### Completely randomized order of MS runs
+
+Let's load `iprg` data first.
+
+```r
+load('./data/iprg.rda')
+```
 
 We can also create a random order using all elements of iPRG
 dataset. Again, we can achieve this using `sample`, asking for exactly
@@ -94,18 +100,16 @@ us a different order of the complete set.
 
 ```r
 msrun <- unique(iprg$Run)
-```
-
-```
-## Error in unique(iprg$Run): object 'iprg' not found
-```
-
-```r
 msrun
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'msrun' not found
+##  [1] "JD_06232014_sample1_B.raw" "JD_06232014_sample1_C.raw"
+##  [3] "JD_06232014_sample1-A.raw" "JD_06232014_sample2_A.raw"
+##  [5] "JD_06232014_sample2_B.raw" "JD_06232014_sample2_C.raw"
+##  [7] "JD_06232014_sample3_A.raw" "JD_06232014_sample3_B.raw"
+##  [9] "JD_06232014_sample3_C.raw" "JD_06232014_sample4_B.raw"
+## [11] "JD_06232014_sample4_C.raw" "JD_06232014_sample4-A.raw"
 ```
 
 ```r
@@ -114,7 +118,12 @@ sample(msrun, length(msrun))
 ```
 
 ```
-## Error in sample(msrun, length(msrun)): object 'msrun' not found
+##  [1] "JD_06232014_sample1_B.raw" "JD_06232014_sample3_C.raw"
+##  [3] "JD_06232014_sample4_B.raw" "JD_06232014_sample1_C.raw"
+##  [5] "JD_06232014_sample3_B.raw" "JD_06232014_sample4_C.raw"
+##  [7] "JD_06232014_sample3_A.raw" "JD_06232014_sample2_B.raw"
+##  [9] "JD_06232014_sample1-A.raw" "JD_06232014_sample2_C.raw"
+## [11] "JD_06232014_sample4-A.raw" "JD_06232014_sample2_A.raw"
 ```
 
 ```r
@@ -123,7 +132,12 @@ sample(msrun, length(msrun))
 ```
 
 ```
-## Error in sample(msrun, length(msrun)): object 'msrun' not found
+##  [1] "JD_06232014_sample3_B.raw" "JD_06232014_sample2_A.raw"
+##  [3] "JD_06232014_sample3_A.raw" "JD_06232014_sample2_B.raw"
+##  [5] "JD_06232014_sample2_C.raw" "JD_06232014_sample3_C.raw"
+##  [7] "JD_06232014_sample4-A.raw" "JD_06232014_sample1-A.raw"
+##  [9] "JD_06232014_sample4_B.raw" "JD_06232014_sample1_C.raw"
+## [11] "JD_06232014_sample1_B.raw" "JD_06232014_sample4_C.raw"
 ```
 
 ### Randomized block design
@@ -146,18 +160,23 @@ randomized block designs! `block.random` function makes random assignment of `n`
 library("psych") ## load the psych package
 
 msrun <- unique(iprg[, c('Condition','Run')])
-```
-
-```
-## Error in unique(iprg[, c("Condition", "Run")]): object 'iprg' not found
-```
-
-```r
 msrun
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'msrun' not found
+##     Condition                       Run
+## 1  Condition1 JD_06232014_sample1_B.raw
+## 2  Condition1 JD_06232014_sample1_C.raw
+## 3  Condition1 JD_06232014_sample1-A.raw
+## 4  Condition2 JD_06232014_sample2_A.raw
+## 5  Condition2 JD_06232014_sample2_B.raw
+## 6  Condition2 JD_06232014_sample2_C.raw
+## 7  Condition3 JD_06232014_sample3_A.raw
+## 8  Condition3 JD_06232014_sample3_B.raw
+## 9  Condition3 JD_06232014_sample3_C.raw
+## 10 Condition4 JD_06232014_sample4_B.raw
+## 11 Condition4 JD_06232014_sample4_C.raw
+## 12 Condition4 JD_06232014_sample4-A.raw
 ```
 
 ```r
@@ -167,14 +186,14 @@ block.random(n = 12, c(Condition = 4))
 
 ```
 ##     blocks Condition
-## S1       1         2
-## S2       1         4
+## S1       1         4
+## S2       1         2
 ## S3       1         3
 ## S4       1         1
-## S5       2         1
-## S6       2         2
-## S7       2         4
-## S8       2         3
+## S5       2         2
+## S6       2         1
+## S7       2         3
+## S8       2         4
 ## S9       3         4
 ## S10      3         3
 ## S11      3         2
@@ -187,23 +206,44 @@ block.random(n = 12, c(Condition = 4, BioReplicate=3))
 
 ```
 ##     blocks Condition BioReplicate
-## S1       1         1            3
-## S2       1         1            2
-## S3       1         4            2
-## S4       1         2            2
-## S5       1         3            2
-## S6       1         2            3
-## S7       1         1            1
-## S8       1         4            1
-## S9       1         3            3
-## S10      1         3            1
-## S11      1         2            1
-## S12      1         4            3
+## S1       1         4            2
+## S2       1         4            1
+## S3       1         3            1
+## S4       1         1            1
+## S5       1         1            2
+## S6       1         3            3
+## S7       1         2            1
+## S8       1         2            3
+## S9       1         4            3
+## S10      1         2            2
+## S11      1         1            3
+## S12      1         3            2
 ```
 
 
 ## Basic statistical summaries
 
+
+```r
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
 ### Calculate simple statistics
 
 Let's start data with one protein as an example and calculate the
@@ -220,26 +260,78 @@ head(unique(iprg$Protein))
 ```
 
 ```
-## Error in unique(iprg$Protein): object 'iprg' not found
+## [1] "sp|D6VTK4|STE2_YEAST"  "sp|O13297|CET1_YEAST"  "sp|O13329|FOB1_YEAST" 
+## [4] "sp|O13539|THP2_YEAST"  "sp|O13547|CCW14_YEAST" "sp|O13563|RPN13_YEAST"
+```
+
+```r
+length(unique(iprg$Protein))
+```
+
+```
+## [1] 3027
+```
+
+```r
+#distinct(iprg, Protein)
+n_distinct(iprg$Protein)
+```
+
+```
+## [1] 3027
 ```
 
 
 ```r
 # Let's start with one protein, named "sp|P44015|VAC2_YEAST"
 oneproteindata <- iprg[iprg$Protein == "sp|P44015|VAC2_YEAST", ]
-```
 
-```
-## Error in eval(expr, envir, enclos): object 'iprg' not found
-```
-
-```r
 # there are 12 rows in oneproteindata
 oneproteindata
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'oneproteindata' not found
+## # A tibble: 12 x 7
+##    Protein      Log2Intensity Run         Condition BioReplicate Intensity
+##    <chr>                <dbl> <chr>       <chr>            <int>     <dbl>
+##  1 sp|P44015|V…          26.3 JD_0623201… Conditio…            1 82714388.
+##  2 sp|P44015|V…          26.1 JD_0623201… Conditio…            1 72749239.
+##  3 sp|P44015|V…          26.3 JD_0623201… Conditio…            1 82100518.
+##  4 sp|P44015|V…          25.8 JD_0623201… Conditio…            2 59219741.
+##  5 sp|P44015|V…          26.1 JD_0623201… Conditio…            2 72690802.
+##  6 sp|P44015|V…          26.1 JD_0623201… Conditio…            2 71180513.
+##  7 sp|P44015|V…          23.1 JD_0623201… Conditio…            3  9295260.
+##  8 sp|P44015|V…          23.3 JD_0623201… Conditio…            3 10505591.
+##  9 sp|P44015|V…          23.3 JD_0623201… Conditio…            3 10295788.
+## 10 sp|P44015|V…          20.9 JD_0623201… Conditio…            4  2019205.
+## 11 sp|P44015|V…          21.7 JD_0623201… Conditio…            4  3440629.
+## 12 sp|P44015|V…          20.3 JD_0623201… Conditio…            4  1248781.
+## # ... with 1 more variable: TechReplicate <chr>
+```
+
+```r
+# with dplyr
+oneproteindata.bcp <- filter(iprg, Protein == "sp|P44015|VAC2_YEAST")
+oneproteindata.bcp
+```
+
+```
+## # A tibble: 12 x 7
+##    Protein      Log2Intensity Run         Condition BioReplicate Intensity
+##    <chr>                <dbl> <chr>       <chr>            <int>     <dbl>
+##  1 sp|P44015|V…          26.3 JD_0623201… Conditio…            1 82714388.
+##  2 sp|P44015|V…          26.1 JD_0623201… Conditio…            1 72749239.
+##  3 sp|P44015|V…          26.3 JD_0623201… Conditio…            1 82100518.
+##  4 sp|P44015|V…          25.8 JD_0623201… Conditio…            2 59219741.
+##  5 sp|P44015|V…          26.1 JD_0623201… Conditio…            2 72690802.
+##  6 sp|P44015|V…          26.1 JD_0623201… Conditio…            2 71180513.
+##  7 sp|P44015|V…          23.1 JD_0623201… Conditio…            3  9295260.
+##  8 sp|P44015|V…          23.3 JD_0623201… Conditio…            3 10505591.
+##  9 sp|P44015|V…          23.3 JD_0623201… Conditio…            3 10295788.
+## 10 sp|P44015|V…          20.9 JD_0623201… Conditio…            4  2019205.
+## 11 sp|P44015|V…          21.7 JD_0623201… Conditio…            4  3440629.
+## 12 sp|P44015|V…          20.3 JD_0623201… Conditio…            4  1248781.
+## # ... with 1 more variable: TechReplicate <chr>
 ```
 
 
@@ -258,18 +350,34 @@ oneproteindata
 sub.mean <- aggregate(Log2Intensity ~ Condition,
 					  data = oneproteindata,
 					  FUN = mean)
-```
-
-```
-## Error in eval(m$data, parent.frame()): object 'oneproteindata' not found
-```
-
-```r
 sub.mean
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'sub.mean' not found
+##    Condition Log2Intensity
+## 1 Condition1      26.23632
+## 2 Condition2      26.00661
+## 3 Condition3      23.25609
+## 4 Condition4      20.97056
+```
+
+```r
+# with dplyr
+sub.mean.bcp <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(mean=mean(Log2Intensity))
+
+sub.mean.bcp
+```
+
+```
+## # A tibble: 4 x 2
+##   Condition   mean
+##   <chr>      <dbl>
+## 1 Condition1  26.2
+## 2 Condition2  26.0
+## 3 Condition3  23.3
+## 4 Condition4  21.0
 ```
 
 ### Calculate SD (standard deviation) per groups
@@ -287,18 +395,34 @@ $$ s = \sqrt{\frac{1}{n-1} \sum_{i=1}^n (x_i - \bar x)^2} $$
 ## The same as mean calculation above. 'FUN' is changed to 'sd'.
 sub.median <- aggregate(Log2Intensity ~ Condition,
 					data = oneproteindata, FUN = median)
-```
-
-```
-## Error in eval(m$data, parent.frame()): object 'oneproteindata' not found
-```
-
-```r
 sub.median
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'sub.median' not found
+##    Condition Log2Intensity
+## 1 Condition1      26.29089
+## 2 Condition2      26.08498
+## 3 Condition3      23.29555
+## 4 Condition4      20.94536
+```
+
+```r
+# with dplyr
+sub.median.bcp <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(median=median(Log2Intensity))
+
+sub.median.bcp
+```
+
+```
+## # A tibble: 4 x 2
+##   Condition  median
+##   <chr>       <dbl>
+## 1 Condition1   26.3
+## 2 Condition2   26.1
+## 3 Condition3   23.3
+## 4 Condition4   20.9
 ```
 </details>
 
@@ -311,18 +435,34 @@ sub.median
 ## The same as mean calculation above. 'FUN' is changed to 'sd'.
 sub.sd <- aggregate(Log2Intensity ~ Condition,
 					data = oneproteindata, FUN = sd)
-```
-
-```
-## Error in eval(m$data, parent.frame()): object 'oneproteindata' not found
-```
-
-```r
 sub.sd
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'sub.sd' not found
+##    Condition Log2Intensity
+## 1 Condition1    0.10396539
+## 2 Condition2    0.16268179
+## 3 Condition3    0.09467798
+## 4 Condition4    0.73140174
+```
+
+```r
+# with dplyr
+sub.sd.bcp <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(sd = sd(Log2Intensity))
+
+sub.sd.bcp
+```
+
+```
+## # A tibble: 4 x 2
+##   Condition      sd
+##   <chr>       <dbl>
+## 1 Condition1 0.104 
+## 2 Condition2 0.163 
+## 3 Condition3 0.0947
+## 4 Condition4 0.731
 ```
 </details>
 
@@ -340,18 +480,34 @@ sub.sd
 sub.len <- aggregate(Log2Intensity ~ Condition,
 					 data = oneproteindata,
 					 FUN = length)
-```
-
-```
-## Error in eval(m$data, parent.frame()): object 'oneproteindata' not found
-```
-
-```r
 sub.len
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'sub.len' not found
+##    Condition Log2Intensity
+## 1 Condition1             3
+## 2 Condition2             3
+## 3 Condition3             3
+## 4 Condition4             3
+```
+
+```r
+# with dplyr
+sub.len.bcp <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(count = n())
+
+sub.len.bcp
+```
+
+```
+## # A tibble: 4 x 2
+##   Condition  count
+##   <chr>      <int>
+## 1 Condition1     3
+## 2 Condition2     3
+## 3 Condition3     3
+## 4 Condition4     3
 ```
 </details>
 
@@ -362,18 +518,11 @@ $$ SE = \sqrt{\frac{s^2}{n}} $$
 
 ```r
 sub.se <- sqrt(sub.sd$Log2Intensity^2 / sub.len$Log2Intensity)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'sub.sd' not found
-```
-
-```r
 sub.se
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'sub.se' not found
+## [1] 0.06002444 0.09392438 0.05466236 0.42227499
 ```
 
 We can now make the summary table including the results above (mean,
@@ -396,19 +545,44 @@ summaryresult <- data.frame(Group = grp,
 							sd = sub.sd$Log2Intensity,
 							se = sub.se,
 							length = sub.len$Log2Intensity)
-```
-
-```
-## Error in data.frame(Group = grp, mean = sub.mean$Log2Intensity, sd = sub.sd$Log2Intensity, : object 'sub.mean' not found
-```
-
-```r
 summaryresult
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+##        Group     mean         sd         se length
+## 1 Condition1 26.23632 0.10396539 0.06002444      3
+## 2 Condition2 26.00661 0.16268179 0.09392438      3
+## 3 Condition3 23.25609 0.09467798 0.05466236      3
+## 4 Condition4 20.97056 0.73140174 0.42227499      3
 ```
+
+> **Challenge**
+>
+> Make the same table as summaryresult with dplyr package.
+
+<details>
+
+```r
+summaryresult.dplyr <- oneproteindata %>% 
+    group_by(Condition) %>%
+    summarise(mean = mean(Log2Intensity),
+              sd = sd(Log2Intensity),
+              length = n())
+summaryresult.dplyr <- mutate(summaryresult.dplyr, se=sqrt(sd^2 / length))
+
+summaryresult.dplyr
+```
+
+```
+## # A tibble: 4 x 5
+##   Condition   mean     sd length     se
+##   <chr>      <dbl>  <dbl>  <int>  <dbl>
+## 1 Condition1  26.2 0.104       3 0.0600
+## 2 Condition2  26.0 0.163       3 0.0939
+## 3 Condition3  23.3 0.0947      3 0.0547
+## 4 Condition4  21.0 0.731       3 0.422
+```
+</details>
 
 ## Visualization with error bars for descriptive purpose
 
@@ -421,23 +595,30 @@ easily adaptable plots.
 
 
 ```r
+library(ggplot2)
+```
+
+```
+## 
+## Attaching package: 'ggplot2'
+```
+
+```
+## The following objects are masked from 'package:psych':
+## 
+##     %+%, alpha
+```
+
+
+```r
 # means without any errorbar
 p <- ggplot(aes(x = Group, y = mean, colour = Group),
 			data = summaryresult)+
 	geom_point(size = 3)
-```
-
-```
-## Error in ggplot(aes(x = Group, y = mean, colour = Group), data = summaryresult): could not find function "ggplot"
-```
-
-```r
 p
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'p' not found
-```
+![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
 
 Let's change a number of visual properties to make the plot more attractive.
 
@@ -449,6 +630,9 @@ Let's change a number of visual properties to make the plot more attractive.
 * Let's make the box for legend
 * Let's remove the box for legend key.
 
+See also this
+[post](http://ggplot2.tidyverse.org/reference/theme.html) for options of *theme*, 
+[post](http://ggplot2.tidyverse.org/reference/ggtheme.html) for complete theme.
 
 
 ```r
@@ -461,19 +645,10 @@ p2 <- p + labs(title = "Mean", x = "Group", y = 'Log2(Intensity)') +
 		  legend.position = 'bottom',
 		  legend.background = element_rect(colour = 'black'),
 		  legend.key = element_rect(colour = 'white'))
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'p' not found
-```
-
-```r
 p2
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'p2' not found
-```
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
 
 Let's now add the **standard deviation**:
 
@@ -484,9 +659,7 @@ p2 + geom_errorbar(aes(ymax = mean + sd, ymin = mean - sd), width = 0.1) +
 	  labs(title="Mean with SD")
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'p2' not found
-```
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
 
 > **Challenge**
 >
@@ -500,9 +673,7 @@ p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1) +
 	labs(title="Mean with SE")
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'p2' not found
-```
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
 
 ```r
 ## The SE is narrow than the SD!
@@ -521,9 +692,7 @@ p2 + geom_errorbar(aes(ymax = mean + se, ymin=mean - se), width = 0.1, color='bl
 	labs(title="Mean with SE")
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'p2' not found
-```
+![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png)
 </details>
 
 ## Working with statistical distributions
@@ -552,7 +721,7 @@ rug(xn)
 lines(density(xn), lwd = 2)
 ```
 
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
+![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
 
 By definition, the area under the density curve is 1. The area at the
 left of 0, 1, and 2 are respectively:
@@ -611,6 +780,14 @@ qnorm(pnorm(2))
 ## [1] 2
 ```
 
+```r
+qnorm(0.05)
+```
+
+```
+## [1] -1.644854
+```
+
 Finally, the density function gives us the *height* at which we are
 for a given mean:
 
@@ -623,7 +800,7 @@ points(1, dnorm(1), pch = 1, col = "blue")
 points(2, dnorm(2), pch = 4, col = "orange")
 ```
 
-![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png)
+![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
 
 ## Calculate the confidence interval
 
@@ -648,28 +825,54 @@ example, 95% confidence interval, right tail is 2.5% and left tail is
 ```r
 summaryresult$ciw.lower.95 <- summaryresult$mean -
 	qt(0.975, summaryresult$len - 1) * summaryresult$se
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'summaryresult' not found
-```
-
-```r
 summaryresult$ciw.upper.95 <- summaryresult$mean +
 	qt(0.975, summaryresult$len - 1) * summaryresult$se
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'summaryresult' not found
-```
-
-```r
 summaryresult
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+##        Group     mean         sd         se length ciw.lower.95
+## 1 Condition1 26.23632 0.10396539 0.06002444      3     25.97805
+## 2 Condition2 26.00661 0.16268179 0.09392438      3     25.60248
+## 3 Condition3 23.25609 0.09467798 0.05466236      3     23.02090
+## 4 Condition4 20.97056 0.73140174 0.42227499      3     19.15366
+##   ciw.upper.95
+## 1     26.49458
+## 2     26.41073
+## 3     23.49128
+## 4     22.78746
 ```
+<details>
+
+```r
+summaryresult.dplyr %>% mutate(ciw.lower.95 = mean - qt(0.975, length-1)*se,
+                               ciw.upper.95 = mean + qt(0.975, length-1)*se)
+```
+
+```
+## # A tibble: 4 x 7
+##   Condition   mean     sd length     se ciw.lower.95 ciw.upper.95
+##   <chr>      <dbl>  <dbl>  <int>  <dbl>        <dbl>        <dbl>
+## 1 Condition1  26.2 0.104       3 0.0600         26.0         26.5
+## 2 Condition2  26.0 0.163       3 0.0939         25.6         26.4
+## 3 Condition3  23.3 0.0947      3 0.0547         23.0         23.5
+## 4 Condition4  21.0 0.731       3 0.422          19.2         22.8
+```
+
+```r
+summaryresult.dplyr
+```
+
+```
+## # A tibble: 4 x 5
+##   Condition   mean     sd length     se
+##   <chr>      <dbl>  <dbl>  <int>  <dbl>
+## 1 Condition1  26.2 0.104       3 0.0600
+## 2 Condition2  26.0 0.163       3 0.0939
+## 3 Condition3  23.3 0.0947      3 0.0547
+## 4 Condition4  21.0 0.731       3 0.422
+```
+</details>
 
 
 ```r
@@ -689,9 +892,7 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 		  legend.key = element_rect(colour='white'))
 ```
 
-```
-## Error in ggplot(aes(x = Group, y = mean, colour = Group), data = summaryresult): could not find function "ggplot"
-```
+![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30-1.png)
 
 > **Challenges**
 >
@@ -702,26 +903,21 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 ```r
 # mean with 99% two-sided confidence interval
 summaryresult$ciw.lower.99 <- summaryresult$mean - qt(0.995,summaryresult$len-1) * summaryresult$se
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'summaryresult' not found
-```
-
-```r
 summaryresult$ciw.upper.99 <- summaryresult$mean + qt(0.995,summaryresult$len-1) * summaryresult$se
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'summaryresult' not found
-```
-
-```r
 summaryresult
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'summaryresult' not found
+##        Group     mean         sd         se length ciw.lower.95
+## 1 Condition1 26.23632 0.10396539 0.06002444      3     25.97805
+## 2 Condition2 26.00661 0.16268179 0.09392438      3     25.60248
+## 3 Condition3 23.25609 0.09467798 0.05466236      3     23.02090
+## 4 Condition4 20.97056 0.73140174 0.42227499      3     19.15366
+##   ciw.upper.95 ciw.lower.99 ciw.upper.99
+## 1     26.49458     25.64058     26.83205
+## 2     26.41073     25.07442     26.93879
+## 3     23.49128     22.71357     23.79860
+## 4     22.78746     16.77955     25.16157
 ```
 
 ```r
@@ -740,9 +936,7 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 		  legend.key = element_rect(colour='white'))
 ```
 
-```
-## Error in ggplot(aes(x = Group, y = mean, colour = Group), data = summaryresult): could not find function "ggplot"
-```
+![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
 </details>
 
 ### Some comments
@@ -764,28 +958,14 @@ ggplot(aes(x = Group, y = mean, colour = Group),
 We have two objects that contain all the information that we have
 generated so far:
 
-* The `summaryresults` object, that contains all the summary
+* The `summaryresults` and `summaryresults.dplyr` objects, that contains all the summary
   statistics.
-* The `iprg` data frame, that was read from the `csv` file. This
-  object can be easily regenerated using `read.csv`, and hence doesn't
-  necessarily to be saved explicity.
 
 
 
 ```r
 save(summaryresult, file = "./data/summaryresults.rda")
-```
-
-```
-## Error in save(summaryresult, file = "./data/summaryresults.rda"): object 'summaryresult' not found
-```
-
-```r
-save(iprg, file = "./data/iprg.rda")
-```
-
-```
-## Error in save(iprg, file = "./data/iprg.rda"): object 'iprg' not found
+save(summaryresult.dplyr, file = "./data/summaryresults.dplyr.rda")
 ```
 
 We can also save the summary result as a `csv` file using the
@@ -797,9 +977,10 @@ write.csv(sumamryresult, file = "./data/summary.csv")
 ```
 
 **Tip**: Exporting to csv is useful to share your work with
-collaborators that do not use R, but for wany continous work in R, to
+collaborators that do not use R, but for many continous work in R, to
 assure data validity accords platforms, the best format is `rda`.
 
+***
 # Part 2: Statistical hypothesis test
 
 First, we are going to prepare the session for further analyses.
@@ -844,20 +1025,16 @@ oneproteindata.condition12
 ```
 
 ```
-##                    Protein Log2Intensity                       Run
-## 21096 sp|P44015|VAC2_YEAST      26.30163 JD_06232014_sample1_B.raw
-## 21097 sp|P44015|VAC2_YEAST      26.11643 JD_06232014_sample1_C.raw
-## 21098 sp|P44015|VAC2_YEAST      26.29089 JD_06232014_sample1-A.raw
-## 21099 sp|P44015|VAC2_YEAST      25.81957 JD_06232014_sample2_A.raw
-## 21100 sp|P44015|VAC2_YEAST      26.11527 JD_06232014_sample2_B.raw
-## 21101 sp|P44015|VAC2_YEAST      26.08498 JD_06232014_sample2_C.raw
-##        Condition BioReplicate Intensity TechReplicate
-## 21096 Condition1            1  82714388             B
-## 21097 Condition1            1  72749239             C
-## 21098 Condition1            1  82100518             A
-## 21099 Condition2            2  59219741             A
-## 21100 Condition2            2  72690802             B
-## 21101 Condition2            2  71180513             C
+## # A tibble: 6 x 7
+##   Protein      Log2Intensity Run          Condition BioReplicate Intensity
+##   <chr>                <dbl> <chr>        <chr>            <int>     <dbl>
+## 1 sp|P44015|V…          26.3 JD_06232014… Conditio…            1 82714388.
+## 2 sp|P44015|V…          26.1 JD_06232014… Conditio…            1 72749239.
+## 3 sp|P44015|V…          26.3 JD_06232014… Conditio…            1 82100518.
+## 4 sp|P44015|V…          25.8 JD_06232014… Conditio…            2 59219741.
+## 5 sp|P44015|V…          26.1 JD_06232014… Conditio…            2 72690802.
+## 6 sp|P44015|V…          26.1 JD_06232014… Conditio…            2 71180513.
+## # ... with 1 more variable: TechReplicate <chr>
 ```
 
 ```r
@@ -871,13 +1048,51 @@ table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
 ##   Condition2 0 3
 ```
 
+<details>
+
+```r
+## with dplyr
+## Let's start with one protein, named "sp|P44015|VAC2_YEAST"
+oneproteindata <- filter(iprg, Protein == "sp|P44015|VAC2_YEAST")
+
+## Then, get two conditions only, because t.test only works for two groups (conditions).
+oneproteindata.subset <- filter(oneproteindata, 
+                                Condition %in% c('Condition1', 'Condition2'))
+oneproteindata.subset
+```
+
+```
+## # A tibble: 6 x 7
+##   Protein      Log2Intensity Run          Condition BioReplicate Intensity
+##   <chr>                <dbl> <chr>        <chr>            <int>     <dbl>
+## 1 sp|P44015|V…          26.3 JD_06232014… Conditio…            1 82714388.
+## 2 sp|P44015|V…          26.1 JD_06232014… Conditio…            1 72749239.
+## 3 sp|P44015|V…          26.3 JD_06232014… Conditio…            1 82100518.
+## 4 sp|P44015|V…          25.8 JD_06232014… Conditio…            2 59219741.
+## 5 sp|P44015|V…          26.1 JD_06232014… Conditio…            2 72690802.
+## 6 sp|P44015|V…          26.1 JD_06232014… Conditio…            2 71180513.
+## # ... with 1 more variable: TechReplicate <chr>
+```
+
+```r
+table(oneproteindata.subset[, c("Condition", "BioReplicate")])
+```
+
+```
+##             BioReplicate
+## Condition    1 2
+##   Condition1 3 0
+##   Condition2 0 3
+```
+</details>
+
 If we want to remove the levels that are not relevant anymore, we can
 use `droplevels`:
 
 
 ```r
-oneproteindata.condition12 <- droplevels(oneproteindata.condition12)
-table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
+oneproteindata.subset <- droplevels(oneproteindata.subset)
+table(oneproteindata.subset[, c("Condition", "BioReplicate")])
 ```
 
 ```
@@ -901,7 +1116,7 @@ And now apply to to our data
 ```r
 # t test for different abundance (log2Int) between Groups (Condition)
 result <- t.test(Log2Intensity ~ Condition,
-				 data = oneproteindata.condition12,
+				 data = oneproteindata.subset,
 				 var.equal = FALSE)
 
 result
@@ -1040,10 +1255,6 @@ diff(summaryresult12$mean)/sqrt(sum(summaryresult12$sd^2/summaryresult12$length)
 
 ## Re-calculating the p values
 
-See the previous
-[*Working with statistical distributions*](https://htmlpreview.github.io/?https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/02-rstats.html#working_with_statistical_distributions)
-for a reminder.
-
 Referring back to our t-test results above, we can manually calculate
 the one- and two-side tests p-values using the t-statistics and the
 test parameter (using the `pt` function).
@@ -1063,7 +1274,7 @@ abline(v = result$statistic, col = "red") ## where t statistics are located.
 abline(h = 0, col = "gray") ## horizontal line at 0
 ```
 
-![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40-1.png)
+![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
 
 **The area on the left** of that point is given by `pt(result$statistic,
 result$parameter)`, which is 0.939693. The p-value for a one-sided test, which is ** the area on the right** of red line, is this given by
@@ -1092,9 +1303,30 @@ And the p-value for a two-sided test is
 
 which is the same as the one calculated by the t-test.
 
+
+***
+# Part 3 : Choosing a model
+
+The decision of which statistical model is appropriate for a given set of observations depends on the type of data that have been collected.
+
+* Quantitative response with quantitative predictors : regression model
+
+* Categorical response with quantitative predictors : logistic regression model for bivariate categorical response (e.g., Yes/No, dead/alive), multivariate logistic regression model when the response variable has more than two possible values.
+
+* Quantitative response with categorical predictors : ANOVA model (quantitative response across several populations defined by one or more categorical predictor variables)
+
+* Categorical response with categorical predictors : contingency table that can be used to draw conclusions about the relationships between variables.
+
+
+Part 5b are adapted from *Bremer & Doerge*,
+[Using R at the Bench : Step-by-Step Data Analytics for Biologists](https://www.amazon.com/dp/1621821129/ref=olp_product_details?_encoding=UTF8&me=)
+, cold Spring Harbor LaboratoryPress, 2015.
+
+
 ***
 
-# Part 3a: Sample size calculation
+
+# Part 4: Sample size calculation
 
 To calculate the required sample size, you’ll need to know four
 things:
@@ -1177,34 +1409,19 @@ samsize <- matrix(0, nrow=ns*nd, ncol = 3)
 counter <- 0
 for (i in 1:nd){
   for (j in 1:ns){
-	result <- pwr.t.test(d = delta[i]/sigma[j],
+	result <- pwr.t.test(d = delta[i] / sigma[j],
 						 sig.level = alpha,
 						 power = power,
 						 type = "two.sample")
 	counter <- counter + 1
-	samsize[counter,1] <- delta[i]
-	samsize[counter,2] <- sigma[j]
-	samsize[counter,3] <- ceiling(result$n)
+	samsize[counter, 1] <- delta[i]
+	samsize[counter, 2] <- sigma[j]
+	samsize[counter, 3] <- ceiling(result$n)
   }
 }
-colnames(samsize) <- c("desiredlog2FC","variability","samplesize")
+colnames(samsize) <- c("desiredlog2FC", "variability", "samplesize")
 
-
-library("ggplot2")
-```
-
-```
-## 
-## Attaching package: 'ggplot2'
-```
-
-```
-## The following objects are masked from 'package:psych':
-## 
-##     %+%, alpha
-```
-
-```r
+## visualization
 samsize <- as.data.frame(samsize)
 samsize$variability <- as.factor(samsize$variability)
 ggplot(data=samsize, aes(x=desiredlog2FC, y=samplesize, group = variability, colour = variability)) +
@@ -1217,488 +1434,13 @@ ggplot(data=samsize, aes(x=desiredlog2FC, y=samplesize, group = variability, col
 		axis.text.x = element_text(size=13))
 ```
 
-![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45-1.png)
-
-***
-# Part 3b: Choosing a model
-
-The decision of which statistical model is appropriate for a given set of observations depends on the type of data that have been collected.
-
-* Quantitative response with quantitative predictors : regression model
-
-* Categorical response with quantitative predictors : logistic regression model for bivariate categorical response (e.g., Yes/No, dead/alive), multivariate logistic regression model when the response variable has more than two possible values.
-
-* Quantitative response with categorical predictors : ANOVA model (quantitative response across several populations defined by one or more categorical predictor variables)
-
-* Categorical response with categorical predictors : contingency table that can be used to draw conclusions about the relationships between variables.
-
-
-Part 5b are adapted from *Bremer & Doerge*,
-[Using R at the Bench : Step-by-Step Data Analytics for Biologists](https://www.amazon.com/dp/1621821129/ref=olp_product_details?_encoding=UTF8&me=)
-, cold Spring Harbor LaboratoryPress, 2015.
-
+![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)
 
 ***
 
-# Part 3c: Analysis of categorical data
+# Part 5: Linear models and correlation
 
-For this part, we are going to use a new dataset, which contains the
-patient information from TCGA colorectal cohort. This data is from
-*Proteogenomic characterization of human colon and rectal cancer*
-(Zhang et al. 2014).
-
-
-Let's read in and explore the TCGA colorectal cancer data:
-
-
-```r
-TCGA.CRC <- read.csv("./data/TCGA_sample_information.csv")
-head(TCGA.CRC)
-```
-
-```
-##   TCGA.participant.ID Gender Cancer BRAF.mutation history_of_colon_polyps
-## 1        TCGA-A6-3807 Female  Colon             0                      NO
-## 2        TCGA-A6-3808   Male  Colon             0                     YES
-## 3        TCGA-A6-3810   Male  Colon             0                     YES
-## 4        TCGA-AA-3518 Female  Colon             0                      NO
-## 5        TCGA-AA-3525   Male  Colon             1                      NO
-## 6        TCGA-AA-3526   Male  Colon             0                     YES
-```
-
-Rows in the data array are patients and columns are patient
-information. The column definition is shown as following:
-
-| Variable            |
-|---------------------|
-| TCGA participant ID |
-| Gender              |
-| Cancer type         |
-| BTAF mutation status|
-| History of colon polyps |
-
-Let's be familiar with data first.
-
-```r
-## check the dimension of data
-dim(TCGA.CRC)
-```
-
-```
-## [1] 78  5
-```
-
-```r
-dim(TCGA.CRC$Gender) # dim function is for matrix, array or data frame.
-```
-
-```
-## NULL
-```
-
-```r
-## check unique information of Gender column.
-unique(TCGA.CRC$Gender)
-```
-
-```
-## [1] Female Male  
-## Levels: Female Male
-```
-
-```r
-class(TCGA.CRC$Gender)
-```
-
-```
-## [1] "factor"
-```
-
-> **Challenge**
->
-> * Get unique information and class for `Cancer` information
-> * Get unique information and class for `BRAF.mutation` information
-> * Get unique information and class for `history_of_colon_polyps` information
-
-<details>
-
-</details>
-
-`table` function generates contingency table (or classification table with frequency of outcomes) at each combination.
-
-
-```r
-## check how many female and male are in the dataset
-table(TCGA.CRC$Gender)
-```
-
-```
-## 
-## Female   Male 
-##     34     44
-```
-
-```r
-## check unique information if paticipant ID
-unique(TCGA.CRC$TCGA.participant.ID)
-```
-
-```
-##  [1] TCGA-A6-3807 TCGA-A6-3808 TCGA-A6-3810 TCGA-AA-3518 TCGA-AA-3525
-##  [6] TCGA-AA-3526 TCGA-AA-3529 TCGA-AA-3531 TCGA-AA-3534 TCGA-AA-3552
-## [11] TCGA-AA-3554 TCGA-AA-3558 TCGA-AA-3561 TCGA-AA-3664 TCGA-AA-3666
-## [16] TCGA-AA-3672 TCGA-AA-3684 TCGA-AA-3695 TCGA-AA-3710 TCGA-AA-3715
-## [21] TCGA-AA-3818 TCGA-AA-3848 TCGA-AA-3986 TCGA-AA-3989 TCGA-AA-A004
-## [26] TCGA-AA-A00A TCGA-AA-A00F TCGA-AA-A00K TCGA-AA-A00N TCGA-AA-A00U
-## [31] TCGA-AA-A010 TCGA-AA-A01D TCGA-AA-A01F TCGA-AA-A01I TCGA-AA-A01K
-## [36] TCGA-AA-A01P TCGA-AA-A01R TCGA-AA-A01S TCGA-AA-A01T TCGA-AA-A01V
-## [41] TCGA-AA-A01X TCGA-AA-A01Z TCGA-AA-A022 TCGA-AA-A024 TCGA-AA-A029
-## [46] TCGA-AA-A02H TCGA-AA-A02O TCGA-AA-A02Y TCGA-AA-A03F TCGA-AA-A03J
-## [51] TCGA-AF-2691 TCGA-AF-2692 TCGA-AF-3400 TCGA-AF-3913 TCGA-AG-3574
-## [56] TCGA-AG-3580 TCGA-AG-3584 TCGA-AG-3593 TCGA-AG-A002 TCGA-AG-A008
-## [61] TCGA-AG-A00C TCGA-AG-A00H TCGA-AG-A00Y TCGA-AG-A011 TCGA-AG-A014
-## [66] TCGA-AG-A015 TCGA-AG-A01L TCGA-AG-A01W TCGA-AG-A01Y TCGA-AG-A020
-## [71] TCGA-AG-A026 TCGA-AG-A02N TCGA-AG-A02X TCGA-AG-A032
-## 74 Levels: TCGA-A6-3807 TCGA-A6-3808 TCGA-A6-3810 ... TCGA-AG-A032
-```
-
-```r
-length(unique(TCGA.CRC$TCGA.participant.ID))
-```
-
-```
-## [1] 74
-```
-
-There are 74 unique participant IDs. but there are total 78 rows. We can suspect that there are multiple rows for some IDs. Let's check. Get the count per participants ID
-
-```r
-countID <- table(TCGA.CRC$TCGA.participant.ID)
-countID
-```
-
-```
-## 
-## TCGA-A6-3807 TCGA-A6-3808 TCGA-A6-3810 TCGA-AA-3518 TCGA-AA-3525 
-##            1            1            1            1            1 
-## TCGA-AA-3526 TCGA-AA-3529 TCGA-AA-3531 TCGA-AA-3534 TCGA-AA-3552 
-##            1            1            1            1            1 
-## TCGA-AA-3554 TCGA-AA-3558 TCGA-AA-3561 TCGA-AA-3664 TCGA-AA-3666 
-##            1            1            1            1            1 
-## TCGA-AA-3672 TCGA-AA-3684 TCGA-AA-3695 TCGA-AA-3710 TCGA-AA-3715 
-##            1            1            1            1            1 
-## TCGA-AA-3818 TCGA-AA-3848 TCGA-AA-3986 TCGA-AA-3989 TCGA-AA-A004 
-##            1            1            1            1            1 
-## TCGA-AA-A00A TCGA-AA-A00F TCGA-AA-A00K TCGA-AA-A00N TCGA-AA-A00U 
-##            2            1            2            2            1 
-## TCGA-AA-A010 TCGA-AA-A01D TCGA-AA-A01F TCGA-AA-A01I TCGA-AA-A01K 
-##            1            1            1            1            1 
-## TCGA-AA-A01P TCGA-AA-A01R TCGA-AA-A01S TCGA-AA-A01T TCGA-AA-A01V 
-##            1            1            1            1            1 
-## TCGA-AA-A01X TCGA-AA-A01Z TCGA-AA-A022 TCGA-AA-A024 TCGA-AA-A029 
-##            1            1            1            1            1 
-## TCGA-AA-A02H TCGA-AA-A02O TCGA-AA-A02Y TCGA-AA-A03F TCGA-AA-A03J 
-##            1            1            1            1            1 
-## TCGA-AF-2691 TCGA-AF-2692 TCGA-AF-3400 TCGA-AF-3913 TCGA-AG-3574 
-##            1            1            1            1            1 
-## TCGA-AG-3580 TCGA-AG-3584 TCGA-AG-3593 TCGA-AG-A002 TCGA-AG-A008 
-##            1            1            1            1            1 
-## TCGA-AG-A00C TCGA-AG-A00H TCGA-AG-A00Y TCGA-AG-A011 TCGA-AG-A014 
-##            1            2            1            1            1 
-## TCGA-AG-A015 TCGA-AG-A01L TCGA-AG-A01W TCGA-AG-A01Y TCGA-AG-A020 
-##            1            1            1            1            1 
-## TCGA-AG-A026 TCGA-AG-A02N TCGA-AG-A02X TCGA-AG-A032 
-##            1            1            1            1
-```
-
-Some participant IDs has 2 rows. Let's get the subset that has more than one row.
-
-```r
-unique(countID)
-```
-
-```
-## [1] 1 2
-```
-
-```r
-countID[countID > 1]
-```
-
-```
-## 
-## TCGA-AA-A00A TCGA-AA-A00K TCGA-AA-A00N TCGA-AG-A00H 
-##            2            2            2            2
-```
-4 participants have two rows per each. Let's check the rows for `parcipant ID = TCGA-AA-A00A`
-
-
-```r
-TCGA.CRC[TCGA.CRC$TCGA.participant.ID == 'TCGA-AA-A00A', ]
-```
-
-```
-##    TCGA.participant.ID Gender Cancer BRAF.mutation history_of_colon_polyps
-## 26        TCGA-AA-A00A   Male  Colon             0                      NO
-## 27        TCGA-AA-A00A   Male  Colon             0                      NO
-```
-
-There are two rows with the same information. They are duplicated rows. Let's remove them.
-
-```r
-TCGA.CRC <- TCGA.CRC[!duplicated(TCGA.CRC), ]
-```
-
-> **Challenge**
->
-> * Check whether dimension and number of participants ID are changed after removing duplicated rows.
-
-<details>
-
-</details>
-
-
-## Generate 2-way contingency tables
-
-`table` function also can calculate 2-way contingency table, which is frequency outcomes of two categorical variables. Let's get the table and visualise the count data.
-
-
-```r
-cancer.polyps <- table(TCGA.CRC$history_of_colon_polyps, TCGA.CRC$Cancer)
-cancer.polyps
-```
-
-```
-##      
-##       Colon Rectum
-##   NO     29     19
-##   YES    21      5
-```
-
-```r
-dotchart(cancer.polyps, xlab = "Observed counts")
-```
-
-![plot of chunk unnamed-chunk-55](figure/unnamed-chunk-55-1.png)
-
-## Comparison of two proportions
-
-**Hypothesis in general** :
-
-$H_0$ : each population has the same proportion of observations, $\pi_{j=1|i=1} = \pi_{j=1|i=2}$
-
-$H_a$ : different population have different proportion of observations.
-
-**Hypothesis that we are interested with this example**: whether the proportion of patients who have history of colon polyps in the patients with colon cancer is different from that in the patients with rectal cancer.
-
-
-
-```r
-polyps <- cancer.polyps[2, ]
-cancer <- apply(cancer.polyps, 2, sum)
-pt <- prop.test(polyps, cancer)
-pt
-```
-
-```
-## 
-## 	2-sample test for equality of proportions with continuity
-## 	correction
-## 
-## data:  polyps out of cancer
-## X-squared = 2.3268, df = 1, p-value = 0.1272
-## alternative hypothesis: two.sided
-## 95 percent confidence interval:
-##  -0.03156841  0.45490175
-## sample estimates:
-##    prop 1    prop 2 
-## 0.4200000 0.2083333
-```
-
-```r
-# name of output
-names(pt)
-```
-
-```
-## [1] "statistic"   "parameter"   "p.value"     "estimate"    "null.value" 
-## [6] "conf.int"    "alternative" "method"      "data.name"
-```
-
-```r
-# proportion in each group
-pt$estimate
-```
-
-```
-##    prop 1    prop 2 
-## 0.4200000 0.2083333
-```
-
-```r
-# test statistic value
-pt$statistic
-```
-
-```
-## X-squared 
-##   2.32678
-```
-
-```r
-# degree of freedom
-pt$parameter
-```
-
-```
-## df 
-##  1
-```
-
-## Test of independence
-
-**Hypothesis in general** :
-
-$H_0$ : the factors are independent.
-
-$H_a$ : the factors are not independent.
-
-**Hypothesis that we are interested with this example**: whether history of colon polyps and type of colon cancer are independent or not.
-
-
-### Pearson Chi-squared test
-
-$$\chi^2 =\sum_{i=1}^2 \sum_{j=1}^2 \frac{(O_{ij}-E_{ij})^2}{E_{ij}} \sim \chi^2_{(2-1)(2-1)}$$
-
-$O_{ij}$ : $n_{ij}$, which is the count within the cells
-
-$E_{ij}$ : $n_{i+}n_{+j}/n$, where $n_{i+}$ is the row count sum, $n_{+j}$ is the column count sum and n is the total count.
-
-!! assumption : the distribution of the test statistic is approximately chi-square if the expected counts are large enough. Use this test only if the expected count for each cell is greater than 5.
-
-
-```r
-chisq.test(cancer.polyps)
-```
-
-```
-## 
-## 	Pearson's Chi-squared test with Yates' continuity correction
-## 
-## data:  cancer.polyps
-## X-squared = 2.3268, df = 1, p-value = 0.1272
-```
-
-Mathematically, two tests above are equivalent. `prop.test()` uses `chisq.test()` internally and print output differently.
-
-
-### Fisher's exact test
-
-Fisher's exact test is a non-parametric test for independence.
-It compares the distributions of counts within 4 cells. p-value for Fisher's exact test is the probability of obtaining more extreme data by chance than the data observed if the row and column totals are held fixed.
-
-There are no assumptions on distributions or sample sizes for this test.
-Therefore, the Fisher's exact test can be used with small sample sizes. However, if the sample sizes are very small, then the power of the test will be very low.
-
-Apply the Fisher's exact test using the `fisher.test` function and extract the odds ratio.
-
-
-```r
-ft <- fisher.test(cancer.polyps)
-ft
-```
-
-```
-## 
-## 	Fisher's Exact Test for Count Data
-## 
-## data:  cancer.polyps
-## p-value = 0.1177
-## alternative hypothesis: true odds ratio is not equal to 1
-## 95 percent confidence interval:
-##  0.09234132 1.24084405
-## sample estimates:
-## odds ratio 
-##  0.3681978
-```
-
-and extract the odds ratio.
-
-```r
-ft$estimate
-```
-
-```
-## odds ratio 
-##  0.3681978
-```
-
-
-> **Challenge**
->
-> * Compare the proportion of male patients in the patients with colon cancer is different from that in the patients with rectal cancer.
-
-<details>
-
-</details>
-
-### Optional practice :  Large-sample Z-test
-
-We could also apply a z-test for comparison of two proportions, defined as
-
-$$Z=\frac{\widehat{p}_1-\widehat{p}_2}{\sqrt{\widehat{p} (1- \widehat{p}) (\frac{1}{n_1} + \frac{1}{n_2})}}$$
-
-where $\widehat{\pi}_1 = \frac{y_{1}}{n_1}$, $\widehat{\pi}_2 = \frac{y_{2}}{n_2}$ and $\widehat{p}=\frac{x_1 + x_2}{n_1 + n_2}$.
-
-We are going to use this test to illustrate how to write functions in
-R.
-
-An R function is created with the function constructor, named
-`function`, and is composed of:
-
-1. a name: we will call our function to calculate the p-value
-   `z.prop.p`;
-2. some inputs: our inputs are the number of observations for the
-   outcome of interest, `x1` and `x2`, and the total number of
-   observation in each category, `n1` and `n2`;
-3. a returned value (output): the computed p-value, named `pvalue`;
-4. a body, i.e. the code that, given the inputs, calculates the output.
-
-
-
-```r
-z.prop.p <- function(x1, x2, n1, n2) {
-	pi_1 <- x1/n1
-	pi_2 <- x2/n2
-	numerator <- pi_1 - pi_2
-	p_common <- (x1+x2)/(n1+n2)
-	denominator <- sqrt(p_common * (1-p_common) * (1/n1 + 1/n2))
-	stat <- numerator/denominator
-	pvalue <- 2 * (1 - pnorm(abs(stat)))
-	return(pvalue)
-}
-
-z.prop.p(cancer.polyps[2,1], cancer.polyps[2,2], sum(cancer.polyps[,1]), sum(cancer.polyps[,2]))
-```
-
-```
-## [1] 0.07418571
-```
-
-
-> **Challenge**
->
-> Write a function named `f2c` (`c2f`) that converts a temperature
-> from Fahrenheit to Celsium (Celsium to Fahrenheit) using the
-> following formula $F = C \times 1.8 + 32$ ($C = \frac{F - 32}{1.8}$).
-
-
-***
-
-# Part 4: Linear models and correlation
-
-
-When considering correlations and modelling data, visualisation is key.
+When considering correlations and modelling data, visualization is key.
 
 Let's use the famous
 [*Anscombe's quartet*](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)
@@ -1763,13 +1505,20 @@ package:
 library("tidyr")
 iprg2 <- spread(iprg[, 1:3], Run, Log2Intensity)
 rownames(iprg2) <- iprg2$Protein
+```
+
+```
+## Warning: Setting row names on a tibble is deprecated.
+```
+
+```r
 iprg2 <- iprg2[, -1]
 ```
 
 
 
 And lets focus on the 3 runs, i.e. 2 replicates from condition
-1 and
+1 and 1 replicate from condition 4.
 
 
 ```r
@@ -1778,27 +1527,22 @@ head(x)
 ```
 
 ```
-##                       JD_06232014_sample1-A.raw JD_06232014_sample1_B.raw
-## sp|D6VTK4|STE2_YEAST                   26.58301                  26.81232
-## sp|O13297|CET1_YEAST                   24.71809                  24.71912
-## sp|O13329|FOB1_YEAST                   23.47075                  23.37678
-## sp|O13539|THP2_YEAST                   24.29661                  27.52021
-## sp|O13547|CCW14_YEAST                  27.11638                  27.22234
-## sp|O13563|RPN13_YEAST                  26.17056                  26.09476
-##                       JD_06232014_sample4-A.raw
-## sp|D6VTK4|STE2_YEAST                   26.65573
-## sp|O13297|CET1_YEAST                   24.50814
-## sp|O13329|FOB1_YEAST                   23.03473
-## sp|O13539|THP2_YEAST                   25.07576
-## sp|O13547|CCW14_YEAST                  27.07526
-## sp|O13563|RPN13_YEAST                  25.77958
+## # A tibble: 6 x 3
+##   `JD_06232014_sample1-A.raw` JD_06232014_sample1_B.raw `JD_06232014_samp…
+##                         <dbl>                     <dbl>              <dbl>
+## 1                        26.6                      26.8               26.7
+## 2                        24.7                      24.7               24.5
+## 3                        23.5                      23.4               23.0
+## 4                        24.3                      27.5               25.1
+## 5                        27.1                      27.2               27.1
+## 6                        26.2                      26.1               25.8
 ```
 
 ```r
 pairs(x)
 ```
 
-![plot of chunk unnamed-chunk-64](figure/unnamed-chunk-64-1.png)
+![plot of chunk unnamed-chunk-54](figure/unnamed-chunk-54-1.png)
 
 We can use the `cor` function to calculate the Pearson correlation
 between two vectors of the same length (making sure the order is
@@ -1865,11 +1609,24 @@ r2 <- x2[, 2]
 M <- r1 - r2
 A <- (r1 + r2)/2
 plot(A, M); grid()
+```
+
+```
+## Error in stripchart.default(x1, ...): invalid plotting method
+```
+
+```
+## Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+```
+
+```r
 suppressPackageStartupMessages(library("affy"))
 affy::ma.plot(A, M)
 ```
 
-![plot of chunk unnamed-chunk-67](figure/unnamed-chunk-67-1.png)
+```
+## Error in quantile(as.numeric(x), c(0.25, 0.75), na.rm = na.rm, names = FALSE, : (list) object cannot be coerced to type 'double'
+```
 
 See also this
 [post](http://simplystatistics.org/2015/08/12/correlation-is-not-a-measure-of-reproducibility/)
@@ -1884,28 +1641,18 @@ can calculate the parameters using the `lm` function:
 
 ```r
 lmod <- lm(r2 ~ r1)
+```
+
+```
+## Error in model.frame.default(formula = r2 ~ r1, drop.unused.levels = TRUE): invalid type (list) for variable 'r2'
+```
+
+```r
 summary(lmod)
 ```
 
 ```
-## 
-## Call:
-## lm(formula = r2 ~ r1)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -3.4939 -0.0721  0.0126  0.0881  3.4595 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) 0.348190   0.091842   3.791 0.000153 ***
-## r1          0.985878   0.003688 267.357  < 2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.3263 on 3024 degrees of freedom
-## Multiple R-squared:  0.9594,	Adjusted R-squared:  0.9594 
-## F-statistic: 7.148e+04 on 1 and 3024 DF,  p-value: < 2.2e-16
+## Error in summary(lmod): object 'lmod' not found
 ```
 
 which can be used to add the adequate line that reflects the (linear)
@@ -1914,10 +1661,19 @@ relationship between the two data
 
 ```r
 plot(r1, r2)
+```
+
+```
+## Error in stripchart.default(x1, ...): invalid plotting method
+```
+
+```r
 abline(lmod, col = "red")
 ```
 
-![plot of chunk unnamed-chunk-69](figure/unnamed-chunk-69-1.png)
+```
+## Error in abline(lmod, col = "red"): object 'lmod' not found
+```
 
 As we have seen in the beginning of this section, it is essential not
 to rely solely on the correlation value, but look at the data. This
@@ -1930,7 +1686,9 @@ par(mfrow = c(2, 2))
 plot(lmod)
 ```
 
-![plot of chunk unnamed-chunk-70](figure/unnamed-chunk-70-1.png)
+```
+## Error in plot(lmod): object 'lmod' not found
+```
 
 * *Cook's distance* is a commonly used estimate of the influence of a
   data point when performing a least-squares regression analysis and
@@ -1987,7 +1745,7 @@ par(mfrow = c(2, 2))
 plot(lmod)
 ```
 
-![plot of chunk unnamed-chunk-71](figure/unnamed-chunk-71-1.png)
+![plot of chunk unnamed-chunk-61](figure/unnamed-chunk-61-1.png)
 </details>
 
 Finally, let's conclude by illustrating how `ggplot2` can very
@@ -2002,7 +1760,7 @@ p + geom_smooth(method = "lm") +
 	geom_quantile(colour = "red")
 ```
 
-![plot of chunk unnamed-chunk-72](figure/unnamed-chunk-72-1.png)
+![plot of chunk unnamed-chunk-62](figure/unnamed-chunk-62-1.png)
 
 > **Challenge**
 >
@@ -2017,6 +1775,11 @@ p + geom_smooth() + geom_quantile(colour = "red")
 ```
 
 ```
+## Don't know how to automatically pick scale for object of type data.frame. Defaulting to continuous.
+## Don't know how to automatically pick scale for object of type data.frame. Defaulting to continuous.
+```
+
+```
 ## `geom_smooth()` using method = 'gam'
 ```
 
@@ -2024,7 +1787,7 @@ p + geom_smooth() + geom_quantile(colour = "red")
 ## Smoothing formula not specified. Using: y ~ x
 ```
 
-![plot of chunk unnamed-chunk-73](figure/unnamed-chunk-73-1.png)
+![plot of chunk unnamed-chunk-63](figure/unnamed-chunk-63-1.png)
 </details>
 
 

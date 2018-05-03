@@ -629,6 +629,7 @@ unique(iprg[, c("Condition", "TechReplicate")])
 ## 11 Condition4             C
 ## 12 Condition4             A
 ```
+</details>
 
 It is often useful to start a preliminary analysis, or proceed with a
 more detailed data exploration using a smalle subset of the data.
@@ -1537,7 +1538,7 @@ summary(iprg$Log2Intensity)
 > `log` function.
 
 
-<details><details>
+<details>
 
 ```r
 hist(log10(iprg$Intensity))
