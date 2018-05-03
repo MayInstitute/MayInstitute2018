@@ -2,6 +2,7 @@
 
 * This page: http://bit.ly/2018MayInstRstats
 * Data files: http://bit.ly/IntroRfiles
+* GitHub repository: https://github.com/MayInstitute/MayInstitute2018
 
 ### Suggested reading
 
