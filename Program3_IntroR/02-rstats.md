@@ -1888,4 +1888,4 @@ save(iprg, file = "./data/iprg.rda")
 
 ---
 
-Back to course [home page](http://bit.ly/2018MayInstRstats)
+Back to course [home page](http://bit.ly/2018MayInstRstats) - last update Thu May  3 12:00:39 2018

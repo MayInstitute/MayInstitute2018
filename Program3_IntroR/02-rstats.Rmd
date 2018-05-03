@@ -1209,4 +1209,4 @@ save(iprg, file = "./data/iprg.rda")
 
 ---
 
-Back to course [home page](http://bit.ly/2018MayInstRstats)
+Back to course [home page](http://bit.ly/2018MayInstRstats) - last update `r date()`

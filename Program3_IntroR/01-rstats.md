@@ -1219,4 +1219,4 @@ statistical analyses.
 
 ---
 
-Back to course [home page](http://bit.ly/2018MayInstRstats)
+Back to course [home page](http://bit.ly/2018MayInstRstats) - last update Thu May  3 12:00:22 2018

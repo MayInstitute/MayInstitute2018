@@ -39,7 +39,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 8 4 6
+## [1] 5 4 3
 ```
 
 ```r
@@ -47,7 +47,7 @@ sample(10, 3)
 ```
 
 ```
-## [1] 3 1 4
+## [1]  2  9 10
 ```
 
 Now suppose we would like to select the same randomly selected samples
@@ -363,9 +363,9 @@ sub.mean
 
 ```r
 # with dplyr
-sub.mean.bcp <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(mean=mean(Log2Intensity))
+sub.mean.bcp <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(mean=mean(Log2Intensity))
 
 sub.mean.bcp
 ```
@@ -408,9 +408,9 @@ sub.median
 
 ```r
 # with dplyr
-sub.median.bcp <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(median=median(Log2Intensity))
+sub.median.bcp <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(median=median(Log2Intensity))
 
 sub.median.bcp
 ```
@@ -448,9 +448,9 @@ sub.sd
 
 ```r
 # with dplyr
-sub.sd.bcp <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(sd = sd(Log2Intensity))
+sub.sd.bcp <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(sd = sd(Log2Intensity))
 
 sub.sd.bcp
 ```
@@ -493,9 +493,9 @@ sub.len
 
 ```r
 # with dplyr
-sub.len.bcp <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(count = n())
+sub.len.bcp <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(count = n())
 
 sub.len.bcp
 ```
@@ -563,11 +563,11 @@ summaryresult
 <details>
 
 ```r
-summaryresult.dplyr <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(mean = mean(Log2Intensity),
-              sd = sd(Log2Intensity),
-              length = n())
+summaryresult.dplyr <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(mean = mean(Log2Intensity),
+			  sd = sd(Log2Intensity),
+			  length = n())
 summaryresult.dplyr <- mutate(summaryresult.dplyr, se=sqrt(sd^2 / length))
 
 summaryresult.dplyr
@@ -631,7 +631,7 @@ Let's change a number of visual properties to make the plot more attractive.
 * Let's remove the box for legend key.
 
 See also this
-[post](http://ggplot2.tidyverse.org/reference/theme.html) for options of *theme*, 
+[post](http://ggplot2.tidyverse.org/reference/theme.html) for options of *theme*,
 [post](http://ggplot2.tidyverse.org/reference/ggtheme.html) for complete theme.
 
 
@@ -846,7 +846,7 @@ summaryresult
 
 ```r
 summaryresult.dplyr %>% mutate(ciw.lower.95 = mean - qt(0.975, length-1)*se,
-                               ciw.upper.95 = mean + qt(0.975, length-1)*se)
+							   ciw.upper.95 = mean + qt(0.975, length-1)*se)
 ```
 
 ```
@@ -1056,8 +1056,8 @@ table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
 oneproteindata <- filter(iprg, Protein == "sp|P44015|VAC2_YEAST")
 
 ## Then, get two conditions only, because t.test only works for two groups (conditions).
-oneproteindata.subset <- filter(oneproteindata, 
-                                Condition %in% c('Condition1', 'Condition2'))
+oneproteindata.subset <- filter(oneproteindata,
+								Condition %in% c('Condition1', 'Condition2'))
 oneproteindata.subset
 ```
 
@@ -1793,4 +1793,4 @@ p + geom_smooth() + geom_quantile(colour = "red")
 
 ---
 
-Back to course [home page](http://bit.ly/2018MayInstRstats)
+Back to course [home page](http://bit.ly/2018MayInstRstats) - last update Thu May  3 12:00:58 2018

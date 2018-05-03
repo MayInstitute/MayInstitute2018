@@ -161,9 +161,9 @@ sub.mean <- aggregate(Log2Intensity ~ Condition,
 sub.mean
 
 # with dplyr
-sub.mean.bcp <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(mean=mean(Log2Intensity))
+sub.mean.bcp <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(mean=mean(Log2Intensity))
 
 sub.mean.bcp
 ```
@@ -185,9 +185,9 @@ sub.median <- aggregate(Log2Intensity ~ Condition,
 sub.median
 
 # with dplyr
-sub.median.bcp <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(median=median(Log2Intensity))
+sub.median.bcp <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(median=median(Log2Intensity))
 
 sub.median.bcp
 ```
@@ -204,9 +204,9 @@ sub.sd <- aggregate(Log2Intensity ~ Condition,
 sub.sd
 
 # with dplyr
-sub.sd.bcp <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(sd = sd(Log2Intensity))
+sub.sd.bcp <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(sd = sd(Log2Intensity))
 
 sub.sd.bcp
 ```
@@ -228,9 +228,9 @@ sub.len <- aggregate(Log2Intensity ~ Condition,
 sub.len
 
 # with dplyr
-sub.len.bcp <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(count = n())
+sub.len.bcp <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(count = n())
 
 sub.len.bcp
 ```
@@ -266,11 +266,11 @@ summaryresult
 
 <details>
 ```{r}
-summaryresult.dplyr <- oneproteindata %>% 
-    group_by(Condition) %>%
-    summarise(mean = mean(Log2Intensity),
-              sd = sd(Log2Intensity),
-              length = n())
+summaryresult.dplyr <- oneproteindata %>%
+	group_by(Condition) %>%
+	summarise(mean = mean(Log2Intensity),
+			  sd = sd(Log2Intensity),
+			  length = n())
 summaryresult.dplyr <- mutate(summaryresult.dplyr, se=sqrt(sd^2 / length))
 
 summaryresult.dplyr
@@ -309,7 +309,7 @@ Let's change a number of visual properties to make the plot more attractive.
 * Let's remove the box for legend key.
 
 See also this
-[post](http://ggplot2.tidyverse.org/reference/theme.html) for options of *theme*, 
+[post](http://ggplot2.tidyverse.org/reference/theme.html) for options of *theme*,
 [post](http://ggplot2.tidyverse.org/reference/ggtheme.html) for complete theme.
 
 ```{r}
@@ -443,7 +443,7 @@ summaryresult
 <details>
 ```{r}
 summaryresult.dplyr %>% mutate(ciw.lower.95 = mean - qt(0.975, length-1)*se,
-                               ciw.upper.95 = mean + qt(0.975, length-1)*se)
+							   ciw.upper.95 = mean + qt(0.975, length-1)*se)
 summaryresult.dplyr
 ```
 </details>
@@ -582,8 +582,8 @@ table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
 oneproteindata <- filter(iprg, Protein == "sp|P44015|VAC2_YEAST")
 
 ## Then, get two conditions only, because t.test only works for two groups (conditions).
-oneproteindata.subset <- filter(oneproteindata, 
-                                Condition %in% c('Condition1', 'Condition2'))
+oneproteindata.subset <- filter(oneproteindata,
+								Condition %in% c('Condition1', 'Condition2'))
 oneproteindata.subset
 table(oneproteindata.subset[, c("Condition", "BioReplicate")])
 ```
@@ -1077,4 +1077,4 @@ p + geom_smooth() + geom_quantile(colour = "red")
 
 ---
 
-Back to course [home page](http://bit.ly/2018MayInstRstats)
+Back to course [home page](http://bit.ly/2018MayInstRstats) - last update `r date()`
