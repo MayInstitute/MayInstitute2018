@@ -734,7 +734,7 @@ iprg %>%
 
 <details>
 ```{r}
-load("./data/iprg2.rda")
+load("./data/iprgna.rda")
 iprgna %>% mutate(Log10Intensity = log10(Intensity))
 ```
 </details>

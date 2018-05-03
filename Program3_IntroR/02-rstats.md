@@ -1202,12 +1202,25 @@ iprg %>%
 <details>
 
 ```r
-load("./data/iprg2.rda")
+load("./data/iprgna.rda")
 iprgna %>% mutate(Log10Intensity = log10(Intensity))
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 36,321 x 7
+##    Protein      Run         Condition BioReplicate Intensity TechReplicate
+##    <chr>        <chr>       <chr>            <int>     <dbl> <chr>        
+##  1 sp|D6VTK4|S… JD_0623201… Conditio…            1   NA      B            
+##  2 sp|D6VTK4|S… JD_0623201… Conditio…            1    1.02e8 C            
+##  3 sp|D6VTK4|S… JD_0623201… Conditio…            1   NA      A            
+##  4 sp|D6VTK4|S… JD_0623201… Conditio…            2    1.20e8 A            
+##  5 sp|D6VTK4|S… JD_0623201… Conditio…            2   NA      B            
+##  6 sp|D6VTK4|S… JD_0623201… Conditio…            2    1.02e8 C            
+##  7 sp|D6VTK4|S… JD_0623201… Conditio…            3    1.04e8 A            
+##  8 sp|D6VTK4|S… JD_0623201… Conditio…            3    9.47e7 B            
+##  9 sp|D6VTK4|S… JD_0623201… Conditio…            3    9.69e7 C            
+## 10 sp|D6VTK4|S… JD_0623201… Conditio…            4    1.02e8 B            
+## # ... with 36,311 more rows, and 1 more variable: Log10Intensity <dbl>
 ```
 </details>
 
@@ -1222,7 +1235,20 @@ iprgna %>%
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 35,318 x 7
+##    Protein      Run         Condition BioReplicate Intensity TechReplicate
+##    <chr>        <chr>       <chr>            <int>     <dbl> <chr>        
+##  1 sp|D6VTK4|S… JD_0623201… Conditio…            1    1.02e8 C            
+##  2 sp|D6VTK4|S… JD_0623201… Conditio…            2    1.20e8 A            
+##  3 sp|D6VTK4|S… JD_0623201… Conditio…            2    1.02e8 C            
+##  4 sp|D6VTK4|S… JD_0623201… Conditio…            3    1.04e8 A            
+##  5 sp|D6VTK4|S… JD_0623201… Conditio…            3    9.47e7 B            
+##  6 sp|D6VTK4|S… JD_0623201… Conditio…            3    9.69e7 C            
+##  7 sp|D6VTK4|S… JD_0623201… Conditio…            4    1.02e8 B            
+##  8 sp|D6VTK4|S… JD_0623201… Conditio…            4    8.77e7 C            
+##  9 sp|D6VTK4|S… JD_0623201… Conditio…            4    1.06e8 A            
+## 10 sp|O13297|C… JD_0623201… Conditio…            1    2.76e7 B            
+## # ... with 35,308 more rows, and 1 more variable: Log10Intensity <dbl>
 ```
 
 `is.na()` is a function that determines whether something is an
@@ -1253,7 +1279,13 @@ iprgna %>%
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 4 x 2
+##   Condition  mean_Intensity
+##   <chr>               <dbl>
+## 1 Condition1             NA
+## 2 Condition2             NA
+## 3 Condition3             NA
+## 4 Condition4             NA
 ```
 
 Unfortunately, the `mean` of any vector that contains even a single
@@ -1268,7 +1300,13 @@ iprgna %>%
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 4 x 2
+##   Condition  mean_Intensity
+##   <chr>               <dbl>
+## 1 Condition1      65144912.
+## 2 Condition2      64439756.
+## 3 Condition3      62475797.
+## 4 Condition4      63616488.
 ```
 
 
@@ -1282,7 +1320,22 @@ iprgna %>%
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 12 x 3
+## # Groups:   TechReplicate [?]
+##    TechReplicate BioReplicate mean_Intensity
+##    <chr>                <int>          <dbl>
+##  1 A                        1      64891444.
+##  2 A                        2      63870255.
+##  3 A                        3      61648150.
+##  4 A                        4      63662564.
+##  5 B                        1      65563938.
+##  6 B                        2      65164270.
+##  7 B                        3      62758494.
+##  8 B                        4      64196979.
+##  9 C                        1      64978764.
+## 10 C                        2      64283727.
+## 11 C                        3      63020774.
+## 12 C                        4      62984686.
 ```
 
 ### Tallying
@@ -1299,7 +1352,13 @@ iprgna %>%
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 4 x 2
+##   Condition      n
+##   <chr>      <int>
+## 1 Condition1  9079
+## 2 Condition2  9081
+## 3 Condition3  9081
+## 4 Condition4  9080
 ```
 
 Here, `tally()` is the action applied to the groups created by `group_by()` and
@@ -1326,7 +1385,12 @@ iprgna %>%
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 3 x 2
+##   TechReplicate     n
+##   <chr>         <int>
+## 1 A             12107
+## 2 B             12106
+## 3 C             12108
 ```
 
 ```r
@@ -1340,7 +1404,13 @@ iprgna %>%
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 4 x 4
+##   Condition   mean_int min_int     max_int
+##   <chr>          <dbl>   <dbl>       <dbl>
+## 1 Condition1 65144912. 254608. 2841953257.
+## 2 Condition2 64439756. 259513. 2757471311.
+## 3 Condition3 62475797.  88409. 2659018724.
+## 4 Condition4 63616488.  84850. 2881057105.
 ```
 
 ```r
@@ -1353,7 +1423,14 @@ iprgna %>%
 ```
 
 ```
-## Error in eval(lhs, parent, parent): object 'iprgna' not found
+## # A tibble: 4 x 6
+## # Groups:   Condition [4]
+##   Protein      Run          Condition BioReplicate Intensity TechReplicate
+##   <chr>        <chr>        <chr>            <int>     <dbl> <chr>        
+## 1 sp|P48589|R… JD_06232014… Conditio…            3    2.66e9 B            
+## 2 sp|P48589|R… JD_06232014… Conditio…            2    2.76e9 B            
+## 3 sp|P48589|R… JD_06232014… Conditio…            1    2.84e9 A            
+## 4 sp|P48589|R… JD_06232014… Conditio…            4    2.88e9 A
 ```
 </details>
 
@@ -1797,6 +1874,16 @@ function.
 >
 > **Tip**: save your figures in a dedicated directory.
 
+## Saving our results
+
+The `iprg` data frame, that was read from the `csv` file. This
+object can be easily regenerated using `read.csv`, and hence doesn't
+necessarily to be saved explicity.
+
+
+```r
+save(iprg, file = "./data/iprg.rda")
+```
 
 ---
 
