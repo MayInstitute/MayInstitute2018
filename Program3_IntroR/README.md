@@ -51,9 +51,9 @@ Olga Vitek (OV), Meena Choi (MC), Laurent Gatto (LG)
 ### License
 
 
-This material, unless otherwise stated, has been adapted from our is
-made available under the
-[Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/).
+This material, unless otherwise stated, is made available under the
+[Creative Commons Attribution
+license](https://creativecommons.org/licenses/by/4.0/).
 
 You are free to:
 
