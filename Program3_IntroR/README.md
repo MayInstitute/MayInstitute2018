@@ -1,6 +1,6 @@
 # May Institute 2018: Beginner's statistics in R
 
-* This page: http://bit.ly/2018MayInstRstats
+* This page: https://raw.githack.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/README.html
 * Data files: http://bit.ly/IntroRfiles
 * GitHub repository: https://github.com/MayInstitute/MayInstitute2018
 
@@ -42,9 +42,9 @@ Olga Vitek (OV), Meena Choi (MC), Laurent Gatto (LG)
 
 ### Material
 
-- [Material day 1](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/01-rstats.html)
-- [Material day 2](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/02-rstats.html)
-- [Material day 3](https://rawgit.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/03-rstats.html)
+- [Material day 1](https://raw.githack.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/01-rstats.html)
+- [Material day 2](https://raw.githack.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/02-rstats.html)
+- [Material day 3](https://raw.githack.com/MayInstitute/MayInstitute2018/master/Program3_IntroR/03-rstats.html)
 
 
 
